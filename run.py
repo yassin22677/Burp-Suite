@@ -1,6 +1,6 @@
-from app import create_app   # Imports the app setup
+from app import create_app
 
-app = create_app()           # Creates the Flask app using the function in __init__.py
+app = create_app()
 
 if __name__ == "__main__":
-    app.run(debug=True)      # Starts the local server
+    app.run(debug=True)
