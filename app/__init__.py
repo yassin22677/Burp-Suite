@@ -1,9 +1,10 @@
 from flask import Flask
+from app.views.auth_routes import auth_bp
 
 def create_app():
     app = Flask(__name__)
 
-    from app.views.main_routes import main
-    app.register_blueprint(main)
+    # Register blueprints
+    app.register_blueprint(auth_bp)
 
     return app
