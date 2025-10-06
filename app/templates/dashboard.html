@@ -1,11 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Burp Suite Smart Assistant</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Burp Smart Assistant - Dashboard</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body style="font-family: Arial; text-align: center; margin-top: 50px;">
-  <h1>Burp Suite Smart Assistant</h1>
-  <p>Flask is running successfully 🎉</p>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-title">Dashboard</div>
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">Dashboard</a>
+            <a href="#">Configuration</a>
+            <a href="#">Logs</a>
+            <a href="#">AI Insight</a>
+            <a href="#">Reports </a>
+            <a href="#">Login</a>
+        </div>
+    </nav>
+
+    <!-- Main Dashboard Container -->
+    <div class="dashboard-container">
+
+        <!-- Overview Section -->
+        <section class="overview">
+            <div class="card progress-card">
+                <div class="circle">
+                    <canvas id="progressChart"></canvas>
+                    <p class="percent-text">75%</p>
+                </div>
+                <p>Scan Progress</p>
+            </div>
+
+            <div class="card">
+                <h3>Total Vulnerabilities</h3>
+                <p class="number">32</p>
+            </div>
+
+            <div class="card">
+                <h3>False Positive Rate</h3>
+                <p class="number">5%</p>
+            </div>
+
+            <div class="card">
+                <h3>Scan Duration</h3>
+                <p class="number">00:45:23</p>
+            </div>
+        </section>
+
+        <!-- Middle Section -->
+        <section class="middle-section">
+            <div class="card chart-card">
+                <h3>Performance Metrics</h3>
+                <canvas id="performanceChart"></canvas>
+            </div>
+
+            <div class="card suggestions-card">
+                <h3>Configuration Suggestions</h3>
+                <ul>
+                    <li>✅ Increase scanner threshold for high severity issues</li>
+                    <li>✅ Disable passive checks not relevant to the target</li>
+                    <li>✅ Expand scope to include additional subdomains</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Recent Activity -->
+        <section class="card recent-activity">
+            <h3>Recent Activity</h3>
+            <ul>
+                <li><strong>14:32</strong> — Changed scope settings to include *.example.com</li>
+                <li><strong>14:10</strong> — Set scanner threshold to High for /login</li>
+                <li><strong>13:55</strong> — Disabled passive checks for session management</li>
+                <li><strong>13:20</strong> — Started new scan on http://example.com</li>
+            </ul>
+        </section>
+
+    </div>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
 </body>
 </html>
