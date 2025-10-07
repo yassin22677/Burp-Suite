@@ -7,6 +7,11 @@ main = Blueprint('main', __name__)
 def home():
     return render_template('dashboard.html')
 
+@main.route('/')
+def home():
+    return render_template('dashboard.html')
+
+
 @main.route('/check-burp')
 def check_burp():
     status = check_burp_status()
