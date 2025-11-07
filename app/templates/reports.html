@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Reports & Results | Burp Config AI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/reports.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg shadow-sm">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Burp Config <span class="brand-highlight">AI</span></a>
+            <div class="d-flex gap-2">
+                <button id="themeToggle" class="btn btn-theme-toggle">🌙</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid px-4 mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="fw-bold">📊 Vulnerability Reports</h3>
+            <div class="btn-group">
+                <button id="exportCSV" class="btn btn-outline-primary btn-sm">⬇ CSV</button>
+                <button id="exportJSON" class="btn btn-outline-primary btn-sm">📦 JSON</button>
+                <button id="exportPDF" class="btn btn-outline-primary btn-sm">🧾 PDF</button>
+            </div>
+        </div>
+
+        <!-- Filter -->
+        <div class="row g-2 mb-4 filter-bar">
+            <div class="col-md-6">
+                <input id="searchInput" type="text" class="form-control" placeholder="Search vulnerabilities...">
+            </div>
+            <div class="col-md-3">
+                <select id="severityFilter" class="form-select">
+                    <option value="All">All Severities</option>
+                    <option value="Critical">Critical</option>
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- AI Insights Summary -->
+        <div class="card ai-insight mb-4 p-3">
+            <h5 class="text-info mb-2">🤖 AI Insights Summary</h5>
+            <p id="insightText">Analyzing vulnerability data...</p>
+        </div>
+
+        <!-- Severity Cards -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-3">
+                <div class="card severity-card critical">
+                    <h6>Critical</h6>
+                    <h2 id="criticalCount">0</h2>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card severity-card high">
+                    <h6>High</h6>
+                    <h2 id="highCount">0</h2>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card severity-card medium">
+                    <h6>Medium</h6>
+                    <h2 id="mediumCount">0</h2>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card severity-card low">
+                    <h6>Low</h6>
+                    <h2 id="lowCount">0</h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card chart-card"><canvas id="severityChart"></canvas></div>
+            </div>
+            <div class="col-md-6">
+                <div class="card chart-card"><canvas id="trendChart"></canvas></div>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="card glass-table mb-5">
+            <div class="card-body table-responsive">
+                <table class="table align-middle text-center" id="vulnTable">
+                    <thead>
+                        <tr>
+                            <th data-sort="id">ID 🔽</th>
+                            <th data-sort="severity">Severity</th>
+                            <th data-sort="name">Name</th>
+                            <th data-sort="endpoint">Endpoint</th>
+                            <th data-sort="status">Status</th>
+                            <th data-sort="confidence">Confidence</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody id="vulnTableBody">
+                        {% for vuln in vulns %}
+                        <tr>
+                            <td>{{ vuln.id }}</td>
+                            <td><span class="badge severity-badge {{ vuln.severity|lower }}">{{ vuln.severity }}</span>
+                            </td>
+                            <td>{{ vuln.name }}</td>
+                            <td><code>{{ vuln.endpoint }}</code></td>
+                            <td>{{ vuln.status }}</td>
+                            <td>{{ vuln.confidence }}</td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-light viewDetailsBtn" data-bs-toggle="modal"
+                                    data-bs-target="#detailsModal" data-name="{{ vuln.name }}"
+                                    data-severity="{{ vuln.severity }}" data-endpoint="{{ vuln.endpoint }}"
+                                    data-status="{{ vuln.status }}" data-confidence="{{ vuln.confidence }}"
+                                    data-description="{{ vuln.description if vuln.description else 'No description available.' }}">
+                                    View
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="detailsModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Vulnerability Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Name:</strong> <span id="modalName"></span></p>
+                    <p><strong>Severity:</strong> <span id="modalSeverity"></span></p>
+                    <p><strong>Endpoint:</strong> <span id="modalEndpoint"></span></p>
+                    <p><strong>Status:</strong> <span id="modalStatus"></span></p>
+                    <p><strong>Confidence:</strong> <span id="modalConfidence"></span></p>
+                    <p><strong>Description:</strong> <span id="modalDescription"></span></p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/reports.js') }}"></script>
+</body>
+
+</html>
