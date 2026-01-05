@@ -12,3 +12,6 @@ def check_burp():
     status = check_burp_status()
     return f"<h3>Burp Suite Status:</h3><pre>{status}</pre>"
 
+@main.route('/reports')
+def reports():
+    return render_template('reports.html')
