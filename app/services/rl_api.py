@@ -64,6 +64,17 @@ def decide_action():
         return jsonify({"error": f"Missing field: {e}"}), 400
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+@app.route("/update-reward", methods=["POST"])
+def update_reward():
+    data = request.json
+    reward = data.get("reward", 0)
+
+    # For now, just log the reward
+    print(f"[RL] Reward received: {reward}")
+
+    # Later we will connect this to Q-learning update
+    return jsonify({"status": "ok"})
 
 
 
