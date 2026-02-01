@@ -11,40 +11,63 @@ public class RLConfigApplier {
     }
 
     /**
-     * Action mapping (you can change this later):
-     * 0 = do nothing
+     * Action mapping:
+     * 0 = NO_OP
      * 1 = enable proxy intercept
      * 2 = disable proxy intercept
-     * 3 = start passive audit (built-in)
-     * 4 = start active audit (built-in)
+     * 3 = start passive audit
+     * 4 = start active audit
      */
-    public void applyAction(int actionId, String url) {
-        switch (actionId) {
+    public void applyAction(int action, String url, long actionId) {
+
+        switch (action) {
             case 0 -> {
-                // no-op
+                api.logging().logToOutput(
+                        "[RL][APPLY][actionId=" + actionId + "] NO_OP"
+                );
             }
-            case 1 -> api.proxy().enableIntercept();
-            case 2 -> api.proxy().disableIntercept();
+
+            case 1 -> {
+                api.proxy().enableIntercept();
+                api.logging().logToOutput(
+                        "[RL][APPLY][actionId=" + actionId + "] ENABLE_INTERCEPT"
+                );
+            }
+
+            case 2 -> {
+                api.proxy().disableIntercept();
+                api.logging().logToOutput(
+                        "[RL][APPLY][actionId=" + actionId + "] DISABLE_INTERCEPT"
+                );
+            }
 
             case 3 -> {
-                // Start passive audit using built-in configuration
-                AuditConfiguration cfg = AuditConfiguration.auditConfiguration(
-                        BuiltInAuditConfiguration.LEGACY_PASSIVE_AUDIT_CHECKS
-                );
+                AuditConfiguration cfg =
+                        AuditConfiguration.auditConfiguration(
+                                BuiltInAuditConfiguration.LEGACY_PASSIVE_AUDIT_CHECKS
+                        );
+
                 api.scanner().startAudit(cfg);
-                api.logging().logToOutput("[RL] Started PASSIVE audit (built-in) for: " + url);
+                api.logging().logToOutput(
+                        "[RL][APPLY][actionId=" + actionId + "] PASSIVE_SCAN " + url
+                );
             }
 
             case 4 -> {
-                // Start active audit using built-in configuration
-                AuditConfiguration cfg = AuditConfiguration.auditConfiguration(
-                        BuiltInAuditConfiguration.LEGACY_ACTIVE_AUDIT_CHECKS
-                );
+                AuditConfiguration cfg =
+                        AuditConfiguration.auditConfiguration(
+                                BuiltInAuditConfiguration.LEGACY_ACTIVE_AUDIT_CHECKS
+                        );
+
                 api.scanner().startAudit(cfg);
-                api.logging().logToOutput("[RL] Started ACTIVE audit (built-in) for: " + url);
+                api.logging().logToOutput(
+                        "[RL][APPLY][actionId=" + actionId + "] ACTIVE_SCAN " + url
+                );
             }
 
-            default -> api.logging().logToError("[RL] Unknown actionId=" + actionId);
+            default -> api.logging().logToError(
+                    "[RL][APPLY][actionId=" + actionId + "] UNKNOWN_ACTION=" + action
+            );
         }
     }
 }

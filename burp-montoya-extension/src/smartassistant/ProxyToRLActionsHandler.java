@@ -1,50 +1,80 @@
 import burp.api.montoya.MontoyaApi;
-import burp.api.montoya.proxy.http.InterceptedRequest;
-import burp.api.montoya.proxy.http.InterceptedResponse;
-import burp.api.montoya.proxy.http.ProxyRequestHandler;
-import burp.api.montoya.proxy.http.ProxyResponseHandler;
-import burp.api.montoya.proxy.http.ProxyRequestReceivedAction;
-import burp.api.montoya.proxy.http.ProxyRequestToBeSentAction;
-import burp.api.montoya.proxy.http.ProxyResponseReceivedAction;
-import burp.api.montoya.proxy.http.ProxyResponseToBeSentAction;
+import burp.api.montoya.proxy.http.*;
 
-public class ProxyToRLActionsHandler implements ProxyRequestHandler, ProxyResponseHandler {
+import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicLong;
+
+public class ProxyToRLActionsHandler
+        implements ProxyRequestHandler, ProxyResponseHandler {
 
     private final MontoyaApi api;
     private final RLHttpClient rlClient;
     private final RLConfigApplier applier;
 
-    public ProxyToRLActionsHandler(MontoyaApi api, RLHttpClient rlClient, RLConfigApplier applier) {
+    // ---- ID generators (timeline traceability)
+    private static final AtomicLong REQUEST_ID = new AtomicLong(0);
+    private static final AtomicLong ACTION_ID = new AtomicLong(0);
+    private static final AtomicLong RESPONSE_ID = new AtomicLong(0);
+
+    // ---- Bootstrap: first time per host
+    private final Set<String> seenHosts = new HashSet<>();
+
+    public ProxyToRLActionsHandler(
+            MontoyaApi api,
+            RLHttpClient rlClient,
+            RLConfigApplier applier
+    ) {
         this.api = api;
         this.rlClient = rlClient;
         this.applier = applier;
     }
 
-    // ---------------------------
-    // REQUEST path
-    // ---------------------------
+    // ================= REQUEST =================
     @Override
     public ProxyRequestReceivedAction handleRequestReceived(InterceptedRequest req) {
 
-        // Example: only act on in-scope traffic (common in pentesting)
         if (!req.isInScope()) {
             return ProxyRequestReceivedAction.continueWith(req);
         }
 
-        // Build a simple "state"
+        String ts = Instant.now().toString();
+        long reqId = REQUEST_ID.incrementAndGet();
+
         String method = req.method();
         String url = req.url();
-        int urlLen = url.length();
+        String host = req.httpService().host();
 
-        // Ask RL for an action
-        int actionId = rlClient.decideAction(method, url, urlLen, -1);
+        api.logging().logToOutput(
+                "[RL][REQ][ts=" + ts + "][reqId=" + reqId + "] " + method + " " + url
+        );
 
-        // Apply tuning action in Burp
-        applier.applyAction(actionId, url);
+        // -------- BOOTSTRAP (first request per host)
+        if (!seenHosts.contains(host)) {
+            seenHosts.add(host);
 
-        api.logging().logToOutput("[RL][REQ] action=" + actionId + " " + method + " " + url);
+            long actionId = ACTION_ID.incrementAndGet();
+            int action = 3; // PASSIVE_SCAN
 
-        // You can also implement drop/intercept based on actionId (optional)
+            api.logging().logToOutput(
+                    "[RL][BOOTSTRAP][ts=" + ts + "][actionId=" + actionId + "] PASSIVE_SCAN"
+            );
+
+            applier.applyAction(action, url, actionId);
+            return ProxyRequestReceivedAction.continueWith(req);
+        }
+
+        // -------- RL DECISION
+        int action = rlClient.decideAction(method, url, url.length(), -1);
+        long actionId = ACTION_ID.incrementAndGet();
+
+        api.logging().logToOutput(
+                "[RL][ACT][ts=" + ts + "][actionId=" + actionId + "] value=" + action
+        );
+
+        applier.applyAction(action, url, actionId);
+
         return ProxyRequestReceivedAction.continueWith(req);
     }
 
@@ -53,24 +83,22 @@ public class ProxyToRLActionsHandler implements ProxyRequestHandler, ProxyRespon
         return ProxyRequestToBeSentAction.continueWith(req);
     }
 
-    // ---------------------------
-    // RESPONSE path
-    // ---------------------------
+    // ================= RESPONSE =================
     @Override
     public ProxyResponseReceivedAction handleResponseReceived(InterceptedResponse resp) {
 
-        // We can use responses for better state and reward shaping
+        String ts = Instant.now().toString();
+        long respId = RESPONSE_ID.incrementAndGet();
         int status = resp.statusCode();
 
-        // Very simple reward example:
-        // - 2xx/3xx: neutral
-        // - 4xx: slightly negative (might be noise/blocked)
-        // - 5xx: negative (server errors / instability)
-        int reward = (status >= 500) ? -3 : (status >= 400 ? -1 : 0);
+        int reward = (status >= 500) ? -3 :
+                     (status >= 400) ? -1 : 0;
 
         rlClient.sendReward(reward);
 
-        api.logging().logToOutput("[RL][RESP] status=" + status + " reward=" + reward);
+        api.logging().logToOutput(
+                "[RL][RESP][ts=" + ts + "][respId=" + respId + "] status=" + status + " reward=" + reward
+        );
 
         return ProxyResponseReceivedAction.continueWith(resp);
     }
