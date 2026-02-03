@@ -1,81 +1,103 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.Random;
 
 public class RLHttpClient {
 
     private final String decideUrl;
     private final String rewardUrl;
 
+    // --- Exploration parameters ---
+    private static final int ACTION_SPACE = 5; // 0..4
+    private static final double EPSILON_START = 1.0;
+    private static final double EPSILON_MIN = 0.1;
+    private static final double EPSILON_DECAY = 0.995;
+
+    private double epsilon = EPSILON_START;
+    private final Random random = new Random();
+
     public RLHttpClient(String decideUrl, String rewardUrl) {
         this.decideUrl = decideUrl;
         this.rewardUrl = rewardUrl;
     }
 
-    public int decideAction(String method, String url, int urlLength, int statusCode) {
-        String json = "{"
-                + "\"method\":\"" + escape(method) + "\","
-                + "\"url\":\"" + escape(url) + "\","
-                + "\"url_length\":" + urlLength + ","
-                + "\"status_code\":" + statusCode
-                + "}";
+    /**
+     * Decide action using ε-greedy strategy.
+     */
+    public int decideAction(String method, String url, int urlLen, int status) {
 
-        String resp = postJson(decideUrl, json);
+        // 🔥 EXPLORATION
+        if (random.nextDouble() < epsilon) {
+            decayEpsilon();
+            return random.nextInt(ACTION_SPACE);
+        }
 
-        // Expecting something like: {"action_id":3}
-        int actionId = extractInt(resp, "action_id", 0);
-        return actionId;
-    }
-
-    public void sendReward(int reward) {
-        String json = "{\"reward\":" + reward + "}";
-        postJson(rewardUrl, json);
-    }
-
-    private String postJson(String endpoint, String jsonBody) {
+        // 🔥 EXPLOITATION (ask Python RL)
         try {
-            HttpURLConnection conn = (HttpURLConnection) new URL(endpoint).openConnection();
+            String json = """
+                {
+                  "method": "%s",
+                  "url_length": %d,
+                  "status": %d
+                }
+                """.formatted(method, urlLen, status);
+
+            HttpURLConnection conn =
+                    (HttpURLConnection) new URL(decideUrl).openConnection();
+
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json");
             conn.setDoOutput(true);
 
             try (OutputStream os = conn.getOutputStream()) {
-                os.write(jsonBody.getBytes("UTF-8"));
+                os.write(json.getBytes(StandardCharsets.UTF_8));
             }
 
-            try (BufferedReader br = new BufferedReader(
-                    new InputStreamReader(conn.getInputStream(), "UTF-8")
-            )) {
-                StringBuilder sb = new StringBuilder();
-                String line;
-                while ((line = br.readLine()) != null) sb.append(line);
-                return sb.toString();
-            }
+            int action = Integer.parseInt(
+                    new String(conn.getInputStream().readAllBytes())
+                            .trim()
+            );
+
+            decayEpsilon();
+            return action;
+
         } catch (Exception e) {
-            return "{}";
+            // Fail-safe
+            return 0;
         }
     }
 
-    private static String escape(String s) {
-        if (s == null) return "";
-        return s.replace("\\", "\\\\").replace("\"", "\\\"");
+    /**
+     * Send reward to Python RL agent.
+     */
+    public void sendReward(int reward) {
+        try {
+            String json = """
+                { "reward": %d }
+                """.formatted(reward);
+
+            HttpURLConnection conn =
+                    (HttpURLConnection) new URL(rewardUrl).openConnection();
+
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setDoOutput(true);
+
+            try (OutputStream os = conn.getOutputStream()) {
+                os.write(json.getBytes(StandardCharsets.UTF_8));
+            }
+
+            conn.getInputStream().close();
+
+        } catch (Exception ignored) {
+        }
     }
 
-    private static int extractInt(String json, String key, int defaultVal) {
-        try {
-            String pattern = "\"" + key + "\":";
-            int idx = json.indexOf(pattern);
-            if (idx < 0) return defaultVal;
-            int start = idx + pattern.length();
-            int end = start;
-            while (end < json.length() && (Character.isDigit(json.charAt(end)) || json.charAt(end) == '-')) {
-                end++;
-            }
-            return Integer.parseInt(json.substring(start, end));
-        } catch (Exception e) {
-            return defaultVal;
+    private void decayEpsilon() {
+        if (epsilon > EPSILON_MIN) {
+            epsilon *= EPSILON_DECAY;
         }
     }
 }

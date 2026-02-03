@@ -18,6 +18,17 @@ public class RLConfigApplier {
      * 3 = start passive audit
      * 4 = start active audit
      */
+    public String describeAction(int actionId) {
+    return switch (actionId) {
+        case 0 -> "NO_OP";
+        case 1 -> "ENABLE_INTERCEPT";
+        case 2 -> "DISABLE_INTERCEPT";
+        case 3 -> "START_PASSIVE_SCAN";
+        case 4 -> "START_ACTIVE_SCAN";
+        default -> "UNKNOWN_ACTION";
+    };
+}
+
     public void applyAction(int action, String url, long actionId) {
 
         switch (action) {
