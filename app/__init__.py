@@ -1,13 +1,15 @@
-from flask import Flask, render_template
-from app.views.main_routes import main
-from app.views.reports_routes import reports_bp
+from flask import Flask
+from app.models import db
+from app.views.rl_event_routes import rl_event_bp
 
 def create_app():
     app = Flask(__name__)
 
-    # Register blueprints
-    app.register_blueprint(main)
-    app.register_blueprint(reports_bp)
+    app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://postgres:123@localhost:5432/burp_rl"
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+    db.init_app(app)
+
+    app.register_blueprint(rl_event_bp)
 
     return app
-
