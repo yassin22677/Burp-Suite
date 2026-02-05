@@ -10,6 +10,7 @@ public class RLHttpClient {
 
     private final String decideUrl;
     private final String rewardUrl;
+    private final String logUrl;
 
     // --- Exploration parameters ---
     private static final int ACTION_SPACE = 5; // 0..4
@@ -20,59 +21,66 @@ public class RLHttpClient {
     private double epsilon = EPSILON_START;
     private final Random random = new Random();
 
-    public RLHttpClient(String decideUrl, String rewardUrl) {
+    public RLHttpClient(String decideUrl, String rewardUrl, String logUrl) {
         this.decideUrl = decideUrl;
         this.rewardUrl = rewardUrl;
+        this.logUrl = logUrl;
     }
 
     // =====================================================
-    // 🔹 PUBLIC: used by ProxyToRLActionsHandler
+    // RAW LOG MIRRORING (EXACT BURP LINE -> DASHBOARD)
     // =====================================================
-    public String postJson(String endpoint, String jsonBody) {
+    public void sendLog(String eventType, String rawLine) {
         try {
+            String json =
+                    "{"
+                            + "\"event_type\":\"" + escapeJson(eventType) + "\","
+                            + "\"raw_line\":\"" + escapeJson(rawLine) + "\""
+                            + "}";
+
             HttpURLConnection conn =
-                    (HttpURLConnection) new URL(endpoint).openConnection();
+                    (HttpURLConnection) new URL(logUrl).openConnection();
 
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json");
             conn.setDoOutput(true);
 
             try (OutputStream os = conn.getOutputStream()) {
-                os.write(jsonBody.getBytes(StandardCharsets.UTF_8));
+                os.write(json.getBytes(StandardCharsets.UTF_8));
             }
 
+            // Consume response (avoid socket leaks)
             try (BufferedReader br = new BufferedReader(
-                    new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8)
-            )) {
-                StringBuilder sb = new StringBuilder();
-                String line;
-                while ((line = br.readLine()) != null) {
-                    sb.append(line);
-                }
-                return sb.toString();
+                    new InputStreamReader(
+                            conn.getResponseCode() >= 400 ? conn.getErrorStream() : conn.getInputStream(),
+                            StandardCharsets.UTF_8
+                    ))) {
+                while (br.readLine() != null) { /* ignore body */ }
             }
 
-        } catch (Exception e) {
-            return "";
+        } catch (Exception ignored) {
+            // Never break Burp flow because dashboard is down
         }
     }
 
     // =====================================================
-    // RL DECISION (UNCHANGED LOGIC)
+    // RL DECISION (Java sends: method, url_length, status)
+    // Flask MUST return a plain integer body (e.g. "0")
     // =====================================================
     public int decideAction(String method, String url, int urlLen, int status) {
 
-        // 🔥 EXPLORATION
+        // Exploration
         if (random.nextDouble() < epsilon) {
             decayEpsilon();
             return random.nextInt(ACTION_SPACE);
         }
 
-        // 🔥 EXPLOITATION (ask Python RL)
+        // Exploitation: ask Python RL
         try {
             String json =
                     "{"
-                            + "\"method\":\"" + escape(method) + "\","
+                            + "\"method\":\"" + escapeJson(method) + "\","
+                            + "\"url\":\"" + escapeJson(url) + "\","
                             + "\"url_length\":" + urlLen + ","
                             + "\"status\":" + status
                             + "}";
@@ -88,10 +96,13 @@ public class RLHttpClient {
                 os.write(json.getBytes(StandardCharsets.UTF_8));
             }
 
-            int action = Integer.parseInt(
-                    new String(conn.getInputStream().readAllBytes(), StandardCharsets.UTF_8)
-                            .trim()
-            );
+            String body = new String(
+                    (conn.getResponseCode() >= 400 ? conn.getErrorStream() : conn.getInputStream()).readAllBytes(),
+                    StandardCharsets.UTF_8
+            ).trim();
+
+            // Body must be just: 0..4
+            int action = Integer.parseInt(body);
 
             decayEpsilon();
             return action;
@@ -103,7 +114,7 @@ public class RLHttpClient {
     }
 
     // =====================================================
-    // REWARD SENDING (UNCHANGED)
+    // REWARD (Java sends: {"reward": <int>})
     // =====================================================
     public void sendReward(int reward) {
         try {
@@ -120,23 +131,29 @@ public class RLHttpClient {
                 os.write(json.getBytes(StandardCharsets.UTF_8));
             }
 
-            conn.getInputStream().close();
+            // Consume response
+            if (conn.getResponseCode() >= 400) {
+                conn.getErrorStream().close();
+            } else {
+                conn.getInputStream().close();
+            }
 
         } catch (Exception ignored) {
         }
     }
 
-    // =====================================================
-    // HELPERS
-    // =====================================================
     private void decayEpsilon() {
         if (epsilon > EPSILON_MIN) {
             epsilon *= EPSILON_DECAY;
         }
     }
 
-    private static String escape(String s) {
+    // Escapes for JSON string values
+    private static String escapeJson(String s) {
         if (s == null) return "";
-        return s.replace("\\", "\\\\").replace("\"", "\\\"");
+        return s.replace("\\", "\\\\")
+                .replace("\"", "\\\"")
+                .replace("\r", "\\r")
+                .replace("\n", "\\n");
     }
 }

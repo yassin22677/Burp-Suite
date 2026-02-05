@@ -25,7 +25,6 @@ public class ScannerFeedbackHandler {
 
                 int reward = 0;
 
-                // Reward based on severity
                 String sev = safeName(issue.severity());
                 switch (sev) {
                     case "HIGH" -> reward += 5;
@@ -34,7 +33,6 @@ public class ScannerFeedbackHandler {
                     default -> reward += 0;
                 }
 
-                // Reward based on confidence
                 String conf = safeName(issue.confidence());
                 switch (conf) {
                     case "FIRM" -> reward += 2;
@@ -42,43 +40,42 @@ public class ScannerFeedbackHandler {
                     default -> reward += 0;
                 }
 
-                // URL is NOT available in some Montoya versions -> safe fallback
                 String issueUrl = tryGetIssueUrl(issue);
 
-                api.logging().logToOutput(
+                String lineSCAN =
                         "[RL][SCAN][ts=" + ts + "][issueId=" + issueId + "] "
                                 + issue.name()
                                 + " | url=" + issueUrl
                                 + " | sev=" + sev
-                                + " | conf=" + conf
-                );
+                                + " | conf=" + conf;
 
-                // Send reward to RL
+                api.logging().logToOutput(lineSCAN);
+                rlClient.sendLog("SCAN", lineSCAN);
+
                 try {
                     rlClient.sendReward(reward);
                 } catch (Exception e) {
-                    api.logging().logToError("[RL][ERROR] Failed to send reward: " + e.getMessage());
+                    String err = "[RL][ERROR] Failed to send reward: " + e.getMessage();
+                    api.logging().logToError(err);
+                    rlClient.sendLog("ERROR", err);
                 }
 
                 long rewardId = REWARD_ID_GEN.incrementAndGet();
                 String rTs = Instant.now().toString();
 
-                api.logging().logToOutput(
+                String lineREWARD =
                         "[RL][REWARD][ts=" + rTs + "][rewardId=" + rewardId + "][issueId=" + issueId + "] "
-                                + "value=" + reward
-                );
+                                + "value=" + reward;
+
+                api.logging().logToOutput(lineREWARD);
+                rlClient.sendLog("REWARD", lineREWARD);
             }
         };
     }
 
-    // ---------------------------
-    // Helpers
-    // ---------------------------
-
     private static String safeName(Object enumLike) {
         if (enumLike == null) return "UNKNOWN";
         try {
-            // Many Montoya enums have .name()
             Method m = enumLike.getClass().getMethod("name");
             Object v = m.invoke(enumLike);
             return v != null ? v.toString() : "UNKNOWN";
@@ -87,21 +84,15 @@ public class ScannerFeedbackHandler {
         }
     }
 
-    /**
-     * Tries multiple ways to derive a URL without compile-time dependency on issue.url().
-     * Uses reflection so it compiles even if the method doesn't exist.
-     */
     private static String tryGetIssueUrl(AuditIssue issue) {
         if (issue == null) return "N/A";
 
-        // 1) Try issue.url() if present (some versions)
         try {
             Method m = issue.getClass().getMethod("url");
             Object v = m.invoke(issue);
             if (v != null) return v.toString();
         } catch (Exception ignored) {}
 
-        // 2) Try issue.httpService().host() as fallback
         try {
             Method hs = issue.getClass().getMethod("httpService");
             Object httpService = hs.invoke(issue);
@@ -112,7 +103,6 @@ public class ScannerFeedbackHandler {
             }
         } catch (Exception ignored) {}
 
-        // 3) Last fallback
         return "N/A";
     }
 }

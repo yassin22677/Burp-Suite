@@ -1,238 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Burp-AI Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+<meta charset="UTF-8" />
+<title>Live RL Logs</title>
+
+<style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        background-color: #0d1117;
+        color: #c9d1d9;
+        font-family: Consolas, Menlo, Monaco, "Courier New", monospace;
+    }
+
+    header {
+        padding: 12px 16px;
+        background: #161b22;
+        border-bottom: 1px solid #30363d;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    #status {
+        color: #3fb950;
+    }
+
+    #log-container {
+        height: calc(100% - 45px);
+        overflow-y: auto;
+        padding: 12px;
+        white-space: pre-wrap;
+        line-height: 1.35;
+        font-size: 13px;
+    }
+
+    .line {
+        padding: 2px 0;
+    }
+
+    /* Optional visual hints (do NOT change content) */
+    .REQ { color: #58a6ff; }
+    .ACT { color: #f0883e; }
+    .APPLY { color: #d2a8ff; }
+    .RESP { color: #7ee787; }
+    .SCAN { color: #ffa657; }
+    .REWARD { color: #ff7b72; }
+    .ERROR { color: #ff0000; }
+</style>
 </head>
 
-<body class="dark">
-    <div class="layout">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="brand-wrap">
-                <h2 class="brand">🤖 Burp-AI</h2>
-                <p class="brand-sub">Adaptive Vulnerability Scanning</p>
-            </div>
+<body>
 
-            <nav class="nav">
-                <button data-view="overview" class="nav-btn active">📊 Overview</button>
-                <button data-view="config" class="nav-btn">⚙ AI Configuration</button>
-                <button data-view="decision" class="nav-btn">🧠 Decision Engine / XAI</button>
-                <button data-view="reports" class="nav-btn">📄 Reports</button>
-                <button data-view="logs" class="nav-btn">🧾 Logs</button>
-            </nav>
-        </aside>
+<header>
+    Live RL Logs — Status: <span id="status">connecting…</span>
+</header>
 
-        <!-- Main Content -->
-        <main class="content">
-            <!-- Header -->
-            <header class="topbar">
-                <div class="top-left">
-                    <h1>Dashboard</h1>
-                    <div id="burp-status" class="status connected">🟢 Burp Connected</div>
-                    <span id="last-scan" class="muted">Last scan: —</span>
-                </div>
-                <div class="top-actions">
-                    <!-- Removed AI mode select and Start Adaptive Scan button -->
-                    <button id="theme-toggle" class="btn ghost" title="Toggle Theme">🌙</button>
-                </div>
-            </header>
+<div id="log-container"></div>
 
-            <!-- ===== Overview Section ===== -->
-            <section class="section" id="overview-cards">
-                <div class="section-head">
-                    <h2>Overview</h2>
-                </div>
-                <div class="cards">
-                    <!-- Keep only two KPI cards -->
-                    <div class="card kpi">
-                        <div class="kpi-icon">✅</div>
-                        <div class="kpi-body">
-                            <div class="kpi-title">Detection Accuracy</div>
-                            <div id="tpr" class="kpi-value">--</div>
-                            <div class="kpi-note">True Positive Rate</div>
-                        </div>
-                    </div>
+<!-- ================= SOCKET.IO CLIENT ================= -->
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 
-                    <div class="card kpi">
-                        <div class="kpi-icon">🎯</div>
-                        <div class="kpi-body">
-                            <div class="kpi-title">False Positive Reduction</div>
-                            <div id="fpr" class="kpi-value">--</div>
-                            <div class="kpi-note">vs Baseline</div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+<script>
+(function () {
 
-            <!-- ===== AI Configuration ===== -->
-            <section class="panel" id="config-panel">
-                <div class="panel-head">
-                    <h2>AI Configuration</h2>
-                    <p class="muted">Burp Suite current vs AI-optimized configuration</p>
-                </div>
-                <div class="split">
-                    <div>
-                        <h4 class="muted">Current Settings</h4>
-                        <pre id="current-config-pre" class="pre"></pre>
-                    </div>
-                    <div>
-                        <h4 class="muted">AI Recommendation</h4>
-                        <pre id="ai-reco-pre" class="pre"></pre>
-                    </div>
-                </div>
-                <div class="btn-row">
-                    <button id="apply-reco" class="btn primary">Apply Recommendation</button>
-                    <button id="reject-reco" class="btn">Reject</button>
+    const statusEl = document.getElementById("status");
+    const logBox   = document.getElementById("log-container");
 
-                </div>
-                <p class="hint">Next configuration update will sync automatically with Burp Suite.</p>
-            </section>
+    // IMPORTANT: must match backend host/port
+    const socket = io("http://127.0.0.1:5000", {
+        transports: ["websocket", "polling"],
+        reconnection: true
+    });
 
-            <!-- ===== Decision Engine & XAI ===== -->
-            <section class="panel" id="decision-panel">
-                <div class="panel-head">
-                    <h2>Decision Engine & Explainability</h2>
-                    <p class="muted">Understand how the AI decides scanner tuning actions</p>
-                </div>
+    socket.on("connect", () => {
+        statusEl.textContent = "connected";
+    });
 
-                <div class="grid-2 tight">
-                    <div>
-                        <h4 class="muted">Input Signals</h4>
-                        <ul class="list">
-                            <li>HTTP status trends (200 / 403 / 429 / 500)</li>
-                            <li>Response time patterns</li>
-                            <li>Payload reflection behavior</li>
-                        </ul>
-                        <h4 class="muted">Adaptive Decision Taken</h4>
-                        <div id="triggered-action" class="info">—</div>
-                    </div>
+    socket.on("disconnect", () => {
+        statusEl.textContent = "disconnected";
+        statusEl.style.color = "#ff7b72";
+    });
 
-                    <div>
-                        <h4 class="muted">AI Rationale (XAI)</h4>
-                        <div id="xai-explain" class="info">—</div>
-                        <h4 class="muted">Learning Curve</h4>
-                        <svg id="spark" class="sparkline" viewBox="0 0 200 40"></svg>
-                    </div>
-                </div>
-            </section>
+    socket.on("connect_error", () => {
+        statusEl.textContent = "connection error";
+        statusEl.style.color = "#ff7b72";
+    });
 
-            <!-- ===== Scan Results ===== -->
-            <section class="panel" id="results-panel">
-                <div class="panel-head row">
-                    <h2>Scan Results</h2>
-                    <div class="controls-inline">
-                        <label class="muted" for="severity-filter">Filter:</label>
-                        <select id="severity-filter" class="input">
-                            <option value="All">All</option>
-                            <option>High</option>
-                            <option>Medium</option>
-                            <option>Low</option>
-                        </select>
-                    </div>
-                </div>
+    // ================= RECEIVE RAW LOG =================
+    socket.on("rl_log", (msg) => {
 
-                <div class="table-wrap">
-                    <table id="findings-table">
-                        <thead>
-                            <tr>
-                                <th>URL</th>
-                                <th>Vulnerability</th>
-                                <th>Severity</th>
-                                <th>Confidence</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </section>
+        // STRICT: only accept { line: "..." }
+        if (!msg || typeof msg.line !== "string") {
+            return;
+        }
 
-            <!-- ===== Reports Section ===== -->
-            <section class="panel" id="reports-panel" style="display:none;">
-                <div class="panel-head">
-                    <h2>Burp-AI Reports</h2>
-                    <p class="muted">Detailed AI-driven scanning and configuration results</p>
-                </div>
+        const div = document.createElement("div");
+        div.className = "line";
 
-                <!-- Counters -->
-                <div class="cards">
-                    <div class="card">
-                        <div class="kpi-title">Critical</div>
-                        <div id="criticalCount" class="kpi-value">0</div>
-                    </div>
-                    <div class="card">
-                        <div class="kpi-title">High</div>
-                        <div id="highCount" class="kpi-value">0</div>
-                    </div>
-                    <div class="card">
-                        <div class="kpi-title">Medium</div>
-                        <div id="mediumCount" class="kpi-value">0</div>
-                    </div>
-                    <div class="card">
-                        <div class="kpi-title">Low</div>
-                        <div id="lowCount" class="kpi-value">0</div>
-                    </div>
-                </div>
+        // Optional coloring based on tag (visual only)
+        if (msg.line.includes("[RL][REQ]"))   div.classList.add("REQ");
+        if (msg.line.includes("[RL][ACT]"))   div.classList.add("ACT");
+        if (msg.line.includes("[RL][APPLY]")) div.classList.add("APPLY");
+        if (msg.line.includes("[RL][RESP]"))  div.classList.add("RESP");
+        if (msg.line.includes("[RL][SCAN]"))  div.classList.add("SCAN");
+        if (msg.line.includes("[RL][REWARD]"))div.classList.add("REWARD");
+        if (msg.line.includes("[RL][ERROR]")) div.classList.add("ERROR");
 
-                <!-- Insight text -->
-                <div id="insightText" class="info" style="margin-top:10px;">Loading insights...</div>
+        // 🔒 EXACT LINE — no changes
+        div.textContent = msg.line;
 
-                <!-- Vulnerabilities Table -->
-                <div class="table-wrap">
-                    <table id="vulnTable">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Severity</th>
-                                <th>Name</th>
-                                <th>Endpoint</th>
-                                <th>Status</th>
-                                <th>Confidence</th>
-                            </tr>
-                        </thead>
-                        <tbody id="vulnTableBody"></tbody>
-                    </table>
-                </div>
+        logBox.appendChild(div);
+        logBox.scrollTop = logBox.scrollHeight;
+    });
 
-                <!-- Export Buttons -->
-                <div class="btn-row">
-                    <button id="exportCSV" class="btn">Export CSV</button>
-                    <button id="exportJSON" class="btn">Export JSON</button>
-                    <button id="exportPDF" class="btn ghost">Export PDF</button>
-                </div>
-            </section>
+})();
+</script>
 
-            <!-- ===== Performance Summary & Log ===== -->
-            <section class="grid-2">
-                <div class="panel">
-                    <h3>Performance Summary</h3>
-                    <div id="report-html" class="report"></div>
-                </div>
-
-                <div class="panel">
-                    <h3>AI Learning Log</h3>
-                    <ul id="db-summary" class="list compact"></ul>
-                    <div id="learning-history" class="history"></div>
-                </div>
-            </section>
-
-            <!-- ===== Logs ===== -->
-            <section class="panel" id="logs-panel">
-                <h3>System Logs</h3>
-                <p class="muted">Recent Burp events and scanner actions</p>
-                <div id="logs" class="report">
-                    <p>[14:45] Connected to Burp Suite (Community)...</p>
-                    <p>[14:46] ZAP ready...</p>
-                </div>
-            </section>
-        </main>
-    </div>
-
-    <div id="toaster" class="toaster"></div>
-    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
 </body>
-
 </html>
