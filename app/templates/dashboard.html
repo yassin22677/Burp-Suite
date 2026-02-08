@@ -1,121 +1,1142 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8" />
-<title>Live RL Logs</title>
 
-<style>
-    html, body {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        background-color: #0d1117;
-        color: #c9d1d9;
-        font-family: Consolas, Menlo, Monaco, "Courier New", monospace;
+<head>
+  <meta charset="UTF-8" />
+  <title>Burp Suite Smart Assistant — Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Inter and JetBrains Mono (Google Fonts, optional enhancement) -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500;600&display=swap"
+    rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    crossorigin="anonymous">
+  <style>
+    :root {
+      --color-bg: #11141a;
+      --color-bg-card: #191d23;
+      --color-border: #23272f;
+      --color-border-focus: #295972;
+      --color-border-light: #292e39;
+      --color-divider: #232733;
+      --color-section-shadow: 0 2px 6px 0 rgba(30, 32, 43, 0.11);
+      --border-radius: 12px;
+      --padding-main: 2vw;
+      --padding-card: 24px 28px 20px;
+      --font-size-base: 15px;
+      --font-family-base: 'Inter', 'Segoe UI', Arial, sans-serif;
+      --font-family-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, Menlo, Monaco, "Courier New", monospace;
+
+      --color-section-header: #eaeef2;
+      --color-section-header-muted: #8b95a2;
+      --color-kpi-accent: #88e8c0;
+      --color-kpi-label: #8796ad;
+      --color-timeline-bullet: #53cfff;
+
+      --color-terminal-bg: #191c21;
+      --color-terminal-border: #1e222c;
+      --color-terminal-text: #eef4fb;
+      --color-terminal-glow: #223047;
+
+      --hover-highlight: #232733;
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background: var(--color-bg);
+      color: #e6edfa;
+      font-family: var(--font-family-base);
+      font-size: var(--font-size-base);
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
     }
 
     header {
-        padding: 12px 16px;
-        background: #161b22;
-        border-bottom: 1px solid #30363d;
-        font-size: 14px;
-        font-weight: bold;
+      background: var(--color-bg-card);
+      border-bottom: 1.5px solid var(--color-divider);
+      font-size: 20px;
+      font-weight: 700;
+      padding: 20px 42px 18px 42px;
+      display: flex;
+      align-items: center;
+      letter-spacing: 0.7px;
+      min-height: 56px;
+      box-shadow: 0 2px 10px 0 rgba(40, 50, 90, 0.06);
+      color: var(--color-section-header);
+    }
+
+    .navbar-auth {
+      margin-left: auto;
+      padding-right: 0.5rem;
+    }
+
+    .navbar-auth .dropdown-toggle::after {
+      vertical-align: 0.15em;
+    }
+
+    .navbar-auth-btn {
+      font-size: 15px;
+      font-weight: 600;
+      background: #171b23;
+      border-radius: 7px;
+      color: #eaeef2;
+      border: 1.5px solid #242742;
+      padding: 7px 18px 7px 18px;
+      margin-left: 20px;
+      transition: background .16s, color .16s;
+    }
+
+    .navbar-auth-btn:hover {
+      background: #242742;
+      color: #53cfff;
     }
 
     #status {
-        color: #3fb950;
+      color: #47d68d;
+      font-weight: 600;
+      margin-left: 22px;
+      font-size: 1em;
+      background: #191f22;
+      padding: 2.5px 16px;
+      border-radius: 17px;
+      border: 1px solid var(--color-border-light);
+      transition: color 0.18s;
+    }
+
+    #main {
+      display: grid;
+      grid-template-columns: 2fr 2.2fr 1.3fr;
+      gap: 30px;
+      padding: var(--padding-main);
+      max-width: 1800px;
+      margin: 0 auto;
+      min-height: calc(100vh - 68px - 16px);
+      align-items: stretch;
+    }
+
+    .dashboard-section,
+    #center-col,
+    #xai-section {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-dark {
+      background: var(--color-bg-card) !important;
+      border-radius: var(--border-radius) !important;
+      border: 1.3px solid var(--color-border-light) !important;
+      box-shadow: 0 2px 16px 0 rgba(54, 80, 120, 0.09);
+    }
+
+    /* === RL LOGS PANEL === */
+    #log-section {
+      background: var(--color-bg-card);
+      border-radius: var(--border-radius);
+      border: 1.5px solid var(--color-border-light);
+      display: flex;
+      flex-direction: column;
+      min-width: 350px;
+      max-width: 650px;
+      padding: 0;
+      margin-bottom: 0;
+    }
+
+    .logs-header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1.3px solid var(--color-divider);
+      padding: 17px 22px 12px 22px;
+    }
+
+    .section-title {
+      font-size: 1.15em;
+      color: var(--color-section-header);
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+
+    .log-live-indicator {
+      margin-left: 8px;
+      font-size: 0.97em;
+      color: #53efa0;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      user-select: none;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .log-live-dot {
+      height: 8px;
+      width: 8px;
+      background: #41ea82;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 5px;
+      transition: background 0.3s;
+      animation: blinkLive 1.1s infinite;
+    }
+
+    .log-live-state-paused {
+      color: #ffaa6c !important;
+    }
+
+    .log-live-dot.log-paused-dot {
+      background: #ffb669 !important;
+      animation: none !important;
+    }
+
+    @keyframes blinkLive {
+      0% {
+        opacity: 1;
+      }
+
+      59% {
+        opacity: 1;
+      }
+
+      63% {
+        opacity: 0.2;
+      }
+
+      80% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    .logs-terminal-container {
+      flex: 1 1 0%;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 380px;
+      height: 100%;
     }
 
     #log-container {
-        height: calc(100% - 45px);
-        overflow-y: auto;
-        padding: 12px;
-        white-space: pre-wrap;
-        line-height: 1.35;
-        font-size: 13px;
+      background: var(--color-terminal-bg);
+      border-radius: 0 0 var(--border-radius) var(--border-radius);
+      border: 1.5px solid var(--color-terminal-border);
+      border-top: none;
+      margin: 0;
+      flex: 1 1 auto;
+      height: 100%;
+      min-height: 300px;
+      max-height: 400px;
+      overflow-y: auto;
+      padding: 20px 17px 15px 20px;
+      font-size: 14.3px;
+      line-height: 1.65;
+      font-family: var(--font-family-mono);
+      color: var(--color-terminal-text);
+      background-image: radial-gradient(ellipse 120% 120% at 50% 0, rgba(70, 190, 255, 0.025), transparent 66%);
+      box-shadow: 0 1.5px 19px 0 rgba(30, 40, 100, 0.13);
+      transition: background 0.15s;
+      scrollbar-width: thin;
+      scrollbar-color: #358efb2a #25282f;
+      scroll-behavior: smooth;
+    }
+
+    #log-container.paused {
+      background: var(--color-terminal-bg);
+      opacity: .96;
+    }
+
+    #log-container::-webkit-scrollbar {
+      width: 7px;
+    }
+
+    #log-container::-webkit-scrollbar-thumb {
+      background: #223047;
+      border-radius: 6px;
+    }
+
+    #log-container::-webkit-scrollbar-track {
+      background: #181b21;
     }
 
     .line {
-        padding: 2px 0;
+      padding: 2.5px 0 2.5px 0;
+      font-family: var(--font-family-mono);
+      font-size: 13.7px;
+      letter-spacing: 0.01em;
+      user-select: text;
+      background: none;
+      border-radius: 4px;
+      transition: background .13s;
+      margin-bottom: 3px;
+      line-height: 1.67;
+      white-space: pre-wrap;
     }
 
-    /* Optional visual hints (do NOT change content) */
-    .REQ { color: #58a6ff; }
-    .ACT { color: #f0883e; }
-    .APPLY { color: #d2a8ff; }
-    .RESP { color: #7ee787; }
-    .SCAN { color: #ffa657; }
-    .REWARD { color: #ff7b72; }
-    .ERROR { color: #ff0000; }
-</style>
+    .line:last-child {
+      margin-bottom: 0;
+    }
+
+    .line:hover {
+      background: var(--hover-highlight);
+    }
+
+    .REQ {
+      color: #3dc2fb;
+      animation: fakeFadeIn 0.18s;
+    }
+
+    .ACT {
+      color: #f0b63e;
+      animation: fakeFadeIn 0.16s;
+    }
+
+    .APPLY {
+      color: #bb9cff;
+      animation: fakeFadeIn 0.17s;
+    }
+
+    .RESP {
+      color: #68edc1;
+      animation: fakeFadeIn 0.19s;
+    }
+
+    .ERROR {
+      color: #ff4970;
+      font-weight: 700;
+      animation: fakeFadeIn 0.21s;
+    }
+
+    /* subtle new-line fade-in */
+    @keyframes fakeFadeIn {
+      from {
+        opacity: 0.12;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* = KPIs = */
+    #center-col {
+      min-width: 360px;
+      max-width: 680px;
+      gap: 20px;
+      flex: 1 1 0;
+    }
+
+    .kpi-card {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      margin-bottom: 0;
+      min-height: 110px;
+    }
+
+    .kpi-header {
+      font-size: 15px;
+      color: var(--color-section-header-muted);
+      font-weight: 600;
+      margin-bottom: 10px;
+      letter-spacing: 0.045em;
+    }
+
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 13px;
+      width: 100%;
+    }
+
+    .kpi-metric {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      background: #202228;
+      border-radius: 11px;
+      border: 1.4px solid #222a33;
+      min-width: 90px;
+      min-height: 62px;
+      padding: 11px 14px 7px 12px;
+      box-shadow: 0 0 10px rgba(40, 60, 140, 0.045);
+      margin-bottom: 0 !important;
+      filter: drop-shadow(0 0 2px #161b22dd);
+    }
+
+    .kpi-value {
+      font-size: 2.1em;
+      font-weight: 700;
+      color: var(--color-kpi-accent);
+      margin-bottom: 1px;
+      letter-spacing: 0.01em;
+      min-height: 1.1em;
+      line-height: 1;
+    }
+
+    .kpi-label {
+      color: var(--color-kpi-label);
+      font-size: 13.8px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+      opacity: .87;
+    }
+
+    /* = TIMELINE = */
+    .timeline-card {
+      min-height: 150px;
+      padding: 20px 18px 17px 18px;
+    }
+
+    .timeline-title {
+      font-size: 15.5px;
+      color: var(--color-section-header-muted);
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .timeline-box-scroll {
+      max-height: 190px;
+      overflow-y: auto;
+      padding-right: 7px;
+      margin-bottom: 0px;
+    }
+
+    .timeline-box-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .timeline-box-scroll::-webkit-scrollbar-thumb {
+      background: #2b3145;
+    }
+
+    .timeline-list {
+      list-style: none;
+      padding-left: 0;
+      margin-bottom: 0;
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-left: 34px;
+      margin-bottom: 11px;
+      color: #b2c5e2;
+      font-size: 14.4px;
+      opacity: 0.97;
+      line-height: 1.55;
+      display: flex;
+      align-items: center;
+      height: 32px;
+      background: transparent;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: 0;
+      top: 8px;
+      width: 10px;
+      height: 10px;
+      background: #25334a;
+      border-radius: 50%;
+      border: 2.2px solid var(--color-timeline-bullet);
+    }
+
+    .timeline-action {
+      color: #5fc7ff;
+      font-weight: 600;
+      margin: 0 4px;
+      letter-spacing: 0.01em;
+    }
+
+    .timeline-time {
+      color: #8391ba;
+      font-weight: 500;
+      margin-left: 8px;
+      font-size: 0.98em;
+    }
+
+    /* === Scan Table ===================== */
+    #scan-table-section {
+      flex: 0 0 auto;
+      margin: 10px 0 0 0;
+      width: 100%;
+    }
+
+    .scan-table-card {
+      padding: 0;
+      background: var(--color-bg-card);
+      border-radius: var(--border-radius);
+      border: 1.5px solid var(--color-border-light);
+      margin-bottom: 0;
+      box-shadow: 0 2px 7px 0 rgba(40, 46, 67, 0.05);
+    }
+
+    .scan-table-title {
+      padding: 13px 22px 9px 22px;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--color-section-header-muted);
+      letter-spacing: 0.01em;
+      border-bottom: 1px solid var(--color-divider);
+    }
+
+    .scan-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      background: transparent;
+      font-size: 13.5px;
+      min-width: 560px;
+    }
+
+    .scan-table th,
+    .scan-table td {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--color-border-light);
+      text-align: left;
+      background: none;
+      vertical-align: middle;
+    }
+
+    .scan-table th {
+      background: #181b21;
+      color: #8da0be;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      font-size: 13.6px;
+      border-bottom: 1.5px solid var(--color-divider);
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    .scan-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .scan-table td small {
+      word-break: break-all;
+      color: #8b94a9;
+      font-size: 12.5px;
+    }
+
+    .scan-table td {
+      font-size: 13.1px;
+      background: none;
+    }
+
+    .scan-status {
+      font-size: 1em;
+      padding: 2.2px 10px;
+      border-radius: 99px;
+    }
+
+    .scan-status.active {
+      background: #1a3d27;
+      color: #41ea82;
+    }
+
+    .scan-status.idle {
+      background: #44240c;
+      color: #ffaa6c;
+    }
+
+    .scan-table-body-scroll {
+      max-height: 174px;
+      overflow-y: auto;
+      display: block;
+    }
+
+    .scan-table-body-scroll::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .scan-table-body-scroll::-webkit-scrollbar-thumb {
+      background: #26292f;
+    }
+
+    .scan-table tbody {
+      display: block;
+      width: 100%;
+    }
+
+    .scan-table tr {
+      display: table;
+      width: 100%;
+      table-layout: fixed;
+    }
+
+    /* == Bootstrap fine-tune == */
+    .badge {
+      font-weight: 600;
+      font-size: 0.98em;
+    }
+
+    /* == Responsive == */
+    @media (max-width: 1400px) {
+      #main {
+        gap: 14px;
+      }
+    }
+
+    @media (max-width: 1150px) {
+      #main {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto;
+        grid-auto-flow: row;
+      }
+
+      #xai-section {
+        grid-column: span 2;
+        margin-top: 30px;
+      }
+
+      .kpi-row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+    }
+
+    @media (max-width: 920px) {
+      #main {
+        display: block;
+      }
+
+      #log-section,
+      #center-col,
+      #xai-section {
+        max-width: 100%;
+        min-width: 0;
+        margin-bottom: 28px;
+      }
+
+      .kpi-row {
+        grid-template-columns: 1fr 1fr;
+        gap: 9px;
+      }
+
+      .timeline-card,
+      .scan-table-card {
+        min-width: 280px;
+      }
+    }
+
+    @media (max-width: 660px) {
+      header {
+        font-size: 14px;
+        padding-left: 8px;
+        padding-right: 8px;
+      }
+
+      .section-title,
+      .timeline-title {
+        font-size: 14px;
+      }
+
+      .kpi-header {
+        font-size: 13.3px;
+      }
+
+      .kpi-row {
+        grid-template-columns: 1fr;
+        gap: 7px;
+      }
+
+      .scan-table {
+        font-size: 12.1px;
+        min-width: 220px;
+      }
+    }
+
+    /* === Auth Navbar Responsive === */
+    @media (max-width: 700px) {
+      .navbar-auth-btn {
+        padding: 6px 8px !important;
+        font-size: 13.5px;
+        margin-left: 12px;
+      }
+    }
+  </style>
 </head>
 
-<body>
+<body style="margin: 0; padding: 0; background: var(--color-bg);">
+  <!-- AUTH GUARD AND USER PROFILE BANNER -->
 
-<header>
-    Live RL Logs — Status: <span id="status">connecting…</span>
-</header>
+  <!-- Top Navbar with Auth -->
+  <nav class="navbar navbar-expand-md navbar-dark px-2 py-0"
+    style="background: var(--color-bg-card); border-bottom:1.5px solid var(--color-divider);box-shadow:0 2px 8px 0 rgba(35,40,71,0.05);min-height:54px;">
+    <div class="container-fluid px-0">
+      <span style="font-size:1.2em; font-weight:700; color:var(--color-section-header); letter-spacing:.7px;">
+        Burp Suite Smart Assistant
+        <span style="color:#50556c;font-weight:400;font-size:0.97em;">—</span>
+      </span>
+      <span style="margin-left:1.85rem;">
+        Status: <span id="status">connecting…</span>
+      </span>
+      <div class="navbar-auth d-flex align-items-center">
+        <span id="user-email" style="color:#8b95a2; font-size:.97em; margin-right:1.1em; display:none"></span>
+        <button class="navbar-auth-btn btn btn-sm" id="auth-action-btn">Logout</button>
+      </div>
+    </div>
+  </nav>
 
-<div id="log-container"></div>
+  <div id="main">
+    <!-- ===== LEFT: RL LOGS (terminal style card) ===== -->
+    <section id="log-section" class="dashboard-section card-dark">
+      <div class="logs-header-bar d-flex align-items-center">
+        <span class="section-title">Live RL Logs</span>
+        <span class="log-live-indicator ms-auto" id="log-live-ind" style="cursor:pointer;" tabindex="0"
+          title="Pause autoscroll">
+          <span class="log-live-dot" id="log-live-dot"></span>
+          <span id="log-live-state" style="margin-left:4px;">Live</span>
+        </span>
+      </div>
+      <div class="logs-terminal-container">
+        <div id="log-container" class="mb-0" tabindex="0" style="border-radius:0 0 12px 12px;"></div>
+      </div>
+    </section>
 
-<!-- ================= SOCKET.IO CLIENT ================= -->
-<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <!-- ===== CENTER: Results Overview + Timeline + Scan Table ===== -->
+    <section id="center-col">
+      <!-- Results Overview Card (KPIs) -->
+      <div class="kpi-card card-dark mb-2 p-3 pb-2" id="kpi-card">
+        <div class="kpi-header mb-2">Results Overview</div>
+        <div class="kpi-row row-cols-4">
+          <div class="kpi-metric">
+            <div class="kpi-value" id="kpi-requests">—</div>
+            <div class="kpi-label">Requests Observed</div>
+          </div>
+          <div class="kpi-metric">
+            <div class="kpi-value" id="kpi-applied">—</div>
+            <div class="kpi-label">Actions Applied</div>
+          </div>
+          <div class="kpi-metric">
+            <div class="kpi-value" id="kpi-avg-reward">—</div>
+            <div class="kpi-label">Average Reward</div>
+          </div>
+          <div class="kpi-metric">
+            <div class="kpi-value" id="kpi-errors">—</div>
+            <div class="kpi-label">Errors</div>
+          </div>
+        </div>
+      </div>
+      <div class="timeline-card card-dark px-3 py-2">
+        <div class="timeline-title">Configuration Timeline</div>
+        <div class="timeline-box-scroll" id="timeline-scroll" style="overflow-y:auto;">
+          <ul class="timeline-list" id="timeline-list">
+            <li class="timeline-item timeline-placeholder" id="timeline-placeholder">
+              <span class="timeline-dot"></span>
+              <span>Waiting for RL activity…</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div id="scan-table-section">
+        <div class="scan-table-card card-dark">
+          <div class="scan-table-title">Scan Reports Viewer</div>
+          <table class="scan-table">
+            <thead>
+              <tr>
+                <th style="width:7ch;">Scan ID</th>
+                <th style="width:40%;">Target</th>
+                <th style="width:17ch;">Status</th>
+                <th style="width:8ch;">Vulns</th>
+                <th style="width:16ch;">Last Seen</th>
+              </tr>
+            </thead>
+          </table>
+          <div class="scan-table-body-scroll" id="scan-table-body-scroll">
+            <table class="scan-table mb-0">
+              <tbody id="scan-table-body">
+                <tr class="scan-row-placeholder">
+                  <td colspan="5" style="text-align:center; color:#757d91;">
+                    No traffic yet
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<script>
-(function () {
+    <!-- ===== RIGHT: XAI ===== -->
+    <section id="xai-section">
+      <div id="xai-container" class="card-dark px-0 py-2" style="box-shadow: 0 1.5px 13px 0 rgba(80,100,160,.09);">
+        <div class="xai-card" id="xai-placeholder"
+          style="opacity:.7; filter: grayscale(.5);border: 1px dashed #242a36;min-height:95px;">
+          <div class="xai-title mb-1" style="color:#9eaabd;font-size:15px;font-weight:600;">Why this action?
+          </div>
+          <div class="xai-item xai-placeholder d-flex align-items-center" style="color:#6b7387;min-height:36px;">
+            <svg width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"
+              stroke-linejoin="round" viewBox="0 0 24 24" style="opacity:.25;">
+              <path d="M13.73 21a2 2 0 01-3.46 0L2.29 7.61A2 2 0 013.73 5h16.54a2 2 0 011.44 2.61z" />
+              <circle cx="12" cy="9" r="2.0" fill="#23272f" stroke="none" />
+            </svg>
+            <span class="ms-2">XAI explanation not available</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
 
-    const statusEl = document.getElementById("status");
-    const logBox   = document.getElementById("log-container");
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <script>
+    (function () {
+      const STORAGE_KEY = "bssaDashboardStateV1.3";
+      const LOGS_HISTORY_MAX = 2000;
+      const TIMELINE_MAX = 15;
 
-    // IMPORTANT: must match backend host/port
-    const socket = io("http://127.0.0.1:5000", {
-        transports: ["websocket", "polling"],
-        reconnection: true
-    });
+      // ===== DOM =====
+      const statusEl = document.getElementById("status");
+      const logBox = document.getElementById("log-container");
+      const logLiveDot = document.getElementById("log-live-dot");
+      const logLiveState = document.getElementById("log-live-state");
 
-    socket.on("connect", () => {
-        statusEl.textContent = "connected";
-    });
+      const kpiReq = document.getElementById("kpi-requests");
+      const kpiApply = document.getElementById("kpi-applied");
+      const kpiReward = document.getElementById("kpi-avg-reward");
+      const kpiErrors = document.getElementById("kpi-errors");
 
-    socket.on("disconnect", () => {
-        statusEl.textContent = "disconnected";
-        statusEl.style.color = "#ff7b72";
-    });
+      const timelineList = document.getElementById("timeline-list");
+      const scanTableBody = document.getElementById("scan-table-body");
 
-    socket.on("connect_error", () => {
-        statusEl.textContent = "connection error";
-        statusEl.style.color = "#ff7b72";
-    });
+      const targetDomainEl = document.getElementById("target-domain");
+      const userEmailEl = document.getElementById("user-email");
+      const logoutBtn = document.getElementById("auth-action-btn");
 
-    // ================= RECEIVE RAW LOG =================
-    socket.on("rl_log", (msg) => {
+      // ===== STATE =====
+      let reqCount = 0, applyCount = 0, rewardSum = 0, rewardCount = 0, errorCount = 0;
+      let logs = [];
+      let scanTargets = {};
+      let scanIdSeq = 1;
+      let timeline = [];
+      let primaryBaseDomain = null;
+      let logPaused = false;
 
-        // STRICT: only accept { line: "..." }
-        if (!msg || typeof msg.line !== "string") {
-            return;
+      const IGNOISE = [
+        "google-analytics", "googletagmanager", "doubleclick", "googleadservices",
+        "facebook", "cloudflareinsights", "cdnjs", "optimizely", "sentry.io",
+        "gstatic", "fontawesome", "bootstrapcdn", "ajax.googleapis", "googlesyndication"
+      ];
+
+      // ===== UTILS =====
+      function safeToText(txt) { return (!!txt && typeof txt === "string") ? txt : ""; }
+      function timeString() { return new Date().toLocaleTimeString([], { hour12: false }); }
+
+      function extractReward(str) {
+        const m = String(str || "").match(/reward[:=]\s*(-?[\d.]+)/i);
+        return m ? parseFloat(m[1]) : null;
+      }
+
+      function extractHostFromLine(str) {
+        const urlMatch = String(str || "").match(/https?:\/\/([^\/\s]+)/i);
+        if (urlMatch) return urlMatch[1].toLowerCase();
+        const hostMatch = String(str || "").match(/Host:\s*([^\]\s]+)/i);
+        if (hostMatch) return hostMatch[1].toLowerCase();
+        return null;
+      }
+
+      function baseDomain(host) {
+        if (!host) return null;
+        host = host.toLowerCase().trim().replace(/:\d+$/, "");
+        const parts = host.split(".").filter(Boolean);
+        if (parts.length <= 2) return host;
+        return parts.slice(-2).join(".");
+      }
+
+      function isNoiseHost(host) {
+        if (!host) return true;
+        const h = host.toLowerCase();
+        return IGNOISE.some(s => h.includes(s));
+      }
+
+      function extractApplyAction(line) {
+        const afterBracket = String(line || "").match(/\]\s*([A-Z][A-Z0-9_\-]+)\b/);
+        if (afterBracket && afterBracket[1]) return afterBracket[1];
+        const id = String(line || "").match(/actionId\s*=\s*(\d+)/i);
+        if (id && id[1]) return "Action#" + id[1];
+        return "NO_OP";
+      }
+
+      // ===== PERSISTENCE =====
+      function saveState() {
+        const scanPersist = {};
+        for (const k in scanTargets) {
+          const tr = scanTargets[k];
+          const safe = Object.assign({}, tr);
+          delete safe.rowEl;
+          delete safe.timer;
+          scanPersist[k] = safe;
+        }
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          logs: logs.slice(-LOGS_HISTORY_MAX),
+          reqCount, applyCount, rewardSum, rewardCount, errorCount,
+          scanTargets: scanPersist,
+          scanIdSeq,
+          timeline: timeline.slice(0, TIMELINE_MAX),
+          primaryBaseDomain
+        }));
+      }
+
+      function restoreState() {
+        let state = {};
+        try { state = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); } catch { }
+
+        logs = Array.isArray(state.logs) ? state.logs.slice(-LOGS_HISTORY_MAX) : [];
+        if (logBox) {
+          logBox.innerHTML = "";
+          for (const log of logs) {
+            const div = document.createElement("div");
+            div.className = "line";
+            if (log.className) div.classList.add(log.className);
+            div.textContent = log.line;
+            logBox.appendChild(div);
+          }
+          logBox.scrollTop = logBox.scrollHeight;
         }
 
-        const div = document.createElement("div");
-        div.className = "line";
+        reqCount = +state.reqCount || 0;
+        applyCount = +state.applyCount || 0;
+        rewardSum = +state.rewardSum || 0;
+        rewardCount = +state.rewardCount || 0;
+        errorCount = +state.errorCount || 0;
+        updateKpiUI();
 
-        // Optional coloring based on tag (visual only)
-        if (msg.line.includes("[RL][REQ]"))   div.classList.add("REQ");
-        if (msg.line.includes("[RL][ACT]"))   div.classList.add("ACT");
-        if (msg.line.includes("[RL][APPLY]")) div.classList.add("APPLY");
-        if (msg.line.includes("[RL][RESP]"))  div.classList.add("RESP");
-        if (msg.line.includes("[RL][SCAN]"))  div.classList.add("SCAN");
-        if (msg.line.includes("[RL][REWARD]"))div.classList.add("REWARD");
-        if (msg.line.includes("[RL][ERROR]")) div.classList.add("ERROR");
+        timeline = Array.isArray(state.timeline) ? state.timeline.slice(0, TIMELINE_MAX) : [];
+        renderTimeline();
 
-        // 🔒 EXACT LINE — no changes
-        div.textContent = msg.line;
+        scanTargets = (typeof state.scanTargets === "object" && state.scanTargets) ? state.scanTargets : {};
+        scanIdSeq = parseInt(state.scanIdSeq) || 1;
 
-        logBox.appendChild(div);
-        logBox.scrollTop = logBox.scrollHeight;
-    });
+        primaryBaseDomain = state.primaryBaseDomain || null;
+        if (targetDomainEl && primaryBaseDomain) targetDomainEl.textContent = primaryBaseDomain;
 
-})();
-</script>
+        renderScanTable();
+      }
+
+      function updateKpiUI() {
+        if (kpiReq) kpiReq.textContent = reqCount ? reqCount : "—";
+        if (kpiApply) kpiApply.textContent = applyCount ? applyCount : "—";
+        if (kpiReward) kpiReward.textContent = rewardCount ? (rewardSum / rewardCount).toFixed(2) : "—";
+        if (kpiErrors) kpiErrors.textContent = errorCount ? errorCount : "—";
+      }
+
+      function renderTimeline() {
+        if (!timelineList) return;
+        timelineList.innerHTML = "";
+        if (!timeline.length) {
+          const li = document.createElement("li");
+          li.className = "timeline-item timeline-placeholder";
+          li.innerHTML = `<span class="timeline-dot"></span><span>Waiting for RL activity…</span>`;
+          timelineList.appendChild(li);
+          return;
+        }
+        for (const t of timeline) {
+          const li = document.createElement("li");
+          li.className = "timeline-item";
+          li.innerHTML = `
+            <span class="timeline-dot"></span>
+            <span>
+              Applied <span class="timeline-action">${safeToText(t.action)}</span>
+              <span class="timeline-time">${safeToText(t.ts)}</span>
+            </span>`;
+          timelineList.insertBefore(li, timelineList.firstChild);
+          while (timelineList.childNodes.length > TIMELINE_MAX) {
+            timelineList.removeChild(timelineList.lastChild);
+          }
+        }
+      }
+
+      function renderScanTable() {
+        if (!scanTableBody) return;
+        scanTableBody.innerHTML = "";
+        const keys = Object.keys(scanTargets);
+        if (!keys.length) {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `<td colspan="5" style="text-align:center; color:#757d91;">No traffic yet</td>`;
+          scanTableBody.appendChild(tr);
+          return;
+        }
+        keys.sort((a, b) => (scanTargets[b].lastSeen || 0) - (scanTargets[a].lastSeen || 0));
+        for (const k of keys) {
+          const s = scanTargets[k];
+          const tr = document.createElement("tr");
+          const statusClass = s.status === "Idle" ? "idle" : "active";
+          tr.innerHTML = `
+            <td>${s.id}</td>
+            <td class="truncate" title="${s.targetFull || s.target}">${s.target}</td>
+            <td><span class="scan-status ${statusClass}">${s.status}</span></td>
+            <td><span class="badge bg-secondary text-dark-subtle opacity-60">${s.vulns || "—"}</span></td>
+            <td title="Started: ${s.start || "—"}"><small class="text-nowrap">${s.lastSeenTime || "—"}</small></td>`;
+          scanTableBody.appendChild(tr);
+          s.rowEl = tr;
+        }
+      }
+
+      // ===== "LOGOUT" WITHOUT AUTH =====
+      function hookLogout() {
+        if (!logoutBtn) return;
+        logoutBtn.onclick = function () {
+          // Just clear UI state and reload (no auth anymore)
+          localStorage.removeItem(STORAGE_KEY);
+          location.reload();
+        };
+      }
+
+      // ===== SOCKET =====
+      function startSocket() {
+        restoreState();
+
+        // If you accidentally open file://... we still connect to the Flask server
+        const socketUrl = (location.protocol === "file:") ? "http://127.0.0.1:5000" : undefined;
+
+        const socket = socketUrl
+          ? io(socketUrl, { transports: ["websocket", "polling"], reconnection: true })
+          : io({ transports: ["websocket", "polling"], reconnection: true });
+
+        socket.on("connect", () => {
+          if (statusEl) { statusEl.textContent = "connected"; statusEl.style.color = "#47d68d"; }
+        });
+
+        socket.on("disconnect", () => {
+          if (statusEl) { statusEl.textContent = "disconnected"; statusEl.style.color = "#ff7b72"; }
+        });
+
+        socket.on("connect_error", (err) => {
+          console.error("socket connect_error:", err);
+          if (statusEl) { statusEl.textContent = "connection error"; statusEl.style.color = "#ff7b72"; }
+        });
+
+        socket.on("rl_log", (msg) => {
+          if (!msg || typeof msg.line !== "string") return;
+
+          const line = msg.line;
+
+          let logClass = "";
+          if (line.includes("[RL][REQ]")) logClass = "REQ";
+          else if (line.includes("[RL][ACT]")) logClass = "ACT";
+          else if (line.includes("[RL][APPLY]")) logClass = "APPLY";
+          else if (line.includes("[RL][RESP]")) logClass = "RESP";
+          else if (line.includes("[RL][ERROR]")) logClass = "ERROR";
+
+          logs.push({ line, className: logClass });
+          if (logs.length > LOGS_HISTORY_MAX) logs.splice(0, logs.length - LOGS_HISTORY_MAX);
+
+          if (logBox) {
+            const div = document.createElement("div");
+            div.className = "line";
+            if (logClass) div.classList.add(logClass);
+            div.textContent = line;
+            logBox.appendChild(div);
+
+            while (logBox.childNodes.length > LOGS_HISTORY_MAX) {
+              logBox.removeChild(logBox.childNodes[0]);
+            }
+            if (!logPaused) logBox.scrollTop = logBox.scrollHeight;
+          }
+
+          if (line.includes("[RL][REQ]")) reqCount++;
+          if (line.includes("[RL][APPLY]")) applyCount++;
+          if (line.includes("[RL][RESP]")) {
+            const r = extractReward(line);
+            if (typeof r === "number" && !isNaN(r)) { rewardSum += r; rewardCount++; }
+          }
+          if (line.includes("[RL][ERROR]")) errorCount++;
+          updateKpiUI();
+
+          if (line.includes("[RL][REQ]")) {
+            const host = extractHostFromLine(line);
+            if (host && !isNoiseHost(host)) {
+              const bd = baseDomain(host);
+              if (!primaryBaseDomain) {
+                primaryBaseDomain = bd;
+                if (targetDomainEl) targetDomainEl.textContent = primaryBaseDomain;
+              }
+
+              const key = bd;
+              const nowEpoch = Date.now() / 1000;
+              const nowStr = timeString();
+
+              if (!scanTargets[key]) {
+                scanTargets[key] = {
+                  id: scanIdSeq++,
+                  target: bd,
+                  targetFull: host,
+                  start: nowStr,
+                  lastSeen: nowEpoch,
+                  lastSeenTime: nowStr,
+                  status: "Active",
+                  vulns: "—"
+                };
+              } else {
+                const s = scanTargets[key];
+                s.lastSeen = nowEpoch;
+                s.lastSeenTime = nowStr;
+                s.targetFull = host;
+              }
+              renderScanTable();
+            }
+          }
+
+          if (line.includes("[RL][APPLY]")) {
+            const actionName = extractApplyAction(line) || "NO_OP";
+            const now = timeString();
+            const nowEpoch = Date.now() / 1000;
+            const last = timeline[0];
+            if (!last || last.action !== actionName || (nowEpoch - (+last.tsEpoch || 0)) > 2.1) {
+              timeline.unshift({ action: actionName, ts: now, tsEpoch: nowEpoch });
+              if (timeline.length > TIMELINE_MAX) timeline.length = TIMELINE_MAX;
+              renderTimeline();
+            }
+          }
+
+          saveState();
+        });
+
+        if (logBox) {
+          function checkLiveState() {
+            setTimeout(() => {
+              const maxScroll = logBox.scrollHeight - logBox.offsetHeight;
+              const bottomed = Math.abs(logBox.scrollTop - maxScroll) < 55;
+              logPaused = !bottomed;
+              if (logLiveDot) logLiveDot.className = bottomed ? "log-live-dot" : "log-live-dot log-paused-dot";
+              if (logLiveState) logLiveState.textContent = bottomed ? "Live" : "Paused";
+            }, 60);
+          }
+          logBox.addEventListener("wheel", checkLiveState, { passive: true });
+          logBox.addEventListener("scroll", checkLiveState);
+          setInterval(checkLiveState, 725);
+        }
+      }
+
+      // ===== BOOT =====
+      document.addEventListener("DOMContentLoaded", async () => {
+        hookLogout();
+
+        if (userEmailEl) {
+          userEmailEl.textContent = "Guest (no auth)";
+          userEmailEl.style.display = "";
+        }
+
+        startSocket();
+      });
+
+    })();
+  </script>
+
+
 
 </body>
+
 </html>
