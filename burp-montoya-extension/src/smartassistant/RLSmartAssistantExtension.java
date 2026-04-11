@@ -12,12 +12,22 @@ public class RLSmartAssistantExtension implements BurpExtension {
     public void initialize(MontoyaApi api) {
         api.extension().setName("RL Smart Assistant");
 
-        // IMPORTANT: keep decide/reward separate + add logs endpoint
+        String base = System.getenv("BURP_RL_API_BASE");
+        if (base == null || base.isBlank()) {
+            base = "http://127.0.0.1:5000";
+        }
+        base = base.trim();
+        if (base.endsWith("/")) {
+            base = base.substring(0, base.length() - 1);
+        }
+
         RLHttpClient rlClient = new RLHttpClient(
-                "http://127.0.0.1:5000/decide-action",
-                "http://127.0.0.1:5000/update-reward",
-                "http://127.0.0.1:5000/api/rl-events"
+                base,
+                base + "/decide-action",
+                base + "/update-reward",
+                base + "/api/rl-events"
         );
+        RlBurpContext.apply(api, rlClient);
 
         RLConfigApplier applier = new RLConfigApplier(api, rlClient);
 

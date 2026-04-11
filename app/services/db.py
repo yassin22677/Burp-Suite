@@ -1,8 +1,5 @@
-from app import SessionLocal
+"""Use app.services.postgres.get_connection for psycopg2 access."""
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+from app.services.postgres import get_connection
+
+__all__ = ["get_connection"]

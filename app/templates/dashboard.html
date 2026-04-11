@@ -314,6 +314,16 @@
       animation: fakeFadeIn 0.21s;
     }
 
+    .SCAN {
+      color: #7ee787;
+      animation: fakeFadeIn 0.17s;
+    }
+
+    .REWARD {
+      color: #ffa657;
+      animation: fakeFadeIn 0.17s;
+    }
+
     /* subtle new-line fade-in */
     @keyframes fakeFadeIn {
       from {
@@ -666,6 +676,19 @@
         margin-left: 12px;
       }
     }
+
+    .scan-session-bar {
+      max-width: 920px;
+      margin: 14px auto 0;
+      padding: 14px 18px;
+      border-radius: var(--border-radius);
+      border: 1px solid var(--color-border);
+    }
+
+    .scan-session-bar code {
+      font-size: 0.88em;
+      color: #9eaabd;
+    }
   </style>
 </head>
 
@@ -684,16 +707,41 @@
         Status: <span id="status">connecting…</span>
       </span>
       <div class="navbar-auth d-flex align-items-center">
-        <span id="user-email" style="color:#8b95a2; font-size:.97em; margin-right:1.1em; display:none"></span>
+        <span id="user-name" style="color:#8b95a2; font-size:.97em; margin-right:1.1em; display:none"></span>
         <button class="navbar-auth-btn btn btn-sm" id="auth-action-btn">Logout</button>
       </div>
     </div>
   </nav>
 
+  <div class="scan-session-bar card-dark px-3 py-3 mx-3" id="scan-session-panel">
+    <div class="small text-muted mb-2">Start a scan session for one target so Burp logs are tagged and show up here.
+      Optionally use a website id from the <code>websites</code> table, or paste a full URL.</div>
+    <div class="d-flex flex-wrap gap-2 align-items-center mb-2">
+      <input type="text" id="scan-target-url" class="form-control form-control-sm"
+        style="min-width:220px;max-width:420px;" placeholder="https://target.example/">
+      <input type="number" id="scan-website-id" class="form-control form-control-sm" style="width:7.5rem;min-width:6rem;"
+        placeholder="Site ID" title="Optional: id from websites table for your user">
+      <button type="button" class="btn btn-sm btn-primary" id="btn-start-scan-session">Start scan session</button>
+      <button type="button" class="btn btn-sm btn-outline-secondary" id="btn-clear-burp-session">Show all logs</button>
+      <span id="scan-session-msg" class="small ms-1"></span>
+    </div>
+    <div id="burp-link-row" class="mt-2">
+      <div id="active-session-row" class="d-none">
+        <label class="small d-block mb-1">Dashboard filter: active <code>sessions.id</code> (optional):</label>
+        <div class="input-group input-group-sm">
+          <input type="text" readonly class="form-control font-monospace small" id="active-session-id-field"
+            style="font-size:12px;">
+          <button class="btn btn-outline-secondary" type="button" id="btn-copy-session-id">Copy</button>
+        </div>
+      </div>
+      <div class="small text-muted mt-2" id="burp-env-hint"></div>
+    </div>
+  </div>
+
   <div id="main">
     <!-- ===== LEFT: RL LOGS (terminal style card) ===== -->
     <section id="log-section" class="dashboard-section card-dark">
-      <div class="logs-header-bar d-flex align-items-center">
+      <div class="logs-header-bar d-flex align-items-center flex-wrap gap-2">
         <span class="section-title">Live RL Logs</span>
         <span class="log-live-indicator ms-auto" id="log-live-ind" style="cursor:pointer;" tabindex="0"
           title="Pause autoscroll">
@@ -783,7 +831,7 @@
               <path d="M13.73 21a2 2 0 01-3.46 0L2.29 7.61A2 2 0 013.73 5h16.54a2 2 0 011.44 2.61z" />
               <circle cx="12" cy="9" r="2.0" fill="#23272f" stroke="none" />
             </svg>
-            <span class="ms-2">XAI explanation not available</span>
+            <span class="ms-2" id="xai-explanation-text" style="white-space:pre-wrap;">XAI explanation not available — populate <code>explanation</code> on <code>rl_event</code> (e.g. from your model) and it appears here.</span>
           </div>
         </div>
       </div>
@@ -793,9 +841,19 @@
   <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
   <script>
     (function () {
-      const STORAGE_KEY = "bssaDashboardStateV1.3";
+      // DB is source of truth for logs/history (no localStorage log cache).
+      const STORAGE_KEY = null;
+      const LS_SCAN_SESSION = "bssa_active_scan_session_id";
       const LOGS_HISTORY_MAX = 2000;
       const TIMELINE_MAX = 15;
+      const LINE_FP_CAP = 2500;
+
+      const API_ORIGIN =
+        window.location.protocol === "file:"
+          ? "http://127.0.0.1:5000"
+          : window.location.origin;
+
+      const FETCH_OPTS = { credentials: "include" };
 
       // ===== DOM =====
       const statusEl = document.getElementById("status");
@@ -812,8 +870,17 @@
       const scanTableBody = document.getElementById("scan-table-body");
 
       const targetDomainEl = document.getElementById("target-domain");
-      const userEmailEl = document.getElementById("user-email");
+      const userNameEl = document.getElementById("user-name");
       const logoutBtn = document.getElementById("auth-action-btn");
+      const scanTargetUrl = document.getElementById("scan-target-url");
+      const scanWebsiteId = document.getElementById("scan-website-id");
+      const btnStartScanSession = document.getElementById("btn-start-scan-session");
+      const btnClearBurpSession = document.getElementById("btn-clear-burp-session");
+      const scanSessionMsg = document.getElementById("scan-session-msg");
+      const activeSessionRow = document.getElementById("active-session-row");
+      const activeSessionIdField = document.getElementById("active-session-id-field");
+      const btnCopySessionId = document.getElementById("btn-copy-session-id");
+      const burpEnvHint = document.getElementById("burp-env-hint");
 
       // ===== STATE =====
       let reqCount = 0, applyCount = 0, rewardSum = 0, rewardCount = 0, errorCount = 0;
@@ -869,59 +936,350 @@
         return "NO_OP";
       }
 
-      // ===== PERSISTENCE =====
-      function saveState() {
-        const scanPersist = {};
-        for (const k in scanTargets) {
-          const tr = scanTargets[k];
-          const safe = Object.assign({}, tr);
-          delete safe.rowEl;
-          delete safe.timer;
-          scanPersist[k] = safe;
+      const fpSeen = new Set();
+      const fpQueue = [];
+      function rememberFp(fp) {
+        const s = String(fp);
+        if (fpSeen.has(s)) return false;
+        fpSeen.add(s);
+        fpQueue.push(s);
+        if (fpQueue.length > LINE_FP_CAP) {
+          const old = fpQueue.shift();
+          fpSeen.delete(old);
         }
-        localStorage.setItem(STORAGE_KEY, JSON.stringify({
-          logs: logs.slice(-LOGS_HISTORY_MAX),
-          reqCount, applyCount, rewardSum, rewardCount, errorCount,
-          scanTargets: scanPersist,
-          scanIdSeq,
-          timeline: timeline.slice(0, TIMELINE_MAX),
-          primaryBaseDomain
-        }));
+        return true;
+      }
+
+      function seedFpFromRestoredLogs() {
+        for (const log of logs) {
+          rememberFp(log.line || "");
+        }
+      }
+
+      let lastRlPollId = 0;
+      let currentUserId = null;
+      const seenHttpLogIds = new Set();
+      let lastHttpLogPollId = 0;
+
+      function getActiveScanSessionId() {
+        let v = (localStorage.getItem(LS_SCAN_SESSION) || "").trim();
+        if (v.includes("-")) {
+          localStorage.removeItem(LS_SCAN_SESSION);
+          return "";
+        }
+        if (v && !/^\d+$/.test(v)) {
+          localStorage.removeItem(LS_SCAN_SESSION);
+          return "";
+        }
+        return v;
+      }
+
+      function sessionQuerySuffix() {
+        const sid = getActiveScanSessionId();
+        return sid ? "&session_id=" + encodeURIComponent(sid) : "";
+      }
+
+      async function loadCurrentUser() {
+        try {
+          const r = await fetch(API_ORIGIN + "/auth/me", FETCH_OPTS);
+          if (!r.ok) {
+            currentUserId = null;
+            return;
+          }
+          const d = await r.json();
+          if (d.user_id != null) {
+            currentUserId = parseInt(d.user_id, 10);
+            if (!Number.isNaN(currentUserId)) {
+              try {
+                localStorage.setItem("user_id", String(currentUserId));
+              } catch (_) { }
+            }
+          }
+          if (d.username && userNameEl) {
+            userNameEl.textContent = d.username;
+            userNameEl.style.display = "";
+            try {
+              localStorage.setItem("username", d.username);
+            } catch (_) { }
+          }
+        } catch {
+          currentUserId = null;
+        }
+      }
+
+      async function pollHttpProxyLogs() {
+        if (currentUserId == null || Number.isNaN(currentUserId)) return;
+        try {
+          const r = await fetch(
+            API_ORIGIN +
+            "/logs?user_id=" +
+            encodeURIComponent(String(currentUserId)),
+            FETCH_OPTS
+          );
+          if (!r.ok) return;
+          const data = await r.json();
+          const items = data.items || [];
+          for (let i = items.length - 1; i >= 0; i--) {
+            const it = items[i];
+            if (!it || it.event_type !== "http_request") continue;
+            const id = it.id;
+            if (id != null && seenHttpLogIds.has(id)) continue;
+            const p = it.data || {};
+            const method = p.method || "?";
+            const url = p.url || "";
+            const st = p.status != null ? p.status : p.response_status;
+            const line =
+              "[HTTP] " +
+              method +
+              " " +
+              url +
+              (st != null ? " -> " + st : "");
+            if (id != null) seenHttpLogIds.add(id);
+            if (id != null && id > lastHttpLogPollId) lastHttpLogPollId = id;
+            onRlLogLine(line);
+          }
+        } catch (e) {
+          console.warn("poll /logs", e);
+        }
+      }
+
+      function refreshBurpSessionUi() {
+        const sid = getActiveScanSessionId();
+        if (sid && activeSessionRow && activeSessionIdField) {
+          activeSessionRow.classList.remove("d-none");
+          activeSessionIdField.value = sid;
+        } else if (activeSessionRow) {
+          activeSessionRow.classList.add("d-none");
+        }
+        if (burpEnvHint) {
+          burpEnvHint.textContent =
+            "Burp: configure preference rl_api_token or environment BURP_RL_API_TOKEN (token is not shown on this dashboard). The extension calls /api/scan/start and stores sessions.id as burp_scan_session_id.";
+        }
+      }
+
+      async function bootstrapRlLogsFromDb() {
+        try {
+          const r = await fetch(
+            API_ORIGIN + "/api/rl-logs/bootstrap?limit=200" + sessionQuerySuffix(),
+            FETCH_OPTS
+          );
+          if (!r.ok) return;
+          const data = await r.json();
+          for (const row of data.lines || []) {
+            if (row.line) onRlLogLine(row.line);
+          }
+          lastRlPollId = Math.max(
+            lastRlPollId,
+            parseInt(data.max_id, 10) || 0
+          );
+        } catch (e) {
+          console.warn("bootstrap rl_logs", e);
+        }
+      }
+
+      async function pollRlLogsFromDb() {
+        try {
+          const r = await fetch(
+            API_ORIGIN +
+              "/api/rl-logs/recent?after_id=" +
+              lastRlPollId +
+              "&limit=200" +
+              sessionQuerySuffix(),
+            FETCH_OPTS
+          );
+          if (!r.ok) return;
+          const data = await r.json();
+          for (const row of data.lines || []) {
+            if (row.id > lastRlPollId) lastRlPollId = row.id;
+            if (row.line) onRlLogLine(row.line);
+          }
+        } catch (e) {
+          console.warn("poll rl_logs", e);
+        }
+      }
+
+      async function pollLatestXai() {
+        const el = document.getElementById("xai-explanation-text");
+        if (!el) return;
+        try {
+          const r = await fetch(
+            API_ORIGIN + "/api/rl-event/latest-xai",
+            FETCH_OPTS
+          );
+          if (!r.ok) return;
+          const d = await r.json();
+          if (d.explanation) {
+            const ctx = d.context || {};
+            const bits = [
+              ctx.event_type && ("Event: " + ctx.event_type),
+              ctx.action_name && ("Action: " + ctx.action_name),
+              ctx.url && ("URL: " + ctx.url),
+            ].filter(Boolean);
+            el.textContent =
+              d.explanation + (bits.length ? "\n\n— " + bits.join(" · ") : "");
+          }
+        } catch (e) {
+          console.warn("poll xai", e);
+        }
+      }
+
+      function onRlLogLine(line) {
+        if (typeof line !== "string" || !line.length) return;
+        if (!rememberFp(line)) return;
+
+        let logClass = "";
+        if (line.includes("[RL][REQ]")) logClass = "REQ";
+        else if (line.includes("[RL][ACT]")) logClass = "ACT";
+        else if (line.includes("[RL][APPLY]")) logClass = "APPLY";
+        else if (line.includes("[RL][RESP]")) logClass = "RESP";
+        else if (line.includes("[RL][SCAN]")) logClass = "SCAN";
+        else if (line.includes("[RL][REWARD]")) logClass = "REWARD";
+        else if (line.includes("[RL][ERROR]")) logClass = "ERROR";
+
+        logs.push({ line, className: logClass });
+        if (logs.length > LOGS_HISTORY_MAX) logs.splice(0, logs.length - LOGS_HISTORY_MAX);
+
+        if (logBox) {
+          const div = document.createElement("div");
+          div.className = "line";
+          if (logClass) div.classList.add(logClass);
+          div.textContent = line;
+          logBox.appendChild(div);
+
+          while (logBox.childNodes.length > LOGS_HISTORY_MAX) {
+            logBox.removeChild(logBox.childNodes[0]);
+          }
+          if (!logPaused) logBox.scrollTop = logBox.scrollHeight;
+        }
+
+        if (line.includes("[RL][REQ]")) reqCount++;
+        if (line.includes("[RL][APPLY]")) applyCount++;
+        if (line.includes("[RL][RESP]")) {
+          const r = extractReward(line);
+          if (typeof r === "number" && !isNaN(r)) {
+            rewardSum += r;
+            rewardCount++;
+          }
+        }
+        if (line.includes("[RL][REWARD]")) {
+          const mr = line.match(/value=(-?\d+)/);
+          if (mr) {
+            rewardSum += parseInt(mr[1], 10);
+            rewardCount++;
+          }
+        }
+        if (line.includes("[RL][ERROR]")) errorCount++;
+        updateKpiUI();
+
+        if (line.includes("[RL][REQ]")) {
+          const host = extractHostFromLine(line);
+          if (host && !isNoiseHost(host)) {
+            const bd = baseDomain(host);
+            if (!primaryBaseDomain) {
+              primaryBaseDomain = bd;
+              if (targetDomainEl) targetDomainEl.textContent = primaryBaseDomain;
+            }
+
+            const key = bd;
+            const nowEpoch = Date.now() / 1000;
+            const nowStr = timeString();
+
+            if (!scanTargets[key]) {
+              scanTargets[key] = {
+                id: scanIdSeq++,
+                target: bd,
+                targetFull: host,
+                start: nowStr,
+                lastSeen: nowEpoch,
+                lastSeenTime: nowStr,
+                status: "Active",
+                vulns: "—",
+              };
+            } else {
+              const s = scanTargets[key];
+              s.lastSeen = nowEpoch;
+              s.lastSeenTime = nowStr;
+              s.targetFull = host;
+            }
+            renderScanTable();
+          }
+        }
+
+        if (line.includes("[RL][SCAN]")) {
+          let u = null;
+          const um = line.match(/url=([^|\s]+)/);
+          if (um) u = um[1].trim();
+          if (u && !/^https?:\/\//i.test(u)) u = "http://" + u;
+          const host = u ? extractHostFromLine(u) : null;
+          if (host && !isNoiseHost(host)) {
+            const bd = baseDomain(host);
+            if (!primaryBaseDomain) {
+              primaryBaseDomain = bd;
+              if (targetDomainEl) targetDomainEl.textContent = primaryBaseDomain;
+            }
+            const key = bd;
+            const nowEpoch = Date.now() / 1000;
+            const nowStr = timeString();
+            if (!scanTargets[key]) {
+              scanTargets[key] = {
+                id: scanIdSeq++,
+                target: bd,
+                targetFull: host,
+                start: nowStr,
+                lastSeen: nowEpoch,
+                lastSeenTime: nowStr,
+                status: "Active",
+                vulns: "scan",
+              };
+            } else {
+              const sx = scanTargets[key];
+              sx.lastSeen = nowEpoch;
+              sx.lastSeenTime = nowStr;
+              sx.targetFull = host;
+              sx.vulns = "scan";
+            }
+            renderScanTable();
+          }
+        }
+
+        if (line.includes("[RL][APPLY]")) {
+          const actionName = extractApplyAction(line) || "NO_OP";
+          const now = timeString();
+          const nowEpoch = Date.now() / 1000;
+          const last = timeline[0];
+          if (
+            !last ||
+            last.action !== actionName ||
+            nowEpoch - (+last.tsEpoch || 0) > 2.1
+          ) {
+            timeline.unshift({ action: actionName, ts: now, tsEpoch: nowEpoch });
+            if (timeline.length > TIMELINE_MAX) timeline.length = TIMELINE_MAX;
+            renderTimeline();
+          }
+        }
+
+        // Intentionally no localStorage persistence for logs/history.
+      }
+
+      // ===== PERSISTENCE (disabled for logs/history) =====
+      function saveState() {
+        return;
       }
 
       function restoreState() {
-        let state = {};
-        try { state = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); } catch { }
-
-        logs = Array.isArray(state.logs) ? state.logs.slice(-LOGS_HISTORY_MAX) : [];
-        if (logBox) {
-          logBox.innerHTML = "";
-          for (const log of logs) {
-            const div = document.createElement("div");
-            div.className = "line";
-            if (log.className) div.classList.add(log.className);
-            div.textContent = log.line;
-            logBox.appendChild(div);
-          }
-          logBox.scrollTop = logBox.scrollHeight;
-        }
-
-        reqCount = +state.reqCount || 0;
-        applyCount = +state.applyCount || 0;
-        rewardSum = +state.rewardSum || 0;
-        rewardCount = +state.rewardCount || 0;
-        errorCount = +state.errorCount || 0;
+        logs = [];
+        scanTargets = {};
+        scanIdSeq = 1;
+        timeline = [];
+        primaryBaseDomain = null;
+        reqCount = 0;
+        applyCount = 0;
+        rewardSum = 0;
+        rewardCount = 0;
+        errorCount = 0;
+        if (logBox) logBox.innerHTML = "";
         updateKpiUI();
-
-        timeline = Array.isArray(state.timeline) ? state.timeline.slice(0, TIMELINE_MAX) : [];
         renderTimeline();
-
-        scanTargets = (typeof state.scanTargets === "object" && state.scanTargets) ? state.scanTargets : {};
-        scanIdSeq = parseInt(state.scanIdSeq) || 1;
-
-        primaryBaseDomain = state.primaryBaseDomain || null;
-        if (targetDomainEl && primaryBaseDomain) targetDomainEl.textContent = primaryBaseDomain;
-
         renderScanTable();
       }
 
@@ -987,121 +1345,84 @@
       // ===== "LOGOUT" WITHOUT AUTH =====
       function hookLogout() {
         if (!logoutBtn) return;
-        logoutBtn.onclick = function () {
-          // Just clear UI state and reload (no auth anymore)
-          localStorage.removeItem(STORAGE_KEY);
-          location.reload();
+        logoutBtn.onclick = async function () {
+          try {
+            await fetch(API_ORIGIN + "/auth/logout", {
+              method: "POST",
+              credentials: "include",
+            });
+          } catch (_) { }
+          localStorage.removeItem(LS_SCAN_SESSION);
+          try {
+            localStorage.removeItem("api_token");
+            localStorage.removeItem("user_id");
+          } catch (_) { }
+          location.href = "/auth/login";
         };
       }
 
       // ===== SOCKET =====
-      function startSocket() {
+      async function startSocket() {
+        const sessionFilter = getActiveScanSessionId();
         restoreState();
+        if (sessionFilter) {
+          logs = [];
+          if (logBox) logBox.innerHTML = "";
+          lastRlPollId = 0;
+          fpSeen.clear();
+          fpQueue.length = 0;
+        }
+        seedFpFromRestoredLogs();
+        await bootstrapRlLogsFromDb();
+        void pollHttpProxyLogs();
+        setInterval(pollRlLogsFromDb, 2500);
+        setInterval(pollHttpProxyLogs, 4000);
+        setInterval(pollLatestXai, 4000);
+        void pollLatestXai();
 
-        // If you accidentally open file://... we still connect to the Flask server
-        const socketUrl = (location.protocol === "file:") ? "http://127.0.0.1:5000" : undefined;
+        const socketUrl =
+          window.location.protocol === "file:" ? "http://127.0.0.1:5000" : undefined;
 
+        const socketOpts = {
+          // Werkzeug + Flask-SocketIO threading is stable with polling transport.
+          transports: ["polling"],
+          reconnection: true,
+          withCredentials: true,
+        };
         const socket = socketUrl
-          ? io(socketUrl, { transports: ["websocket", "polling"], reconnection: true })
-          : io({ transports: ["websocket", "polling"], reconnection: true });
+          ? io(socketUrl, socketOpts)
+          : io(socketOpts);
 
         socket.on("connect", () => {
-          if (statusEl) { statusEl.textContent = "connected"; statusEl.style.color = "#47d68d"; }
+          if (statusEl) {
+            statusEl.textContent = "connected";
+            statusEl.style.color = "#47d68d";
+          }
         });
 
         socket.on("disconnect", () => {
-          if (statusEl) { statusEl.textContent = "disconnected"; statusEl.style.color = "#ff7b72"; }
+          if (statusEl) {
+            statusEl.textContent = "disconnected";
+            statusEl.style.color = "#ff7b72";
+          }
         });
 
         socket.on("connect_error", (err) => {
           console.error("socket connect_error:", err);
-          if (statusEl) { statusEl.textContent = "connection error"; statusEl.style.color = "#ff7b72"; }
+          if (statusEl) {
+            statusEl.textContent = "connection error";
+            statusEl.style.color = "#ff7b72";
+          }
         });
 
         socket.on("rl_log", (msg) => {
           if (!msg || typeof msg.line !== "string") return;
-
-          const line = msg.line;
-
-          let logClass = "";
-          if (line.includes("[RL][REQ]")) logClass = "REQ";
-          else if (line.includes("[RL][ACT]")) logClass = "ACT";
-          else if (line.includes("[RL][APPLY]")) logClass = "APPLY";
-          else if (line.includes("[RL][RESP]")) logClass = "RESP";
-          else if (line.includes("[RL][ERROR]")) logClass = "ERROR";
-
-          logs.push({ line, className: logClass });
-          if (logs.length > LOGS_HISTORY_MAX) logs.splice(0, logs.length - LOGS_HISTORY_MAX);
-
-          if (logBox) {
-            const div = document.createElement("div");
-            div.className = "line";
-            if (logClass) div.classList.add(logClass);
-            div.textContent = line;
-            logBox.appendChild(div);
-
-            while (logBox.childNodes.length > LOGS_HISTORY_MAX) {
-              logBox.removeChild(logBox.childNodes[0]);
-            }
-            if (!logPaused) logBox.scrollTop = logBox.scrollHeight;
+          const filterSid = getActiveScanSessionId();
+          const msgSid = msg.session_id != null ? String(msg.session_id) : "";
+          if (filterSid) {
+            if (!msgSid || msgSid !== filterSid) return;
           }
-
-          if (line.includes("[RL][REQ]")) reqCount++;
-          if (line.includes("[RL][APPLY]")) applyCount++;
-          if (line.includes("[RL][RESP]")) {
-            const r = extractReward(line);
-            if (typeof r === "number" && !isNaN(r)) { rewardSum += r; rewardCount++; }
-          }
-          if (line.includes("[RL][ERROR]")) errorCount++;
-          updateKpiUI();
-
-          if (line.includes("[RL][REQ]")) {
-            const host = extractHostFromLine(line);
-            if (host && !isNoiseHost(host)) {
-              const bd = baseDomain(host);
-              if (!primaryBaseDomain) {
-                primaryBaseDomain = bd;
-                if (targetDomainEl) targetDomainEl.textContent = primaryBaseDomain;
-              }
-
-              const key = bd;
-              const nowEpoch = Date.now() / 1000;
-              const nowStr = timeString();
-
-              if (!scanTargets[key]) {
-                scanTargets[key] = {
-                  id: scanIdSeq++,
-                  target: bd,
-                  targetFull: host,
-                  start: nowStr,
-                  lastSeen: nowEpoch,
-                  lastSeenTime: nowStr,
-                  status: "Active",
-                  vulns: "—"
-                };
-              } else {
-                const s = scanTargets[key];
-                s.lastSeen = nowEpoch;
-                s.lastSeenTime = nowStr;
-                s.targetFull = host;
-              }
-              renderScanTable();
-            }
-          }
-
-          if (line.includes("[RL][APPLY]")) {
-            const actionName = extractApplyAction(line) || "NO_OP";
-            const now = timeString();
-            const nowEpoch = Date.now() / 1000;
-            const last = timeline[0];
-            if (!last || last.action !== actionName || (nowEpoch - (+last.tsEpoch || 0)) > 2.1) {
-              timeline.unshift({ action: actionName, ts: now, tsEpoch: nowEpoch });
-              if (timeline.length > TIMELINE_MAX) timeline.length = TIMELINE_MAX;
-              renderTimeline();
-            }
-          }
-
-          saveState();
+          onRlLogLine(msg.line);
         });
 
         if (logBox) {
@@ -1123,13 +1444,85 @@
       // ===== BOOT =====
       document.addEventListener("DOMContentLoaded", async () => {
         hookLogout();
+        await loadCurrentUser();
+        refreshBurpSessionUi();
 
-        if (userEmailEl) {
-          userEmailEl.textContent = "Guest (no auth)";
-          userEmailEl.style.display = "";
+        if (userNameEl && (!userNameEl.textContent || userNameEl.textContent === "")) {
+          const storedUsername = localStorage.getItem("username");
+          userNameEl.textContent = storedUsername || "Guest (no auth)";
+          userNameEl.style.display = "";
         }
 
-        startSocket();
+        if (btnStartScanSession) {
+          btnStartScanSession.onclick = async function () {
+            if (scanSessionMsg) scanSessionMsg.textContent = "";
+            const widRaw = scanWebsiteId && scanWebsiteId.value.trim();
+            const target =
+              scanTargetUrl && scanTargetUrl.value.trim();
+            const body = {};
+            if (widRaw) {
+              const w = parseInt(widRaw, 10);
+              if (Number.isNaN(w)) {
+                if (scanSessionMsg) scanSessionMsg.textContent = "Invalid website id.";
+                return;
+              }
+              body.website_id = w;
+            } else if (target) {
+              body.target_url = target;
+            } else {
+              if (scanSessionMsg)
+                scanSessionMsg.textContent = "Enter a URL or website id.";
+              return;
+            }
+            try {
+              const r = await fetch(API_ORIGIN + "/api/scan/start", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify(body),
+              });
+              const d = await r.json().catch(() => ({}));
+              if (!r.ok) {
+                if (scanSessionMsg)
+                  scanSessionMsg.textContent = d.error || "Could not start session.";
+                return;
+              }
+              const sid = d.session_id;
+              if (sid != null) {
+                localStorage.setItem(LS_SCAN_SESSION, String(sid));
+                refreshBurpSessionUi();
+                lastRlPollId = 0;
+                fpSeen.clear();
+                fpQueue.length = 0;
+                logs = [];
+                if (logBox) logBox.innerHTML = "";
+                await bootstrapRlLogsFromDb();
+                if (scanSessionMsg) scanSessionMsg.textContent = "Session started.";
+              }
+            } catch (e) {
+              console.warn(e);
+              if (scanSessionMsg)
+                scanSessionMsg.textContent = "Network error starting session.";
+            }
+          };
+        }
+
+        if (btnClearBurpSession) {
+          btnClearBurpSession.onclick = function () {
+            localStorage.removeItem(LS_SCAN_SESSION);
+            location.reload();
+          };
+        }
+
+        if (btnCopySessionId && activeSessionIdField) {
+          btnCopySessionId.onclick = function () {
+            const t = activeSessionIdField.value;
+            if (!t) return;
+            navigator.clipboard.writeText(t).catch(() => {});
+          };
+        }
+
+        void startSocket();
       });
 
     })();
