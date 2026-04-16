@@ -11,7 +11,12 @@ from app.models.rl_log import RLLog
 from app.models.scan_session import ScanSession
 from app.models.user import User
 from app.services.api_auth import resolve_rl_actor_user_id, trusted_loopback
-from app.services.rl_ingest import _coerce_int, ingest_rl_event
+from app.services.rl_ingest import (
+    _coerce_int,
+    build_rl_xai_payload,
+    ingest_rl_event,
+    parse_structured_from_raw,
+)
 
 rl_event_bp = Blueprint("rl_event_bp", __name__)
 
@@ -268,7 +273,10 @@ def bootstrap_rl_logs():
         .order_by(RLLog.id.asc())
         .all()
     )
-    lines = [{"id": r.id, "line": r.raw_line} for r in rows]
+    lines = []
+    for r in rows:
+        xai = build_rl_xai_payload(r.raw_line, parse_structured_from_raw(r.raw_line))
+        lines.append({"id": r.id, "line": r.raw_line, "xai": xai})
     return jsonify({"lines": lines, "max_id": max(id_list)})
 
 
@@ -285,37 +293,38 @@ def recent_rl_logs():
     if sf is not None:
         q = q.filter(RLLog.session_id == sf)
     q = q.order_by(RLLog.id.asc()).limit(limit)
-    lines = [{"id": r.id, "line": r.raw_line} for r in q.all()]
+    lines = []
+    for r in q.all():
+        xai = build_rl_xai_payload(r.raw_line, parse_structured_from_raw(r.raw_line))
+        lines.append({"id": r.id, "line": r.raw_line, "xai": xai})
     return jsonify({"lines": lines})
 
 
 @rl_event_bp.get("/api/rl-event/latest-xai")
 def latest_xai():
     try:
-        row = (
-            RLEvent.query.filter(
-                RLEvent.explanation.isnot(None),
-                RLEvent.explanation != "",
-            )
-            .order_by(RLEvent.id.desc())
-            .first()
-        )
+        row = RLEvent.query.order_by(RLEvent.id.desc()).first()
     except Exception as exc:
         current_app.logger.warning("latest-xai query failed: %s", exc)
         return jsonify({"explanation": None, "context": None})
     if not row:
         return jsonify({"explanation": None, "context": None})
-    return jsonify(
-        {
-            "explanation": row.explanation,
-            "context": {
-                "event_type": row.event_type,
-                "action_name": row.action_name,
-                "url": row.url,
-                "http_method": row.http_method,
-            },
-        }
-    )
+    expl = (row.explanation or "").strip()
+    ctx = {
+        "event_type": row.event_type,
+        "action_name": row.action_name,
+        "action_id": row.action_id,
+        "url": row.url,
+        "http_method": row.http_method,
+        "status_code": row.status_code,
+        "reward": row.reward,
+        "request_id": row.request_id,
+    }
+    if not expl and row.raw_line:
+        xai = build_rl_xai_payload(row.raw_line, parse_structured_from_raw(row.raw_line))
+        expl = xai["explanation"]
+        ctx = {**ctx, **xai["context"]}
+    return jsonify({"explanation": expl or None, "context": ctx})
 
 
 @rl_event_bp.route("/api/rl-events", methods=["POST", "OPTIONS"])
@@ -392,7 +401,11 @@ def receive_rl_event():
     room = f"user_{int(auth_uid)}"
     socketio.emit(
         "rl_log",
-        {"line": raw_line, "session_id": result.get("session_id")},
+        {
+            "line": raw_line,
+            "session_id": result.get("session_id"),
+            "xai": result.get("xai"),
+        },
         to=room,
     )
 

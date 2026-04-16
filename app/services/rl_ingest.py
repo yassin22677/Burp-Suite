@@ -108,6 +108,280 @@ def _parse_reward(raw_line: str) -> dict[str, Any]:
     return out
 
 
+def _parse_error(raw_line: str) -> dict[str, Any]:
+    out: dict[str, Any] = {}
+    m = re.search(r"\[RL\]\[ERROR\]\s*(.*)$", raw_line or "", re.DOTALL)
+    if m:
+        out["error_message"] = m.group(1).strip()[:4000]
+    return out
+
+
+_APPLY_PLAIN: dict[str, str] = {
+    "PASSIVE_SCAN": (
+        "What this means: Burp watches traffic and runs passive checks—it does not "
+        "aggressively attack the site from this setting alone."
+    ),
+    "ACTIVE_SCAN": (
+        "What this means: Burp actively probes for vulnerabilities (more intrusive than passive only)."
+    ),
+    "NO_OP": (
+        "What this means: the assistant did not change Burp configuration on this step; it kept the current setup."
+    ),
+    "DISABLE_INTERCEPT": (
+        "What this means: Proxy Intercept is turned off. Requests and responses are not held in the "
+        "Intercept tab for manual review—they pass through automatically. The assistant usually does this "
+        "so automated crawling and RL traffic are not stuck waiting for you to click Forward."
+    ),
+    "ENABLE_INTERCEPT": (
+        "What this means: Proxy Intercept is turned on. Traffic that matches your intercept rules can pause "
+        "until you forward or drop it. That gives manual control but can slow or block a fully automated "
+        "run if messages pile up in the Intercept queue."
+    ),
+}
+
+
+def _lines_score_not_on_this_step() -> list[str]:
+    """REQ / ACT / APPLY: user expects a number—explain where it will show up."""
+    return [
+        "When a reward or penalty appears (not on this line)",
+        "This line has no score. Rewards and penalties are numbers that show up after the environment "
+        "judges an outcome—almost always on a later [RL][RESP] line as reward=… and/or on a "
+        "[RL][REWARD] line as value=…. "
+        "Positive = reward, negative = penalty, zero = neutral. "
+        "Follow the log downward from here to find the next RESP or REWARD line for this traffic.",
+    ]
+
+
+def _score_explanation_lines(reward: int | None) -> list[str]:
+    """User-facing paragraphs: what the number is, and why it is a reward, penalty, or neutral."""
+    if reward is None:
+        return [
+            "No score on this line",
+            "This line usually does not carry a reward number. Scores typically appear on "
+            "[RL][RESP] or [RL][REWARD] lines after the server (or your training code) reacts to what happened.",
+        ]
+    if reward > 0:
+        return [
+            f"The score on this line: +{reward} (this is a reward)",
+            "Why you see a reward (positive number)",
+            "A positive score means the RL setup judged this outcome as good for the goal "
+            "(for example: a successful HTTP response, discovering a new URL or behavior, "
+            "scanner progress, or a rule in your reward code that adds points for this situation). "
+            "The assistant is encouraged to make similar choices when it sees a similar situation again.",
+            "This is not a random number—it is how the system says “that last move helped.”",
+        ]
+    if reward < 0:
+        return [
+            f"The score on this line: {reward} (this is a penalty)",
+            "Why you see a penalty (negative number)",
+            "A negative score means the RL setup judged this outcome as bad or wasteful. "
+            "Typical reasons include: HTTP errors (4xx/5xx), blocked or failed requests, "
+            "timeouts, repeating useless steps, or a rule in your reward code that subtracts points.",
+            "The assistant is nudged to try something different next time instead of repeating the same pattern.",
+            "Compare to a reward: a positive score would mean the opposite—the step was considered useful.",
+        ]
+    return [
+        "The score on this line: 0 (neutral)",
+        "Why the score is zero",
+        "Zero means neither a clear win nor a clear loss. The step was recorded, but the training signal "
+        "does not strongly say “do more of this” or “avoid this.” The next action still depends on the "
+        "overall policy and other recent rewards and penalties.",
+    ]
+
+
+def _http_status_plain(status_code: int | None) -> str | None:
+    if status_code is None:
+        return None
+    sc = int(status_code)
+    if 200 <= sc < 300:
+        return "Success range: the server accepted the request and returned a normal response."
+    if 300 <= sc < 400:
+        return "Redirect: the client may follow a new location; the assistant may treat this as progress or noise depending on your rules."
+    if 400 <= sc < 500:
+        return "Client error: often “not found” or “bad request”—usually worse for reward unless your rules reward probing errors."
+    if 500 <= sc < 600:
+        return "Server error: the application failed processing—often leads to penalties if your reward code punishes errors."
+    return "Unusual status; check the response body and your reward rules for how this is scored."
+
+
+def build_rl_xai_payload(
+    raw_line: str, merged: dict[str, Any] | None = None
+) -> dict[str, Any]:
+    """
+    Human-readable explanation for dashboard XAI (from log structure only).
+    Returns {explanation, context} for API/WebSocket/UI.
+    """
+    m = dict(merged) if merged else parse_structured_from_raw(raw_line)
+    et = (m.get("event_type") or infer_event_type(raw_line) or "UNKNOWN").upper()
+    ctx: dict[str, Any] = {
+        "event_type": et,
+        "action_name": m.get("action_name"),
+        "action_id": m.get("action_id"),
+        "url": m.get("url"),
+        "http_method": m.get("http_method"),
+        "status_code": m.get("status_code"),
+        "reward": m.get("reward"),
+        "request_id": m.get("request_id"),
+    }
+
+    lines: list[str] = []
+
+    if et == "REQ":
+        method = m.get("http_method") or "HTTP"
+        url = m.get("url") or "(URL not parsed from line)"
+        rid = m.get("request_id")
+        lines.append("What happened")
+        lines.append(
+            f"The assistant sent {method} {url} through Burp so the application responds and the RL loop can observe the result."
+        )
+        lines.append("Why this request was made")
+        lines.append(
+            "The assistant explores the target by sending real traffic. Each response updates what it “sees” "
+            "and feeds the next decision (which Burp mode to use, what to scan, etc.). "
+            "It is not a human clicking; it follows the current policy and training."
+        )
+        if rid is not None:
+            lines.append(
+                f"Technical note: request id {rid} ties this line to matching ACT / APPLY / RESP lines in the same step."
+            )
+        lines.extend(_lines_score_not_on_this_step())
+
+    elif et == "ACT":
+        aid = m.get("action_id")
+        an = m.get("action_name") or (
+            f"RL_VALUE_{aid}" if aid is not None else "unknown discrete action"
+        )
+        lines.append("What happened")
+        lines.append(
+            f"The assistant chose option “{an}” (internal index {aid if aid is not None else '—'}). "
+            "That number is a code: your integration maps it to a concrete Burp action on the next APPLY line."
+        )
+        lines.append("Why this action was taken (what you should tell a user)")
+        lines.append(
+            "The log does not contain a sentence like “because the login page looked interesting.” "
+            "Instead, the model picks the code that currently scores best given everything it has observed "
+            "(URLs, responses, rewards, and penalties from earlier steps) and how it was trained or fine-tuned."
+        )
+        lines.append(
+            "So: this action was taken because the RL policy at this moment preferred this option over the other "
+            "numbered options—not because someone manually selected it in the UI."
+        )
+        lines.extend(_lines_score_not_on_this_step())
+
+    elif et == "APPLY":
+        an = (m.get("action_name") or "CONFIG_CHANGE").strip() or "CONFIG_CHANGE"
+        url = m.get("url")
+        host = m.get("target_host")
+        lines.append("What happened")
+        lines.append(
+            f"The assistant actually changed Burp behavior: “{an}”. This is the visible effect of the last ACT choice."
+        )
+        plain = _APPLY_PLAIN.get(an.upper())
+        if plain:
+            lines.append(plain)
+        lines.append("Why this matters")
+        lines.append(
+            "Rewards and penalties you see later are partly based on whether this setting helped testing "
+            "(coverage, findings, stable traffic) or caused problems (errors, noise, wasted steps)—according to your reward rules."
+        )
+        if url:
+            lines.append(f"Related URL in the log: {url}.")
+        elif host:
+            lines.append(f"Target host in the log: {host}.")
+        lines.extend(_lines_score_not_on_this_step())
+
+    elif et == "RESP":
+        sc = m.get("status_code")
+        rw = m.get("reward")
+        lines.append("What happened")
+        if sc is not None:
+            lines.append(f"The server answered with HTTP status {sc}.")
+            hint = _http_status_plain(sc)
+            if hint:
+                lines.append(hint)
+        else:
+            lines.append("A response was logged, but the status code was not parsed from this line.")
+        if rw is not None:
+            lines.append("When reward or penalty appears")
+            lines.append(
+                "On this [RL][RESP] line: look at reward=…. "
+                "A positive value is a reward, a negative value is a penalty, zero is neutral."
+            )
+        else:
+            lines.append("When reward or penalty appears")
+            lines.append(
+                "This line has no reward= field after parsing. The score may be emitted on the next "
+                "[RL][REWARD] line (value=…) or omitted if your pipeline does not attach a number to this response."
+            )
+        lines.extend(_score_explanation_lines(rw))
+        if sc is not None and rw is not None:
+            lines.append("How status and score fit together")
+            lines.append(
+                "The status code describes the server’s answer. The reward/penalty number describes how your RL "
+                "training setup judged that answer (and possibly other signals). They are related but not the same: "
+                "you can configure rewards so that even some 4xx responses are useful, or so that 200 responses are neutral."
+            )
+
+    elif et == "REWARD":
+        rw = m.get("reward")
+        lines.append("What happened")
+        lines.append(
+            "This line is a dedicated reward signal from your pipeline (extra shaping on top of raw HTTP)."
+        )
+        lines.append("When reward or penalty appears")
+        lines.append(
+            "Right here: [RL][REWARD] uses value=…. "
+            "That single number is the score—positive = reward, negative = penalty, zero = neutral—"
+            "for whatever your reward code decided to grade on this step."
+        )
+        lines.extend(_score_explanation_lines(rw))
+
+    elif et == "SCAN":
+        an = m.get("action_name") or "scanner finding"
+        url = m.get("url")
+        lines.append("What happened")
+        lines.append(f"Scanner / analysis feedback: {an}.")
+        lines.append("Why this affects rewards")
+        lines.append(
+            "Many setups give a reward when new issues or interesting findings appear, because that indicates "
+            "progress for security testing. If nothing new is found, the same step might earn less or no reward—"
+            "depending on how your reward function is written."
+        )
+        if url:
+            lines.append(f"Related URL: {url}.")
+        lines.append("When reward or penalty appears")
+        lines.append(
+            "SCAN lines describe findings; they usually do not carry value= or reward= themselves. "
+            "The numeric reward or penalty for the step typically appears on a nearby [RL][RESP] or [RL][REWARD] line."
+        )
+
+    elif et == "ERROR":
+        msg = m.get("error_message") or raw_line
+        lines.append("What happened")
+        lines.append("Something failed in the RL or Burp integration; this step did not complete normally.")
+        lines.append(f"Detail: {msg}")
+
+    else:
+        lines.append("What happened")
+        lines.append(
+            f"Event type “{et}”. Only part of the line could be interpreted automatically; read the raw line for full detail."
+        )
+        if m.get("reward") is not None:
+            lines.extend(_score_explanation_lines(m.get("reward")))
+
+    explanation = "\n\n".join(lines)
+    return {"explanation": explanation, "context": ctx}
+
+
+def _merge_user_and_auto_explanation(
+    user_text: str | None, auto: str
+) -> str:
+    u = (user_text or "").strip()
+    if not u:
+        return auto
+    return f"{u}\n\n— Interpretation —\n{auto}"
+
+
 def parse_structured_from_raw(raw_line: str) -> dict[str, Any]:
     et = infer_event_type(raw_line) or ""
     parsers = {
@@ -117,6 +391,7 @@ def parse_structured_from_raw(raw_line: str) -> dict[str, Any]:
         "RESP": _parse_resp,
         "SCAN": _parse_scan,
         "REWARD": _parse_reward,
+        "ERROR": _parse_error,
     }
     fn = parsers.get(et, lambda _: {})
     parsed = fn(raw_line)
@@ -368,6 +643,11 @@ def ingest_rl_event(
 
     evt_type = (et[:64] if et else None) or "UNKNOWN"
 
+    xai = build_rl_xai_payload(raw_line, merged)
+    explanation_final = _merge_user_and_auto_explanation(
+        merged.get("explanation"), xai["explanation"]
+    )
+
     evt = RLEvent(
         timestamp=db.func.now(),
         event_type=evt_type,
@@ -380,7 +660,7 @@ def ingest_rl_event(
         ),
         status_code=sc,
         reward=rw,
-        explanation=merged.get("explanation"),
+        explanation=explanation_final,
         raw_line=raw_line,
     )
     try:
@@ -391,4 +671,8 @@ def ingest_rl_event(
         current_app.logger.warning("rl_event insert skipped (schema mismatch OK): %s", exc)
 
     out_sid = str(session_fk) if session_fk is not None else None
-    return {"raw_line": raw_line, "session_id": out_sid}
+    return {
+        "raw_line": raw_line,
+        "session_id": out_sid,
+        "xai": {"explanation": explanation_final, "context": xai["context"]},
+    }

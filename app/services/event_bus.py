@@ -17,7 +17,11 @@ def emit_and_store_event(event_type: str, raw_line: str):
     if auth_uid is not None:
         socketio.emit(
             "rl_log",
-            {"line": result["raw_line"], "session_id": result.get("session_id")},
+            {
+                "line": result["raw_line"],
+                "session_id": result.get("session_id"),
+                "xai": result.get("xai"),
+            },
             to=f"user_{int(auth_uid)}",
         )
     print(raw_line)

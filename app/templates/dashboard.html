@@ -288,6 +288,16 @@
       background: var(--hover-highlight);
     }
 
+    .line.xai-log-line {
+      cursor: pointer;
+    }
+
+    .line.xai-log-selected {
+      background: rgba(53, 142, 251, 0.12);
+      border-radius: 4px;
+      box-shadow: inset 0 0 0 1px rgba(80, 160, 255, 0.35);
+    }
+
     .REQ {
       color: #3dc2fb;
       animation: fakeFadeIn 0.18s;
@@ -371,13 +381,15 @@
     .kpi-metric {
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
       background: #202228;
       border-radius: 11px;
       border: 1.4px solid #222a33;
-      min-width: 90px;
-      min-height: 62px;
-      padding: 11px 14px 7px 12px;
+      min-width: 0;
+      min-height: 72px;
+      padding: 10px 8px 9px;
       box-shadow: 0 0 10px rgba(40, 60, 140, 0.045);
       margin-bottom: 0 !important;
       filter: drop-shadow(0 0 2px #161b22dd);
@@ -387,18 +399,23 @@
       font-size: 2.1em;
       font-weight: 700;
       color: var(--color-kpi-accent);
-      margin-bottom: 1px;
+      margin-bottom: 4px;
       letter-spacing: 0.01em;
       min-height: 1.1em;
       line-height: 1;
+      width: 100%;
+      text-align: center;
     }
 
     .kpi-label {
       color: var(--color-kpi-label);
-      font-size: 13.8px;
+      font-size: 12.5px;
       font-weight: 600;
       letter-spacing: 0.01em;
-      white-space: nowrap;
+      line-height: 1.3;
+      width: 100%;
+      text-align: center;
+      text-wrap: balance;
       opacity: .87;
     }
 
@@ -484,106 +501,175 @@
 
     .scan-table-card {
       padding: 0;
-      background: var(--color-bg-card);
+      background: linear-gradient(180deg, #1c2028 0%, #191d23 42%);
       border-radius: var(--border-radius);
       border: 1.5px solid var(--color-border-light);
+      border-left: 3px solid #c97a2d;
       margin-bottom: 0;
-      box-shadow: 0 2px 7px 0 rgba(40, 46, 67, 0.05);
+      box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.22);
     }
 
     .scan-table-title {
-      padding: 13px 22px 9px 22px;
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--color-section-header-muted);
-      letter-spacing: 0.01em;
+      padding: 14px 22px 11px 22px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--color-section-header);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
       border-bottom: 1px solid var(--color-divider);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .scan-table-title::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #c97a2d;
+      box-shadow: 0 0 0 2px rgba(201, 122, 45, 0.25);
+      flex-shrink: 0;
+    }
+
+    .scan-table-scroll-wrap {
+      max-height: 220px;
+      overflow: auto;
+      border-radius: 0 0 calc(var(--border-radius) - 2px) calc(var(--border-radius) - 2px);
+    }
+
+    .scan-table-scroll-wrap::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    .scan-table-scroll-wrap::-webkit-scrollbar-thumb {
+      background: #353b48;
+      border-radius: 6px;
+    }
+
+    .scan-table-scroll-wrap::-webkit-scrollbar-track {
+      background: #14171c;
     }
 
     .scan-table {
       width: 100%;
       border-collapse: separate;
       border-spacing: 0;
+      table-layout: fixed;
       background: transparent;
       font-size: 13.5px;
-      min-width: 560px;
+      min-width: 520px;
     }
 
     .scan-table th,
     .scan-table td {
-      padding: 10px 16px;
+      padding: 11px 14px;
       border-bottom: 1px solid var(--color-border-light);
       text-align: left;
-      background: none;
       vertical-align: middle;
     }
 
     .scan-table th {
-      background: #181b21;
-      color: #8da0be;
+      background: #14181f;
+      color: #a8b4c9;
       font-weight: 700;
-      letter-spacing: 0.02em;
-      font-size: 13.6px;
-      border-bottom: 1.5px solid var(--color-divider);
+      letter-spacing: 0.03em;
+      font-size: 11px;
+      text-transform: uppercase;
+      border-bottom: 1px solid #2a3140;
       position: sticky;
       top: 0;
-      z-index: 1;
+      z-index: 2;
+      box-shadow: 0 1px 0 #2a3140;
+    }
+
+    .scan-table tbody tr {
+      background: rgba(25, 29, 35, 0.6);
+    }
+
+    .scan-table tbody tr:nth-child(even) {
+      background: rgba(22, 26, 32, 0.85);
+    }
+
+    .scan-table tbody tr:hover {
+      background: rgba(42, 48, 58, 0.95);
     }
 
     .scan-table tr:last-child td {
       border-bottom: none;
     }
 
+    .scan-table .col-target {
+      font-weight: 600;
+      color: #dce4f0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .scan-table td.col-last {
+      font-family: var(--font-family-mono);
+      font-size: 12.5px;
+      color: #9eb0d0;
+      white-space: nowrap;
+    }
+
     .scan-table td small {
       word-break: break-all;
-      color: #8b94a9;
-      font-size: 12.5px;
+      color: inherit;
+      font-size: inherit;
     }
 
     .scan-table td {
-      font-size: 13.1px;
-      background: none;
+      font-size: 13px;
+      color: #c4cddc;
     }
 
     .scan-status {
-      font-size: 1em;
-      padding: 2.2px 10px;
-      border-radius: 99px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 6px;
+      display: inline-block;
     }
 
     .scan-status.active {
-      background: #1a3d27;
-      color: #41ea82;
+      background: rgba(65, 234, 130, 0.12);
+      color: #5eed9a;
+      border: 1px solid rgba(65, 234, 130, 0.28);
     }
 
     .scan-status.idle {
-      background: #44240c;
-      color: #ffaa6c;
+      background: rgba(255, 170, 108, 0.12);
+      color: #ffb669;
+      border: 1px solid rgba(255, 170, 108, 0.28);
     }
 
-    .scan-table-body-scroll {
-      max-height: 174px;
-      overflow-y: auto;
-      display: block;
+    .scan-vuln-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 2.25rem;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      font-family: var(--font-family-mono);
     }
 
-    .scan-table-body-scroll::-webkit-scrollbar {
-      width: 8px;
+    .scan-vuln-pill.none {
+      background: #252a33;
+      color: #6b7387;
+      border: 1px solid #323844;
     }
 
-    .scan-table-body-scroll::-webkit-scrollbar-thumb {
-      background: #26292f;
-    }
-
-    .scan-table tbody {
-      display: block;
-      width: 100%;
-    }
-
-    .scan-table tr {
-      display: table;
-      width: 100%;
-      table-layout: fixed;
+    .scan-vuln-pill.activity {
+      background: rgba(126, 231, 135, 0.1);
+      color: #7ee787;
+      border: 1px solid rgba(126, 231, 135, 0.25);
     }
 
     /* == Bootstrap fine-tune == */
@@ -680,7 +766,7 @@
     .scan-session-bar {
       max-width: 920px;
       margin: 14px auto 0;
-      padding: 14px 18px;
+      padding: 16px 20px 18px;
       border-radius: var(--border-radius);
       border: 1px solid var(--color-border);
     }
@@ -716,7 +802,7 @@
   <div class="scan-session-bar card-dark px-3 py-3 mx-3" id="scan-session-panel">
     <div class="small text-muted mb-2">Start a scan session for one target so Burp logs are tagged and show up here.
       Optionally use a website id from the <code>websites</code> table, or paste a full URL.</div>
-    <div class="d-flex flex-wrap gap-2 align-items-center mb-2">
+    <div class="d-flex flex-wrap gap-2 align-items-center mb-2 scan-session-controls">
       <input type="text" id="scan-target-url" class="form-control form-control-sm"
         style="min-width:220px;max-width:420px;" placeholder="https://target.example/">
       <input type="number" id="scan-website-id" class="form-control form-control-sm" style="width:7.5rem;min-width:6rem;"
@@ -790,24 +876,22 @@
         </div>
       </div>
       <div id="scan-table-section">
-        <div class="scan-table-card card-dark">
-          <div class="scan-table-title">Scan Reports Viewer</div>
-          <table class="scan-table">
-            <thead>
-              <tr>
-                <th style="width:7ch;">Scan ID</th>
-                <th style="width:40%;">Target</th>
-                <th style="width:17ch;">Status</th>
-                <th style="width:8ch;">Vulns</th>
-                <th style="width:16ch;">Last Seen</th>
-              </tr>
-            </thead>
-          </table>
-          <div class="scan-table-body-scroll" id="scan-table-body-scroll">
+        <div class="scan-table-card">
+          <div class="scan-table-title">Scan reports</div>
+          <div class="scan-table-scroll-wrap" id="scan-table-body-scroll">
             <table class="scan-table mb-0">
+              <thead>
+                <tr>
+                  <th style="width:9%;">ID</th>
+                  <th style="width:34%;">Target</th>
+                  <th style="width:18%;">Status</th>
+                  <th style="width:14%;">Findings</th>
+                  <th style="width:25%;">Last seen</th>
+                </tr>
+              </thead>
               <tbody id="scan-table-body">
                 <tr class="scan-row-placeholder">
-                  <td colspan="5" style="text-align:center; color:#757d91;">
+                  <td colspan="5" style="text-align:center; color:#757d91; padding:28px 16px;">
                     No traffic yet
                   </td>
                 </tr>
@@ -823,15 +907,16 @@
       <div id="xai-container" class="card-dark px-0 py-2" style="box-shadow: 0 1.5px 13px 0 rgba(80,100,160,.09);">
         <div class="xai-card" id="xai-placeholder"
           style="opacity:.7; filter: grayscale(.5);border: 1px dashed #242a36;min-height:95px;">
-          <div class="xai-title mb-1" style="color:#9eaabd;font-size:15px;font-weight:600;">Why this action?
+          <div class="xai-title mb-1" style="color:#9eaabd;font-size:15px;font-weight:600;">Explanation (XAI)
           </div>
+          <div class="xai-subtitle mb-2" style="color:#6b7387;font-size:12px;line-height:1.4;">Logs on the left are raw lines only. Click an RL line or wait for the latest event.</div>
           <div class="xai-item xai-placeholder d-flex align-items-center" style="color:#6b7387;min-height:36px;">
             <svg width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"
               stroke-linejoin="round" viewBox="0 0 24 24" style="opacity:.25;">
               <path d="M13.73 21a2 2 0 01-3.46 0L2.29 7.61A2 2 0 013.73 5h16.54a2 2 0 011.44 2.61z" />
               <circle cx="12" cy="9" r="2.0" fill="#23272f" stroke="none" />
             </svg>
-            <span class="ms-2" id="xai-explanation-text" style="white-space:pre-wrap;">XAI explanation not available — populate <code>explanation</code> on <code>rl_event</code> (e.g. from your model) and it appears here.</span>
+            <span class="ms-2" id="xai-explanation-text" style="white-space:pre-wrap;">Click an RL log line to see the explanation here, or wait for new events (the panel updates with the latest).</span>
           </div>
         </div>
       </div>
@@ -890,6 +975,9 @@
       let timeline = [];
       let primaryBaseDomain = null;
       let logPaused = false;
+      let logSeq = 0;
+      const xaiBySeq = new Map();
+      let selectedLogLineEl = null;
 
       const IGNOISE = [
         "google-analytics", "googletagmanager", "doubleclick", "googleadservices",
@@ -1066,7 +1154,7 @@
           if (!r.ok) return;
           const data = await r.json();
           for (const row of data.lines || []) {
-            if (row.line) onRlLogLine(row.line);
+            if (row.line) onRlLogLine(row.line, row.xai || null);
           }
           lastRlPollId = Math.max(
             lastRlPollId,
@@ -1091,16 +1179,295 @@
           const data = await r.json();
           for (const row of data.lines || []) {
             if (row.id > lastRlPollId) lastRlPollId = row.id;
-            if (row.line) onRlLogLine(row.line);
+            if (row.line) onRlLogLine(row.line, row.xai || null);
           }
         } catch (e) {
           console.warn("poll rl_logs", e);
         }
       }
 
-      async function pollLatestXai() {
+      /** When the API/socket omits xai (older server), derive text from the raw RL line. */
+      const APPLY_PLAIN_JS = {
+        PASSIVE_SCAN:
+          "What this means: Burp watches traffic and runs passive checks—it does not aggressively attack the site from this setting alone.",
+        ACTIVE_SCAN:
+          "What this means: Burp actively probes for vulnerabilities (more intrusive than passive only).",
+        NO_OP:
+          "What this means: the assistant did not change Burp configuration on this step; it kept the current setup.",
+        DISABLE_INTERCEPT:
+          "What this means: Proxy Intercept is turned off. Requests and responses are not held in the Intercept tab for manual review—they pass through automatically. The assistant usually does this so automated crawling and RL traffic are not stuck waiting for you to click Forward.",
+        ENABLE_INTERCEPT:
+          "What this means: Proxy Intercept is turned on. Traffic that matches your intercept rules can pause until you forward or drop it. That gives manual control but can slow or block a fully automated run if messages pile up in the Intercept queue.",
+      };
+
+      function httpStatusPlainJs(sc) {
+        if (sc == null) return null;
+        if (sc >= 200 && sc < 300) {
+          return "Success range: the server accepted the request and returned a normal response.";
+        }
+        if (sc >= 300 && sc < 400) {
+          return "Redirect: the client may follow a new location; your reward rules decide if that counts as progress.";
+        }
+        if (sc >= 400 && sc < 500) {
+          return "Client error: often “not found” or “bad request”—often scored as a penalty unless your rules say otherwise.";
+        }
+        if (sc >= 500 && sc < 600) {
+          return "Server error: the application failed processing—often leads to penalties if your reward code punishes errors.";
+        }
+        return "Unusual status; check the response and your reward rules.";
+      }
+
+      function scoreExplanationLinesJs(reward) {
+        if (reward == null || reward === "") {
+          return [
+            "No score on this line",
+            "This line usually does not carry a reward number. Scores typically appear on [RL][RESP] or [RL][REWARD] lines after the system reacts to what happened.",
+          ];
+        }
+        const r = Number(reward);
+        if (r > 0) {
+          return [
+            "The score on this line: +" + r + " (this is a reward)",
+            "Why you see a reward (positive number)",
+            "A positive score means the RL setup judged this outcome as good for the goal—for example a successful HTTP response, discovering new URLs or behavior, scanner progress, or a rule in your reward code that adds points. The assistant is encouraged to make similar choices when the situation looks similar again.",
+            "This is how the system says “that last move helped,” not a random number.",
+          ];
+        }
+        if (r < 0) {
+          return [
+            "The score on this line: " + r + " (this is a penalty)",
+            "Why you see a penalty (negative number)",
+            "A negative score means the RL setup judged this outcome as bad or wasteful. Typical reasons: HTTP errors (4xx/5xx), blocked or failed requests, timeouts, repeating useless steps, or your reward code subtracting points.",
+            "The assistant is nudged to try something different next time instead of repeating the same pattern.",
+            "Compare to a reward: a positive score would mean the step was considered useful.",
+          ];
+        }
+        return [
+          "The score on this line: 0 (neutral)",
+          "Why the score is zero",
+          "Zero means neither a clear win nor a clear loss. The step was recorded, but the training signal does not strongly say “do more of this” or “avoid this.”",
+        ];
+      }
+
+      function linesScoreNotOnThisStepJs() {
+        return [
+          "When a reward or penalty appears (not on this line)",
+          "This line has no score. Rewards and penalties show up after the environment judges an outcome—almost always on a later [RL][RESP] line as reward=… and/or on a [RL][REWARD] line as value=…. Positive = reward, negative = penalty, zero = neutral. Scroll to the next RESP or REWARD line for this traffic.",
+        ];
+      }
+
+      function buildLocalXaiFromRlLine(line) {
+        if (typeof line !== "string" || line.indexOf("[RL][") === -1) return null;
+        const tagM = line.match(/\[RL\]\[([A-Z]+)\]/);
+        const et = tagM ? tagM[1] : "UNKNOWN";
+        const ctx = { event_type: et };
+        const parts = [];
+
+        if (et === "REQ") {
+          const ridM = line.match(/\[reqId=(\d+)\]/);
+          const urlM = line.match(
+            /\b(GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS)\s+(https?:\/\/\S+)/i
+          );
+          if (urlM) {
+            ctx.http_method = urlM[1].toUpperCase();
+            ctx.url = urlM[2].split(/\s/)[0].replace(/\)+$/, "");
+          }
+          if (ridM) ctx.request_id = parseInt(ridM[1], 10);
+          parts.push("What happened");
+          parts.push(
+            "The assistant sent " +
+              (ctx.http_method || "HTTP") +
+              " " +
+              (ctx.url || "a request") +
+              " through Burp so the application responds and the RL loop can observe the result."
+          );
+          parts.push("Why this request was made");
+          parts.push(
+            "The assistant explores the target with real traffic. Each response updates what it sees and feeds the next decision. It follows the current policy and training—not a manual click in the UI."
+          );
+          if (ctx.request_id != null) {
+            parts.push(
+              "Technical note: request id " +
+                ctx.request_id +
+                " ties this line to matching ACT / APPLY / RESP lines in the same step."
+            );
+          }
+          parts.push(...linesScoreNotOnThisStepJs());
+        } else if (et === "ACT") {
+          const corrM = line.match(/\[actionId=(\d+)\]/);
+          const valM = line.match(/value=(\d+)/);
+          if (corrM) ctx.request_id = parseInt(corrM[1], 10);
+          if (valM) {
+            ctx.action_id = parseInt(valM[1], 10);
+            ctx.action_name = "RL_VALUE_" + valM[1];
+          }
+          parts.push("What happened");
+          parts.push(
+            "The assistant chose option “" +
+              (ctx.action_name || "index " + (ctx.action_id != null ? ctx.action_id : "?")) +
+              ".” That number is a code: your integration maps it to a concrete Burp action on the next APPLY line."
+          );
+          parts.push("Why this action was taken (plain language)");
+          parts.push(
+            "The log does not say “because the page looked interesting.” The model picks the code that currently scores best given what it has seen (URLs, responses, earlier rewards and penalties) and how it was trained."
+          );
+          parts.push(
+            "So this action was taken because the RL policy at this moment preferred this option over the other numbered options—not because someone selected it by hand."
+          );
+          parts.push(...linesScoreNotOnThisStepJs());
+        } else if (et === "APPLY") {
+          const aidM = line.match(/\[actionId=(\d+)\]/);
+          const nameM = line.match(/\[RL\]\[APPLY\]\[actionId=\d+\]\s+([A-Z0-9_]+)/);
+          if (aidM) ctx.action_id = parseInt(aidM[1], 10);
+          if (nameM) ctx.action_name = nameM[1];
+          const urlM = line.match(/(https?:\/\/[^\s)]+)/);
+          if (urlM) {
+            ctx.url = urlM[1].replace(/\)+$/, "");
+          }
+          const an = ctx.action_name || "CONFIG";
+          parts.push("What happened");
+          parts.push(
+            "The assistant actually changed Burp behavior: “" + an + ".” This is the visible effect of the last ACT choice."
+          );
+          const plain = APPLY_PLAIN_JS[String(an).toUpperCase()];
+          if (plain) parts.push(plain);
+          parts.push("Why this matters");
+          parts.push(
+            "Later rewards and penalties depend on whether this setting helped testing (coverage, findings) or caused problems (errors, wasted steps)—according to your reward rules."
+          );
+          if (ctx.url) parts.push("Related URL in the log: " + ctx.url + ".");
+          parts.push(...linesScoreNotOnThisStepJs());
+        } else if (et === "RESP") {
+          const stM = line.match(/status=(\d+)/);
+          const rwM = line.match(/reward=(-?\d+)/);
+          if (stM) ctx.status_code = parseInt(stM[1], 10);
+          if (rwM) ctx.reward = parseInt(rwM[1], 10);
+          parts.push("What happened");
+          if (ctx.status_code != null) {
+            parts.push("The server answered with HTTP status " + ctx.status_code + ".");
+            const h = httpStatusPlainJs(ctx.status_code);
+            if (h) parts.push(h);
+          } else {
+            parts.push("A response was logged, but the status code was not parsed from this line.");
+          }
+          if (ctx.reward != null) {
+            parts.push("When reward or penalty appears");
+            parts.push(
+              "On this [RL][RESP] line: look at reward=…. A positive value is a reward, a negative value is a penalty, zero is neutral."
+            );
+          } else {
+            parts.push("When reward or penalty appears");
+            parts.push(
+              "This line has no reward= field after parsing. The score may be on the next [RL][REWARD] line (value=…) or omitted if your pipeline does not attach a number to this response."
+            );
+          }
+          parts.push(...scoreExplanationLinesJs(ctx.reward));
+          if (ctx.status_code != null && ctx.reward != null) {
+            parts.push("How status and score fit together");
+            parts.push(
+              "The status code is what the server returned. The reward/penalty is how your RL setup judged that outcome. They are related but not the same—you can configure rewards so some errors still help learning."
+            );
+          }
+        } else if (et === "REWARD") {
+          const vm = line.match(/value=(-?\d+)/);
+          if (vm) ctx.reward = parseInt(vm[1], 10);
+          parts.push("What happened");
+          parts.push(
+            "This line is a dedicated reward signal from your pipeline (extra shaping on top of raw HTTP)."
+          );
+          parts.push("When reward or penalty appears");
+          parts.push(
+            "Right here: [RL][REWARD] uses value=…. That number is the score—positive = reward, negative = penalty, zero = neutral—for whatever your reward code graded on this step."
+          );
+          parts.push(...scoreExplanationLinesJs(ctx.reward));
+        } else if (et === "SCAN") {
+          const um = line.match(/url=([^|\s]+)/);
+          const nameM = line.match(/\[RL\]\[SCAN\][^\]]*\]\s+(.+?)\s*\|/);
+          if (um) ctx.url = um[1].trim();
+          if (nameM) ctx.action_name = nameM[1].trim().slice(0, 255);
+          parts.push("What happened");
+          parts.push("Scanner / analysis feedback: " + (ctx.action_name || "finding") + ".");
+          parts.push("Why this affects rewards");
+          parts.push(
+            "Many setups add reward when new issues appear (progress for security testing). If nothing new is found, the step may earn less—depending on your reward function."
+          );
+          if (ctx.url) parts.push("Related URL: " + ctx.url + ".");
+          parts.push("When reward or penalty appears");
+          parts.push(
+            "SCAN lines describe findings; they usually do not carry value= or reward= themselves. The numeric reward or penalty typically appears on a nearby [RL][RESP] or [RL][REWARD] line."
+          );
+        } else if (et === "ERROR") {
+          const msg = line.replace(/^[\s\S]*?\[RL\]\[ERROR\]\s*/i, "").trim();
+          parts.push("What happened");
+          parts.push("Something failed in the RL or Burp integration; this step did not complete normally.");
+          if (msg) parts.push("Detail: " + msg);
+        } else {
+          parts.push("What happened");
+          parts.push(
+            "Event type “" + et + "”. Only part of the line could be interpreted automatically; read the raw line for full detail."
+          );
+          const rwAny = line.match(/reward=(-?\d+)/);
+          if (rwAny) {
+            ctx.reward = parseInt(rwAny[1], 10);
+            parts.push(...scoreExplanationLinesJs(ctx.reward));
+          }
+        }
+
+        return {
+          explanation: parts.join("\n\n"),
+          context: ctx,
+        };
+      }
+
+      function resolveXaiForLine(line, xaiPayload) {
+        if (
+          xaiPayload &&
+          typeof xaiPayload.explanation === "string" &&
+          xaiPayload.explanation.trim()
+        ) {
+          return xaiPayload;
+        }
+        return buildLocalXaiFromRlLine(line);
+      }
+
+      function renderXaiPanel(xai) {
         const el = document.getElementById("xai-explanation-text");
+        const card = document.getElementById("xai-placeholder");
         if (!el) return;
+        if (!xai || !xai.explanation) {
+          el.textContent =
+            "Click an RL log line on the left to see its explanation here, or wait for new RL events.";
+          if (card) {
+            card.style.opacity = "0.7";
+            card.style.filter = "grayscale(.5)";
+          }
+          return;
+        }
+        const ctx = xai.context || {};
+        const bits = [
+          ctx.event_type && ("Event: " + ctx.event_type),
+          ctx.action_name && ("Action: " + ctx.action_name),
+          ctx.action_id != null &&
+            ctx.action_id !== "" &&
+            ("Action id: " + ctx.action_id),
+          ctx.http_method && ctx.url && (String(ctx.http_method) + " " + ctx.url),
+          !ctx.http_method && ctx.url && ("URL: " + ctx.url),
+          ctx.status_code != null && ("HTTP " + ctx.status_code),
+          ctx.reward != null && ("Score (reward): " + ctx.reward),
+          ctx.request_id != null &&
+            (ctx.event_type === "ACT"
+              ? "Correlation id: " + ctx.request_id
+              : "Request id: " + ctx.request_id),
+        ].filter(Boolean);
+        el.textContent =
+          xai.explanation + (bits.length ? "\n\n— " + bits.join(" · ") : "");
+        if (card) {
+          card.style.opacity = "1";
+          card.style.filter = "none";
+        }
+      }
+
+      async function pollLatestXai() {
         try {
           const r = await fetch(
             API_ORIGIN + "/api/rl-event/latest-xai",
@@ -1109,23 +1476,21 @@
           if (!r.ok) return;
           const d = await r.json();
           if (d.explanation) {
-            const ctx = d.context || {};
-            const bits = [
-              ctx.event_type && ("Event: " + ctx.event_type),
-              ctx.action_name && ("Action: " + ctx.action_name),
-              ctx.url && ("URL: " + ctx.url),
-            ].filter(Boolean);
-            el.textContent =
-              d.explanation + (bits.length ? "\n\n— " + bits.join(" · ") : "");
+            renderXaiPanel({
+              explanation: d.explanation,
+              context: d.context || {},
+            });
           }
         } catch (e) {
           console.warn("poll xai", e);
         }
       }
 
-      function onRlLogLine(line) {
+      function onRlLogLine(line, xaiPayload) {
         if (typeof line !== "string" || !line.length) return;
         if (!rememberFp(line)) return;
+
+        const xai = resolveXaiForLine(line, xaiPayload);
 
         let logClass = "";
         if (line.includes("[RL][REQ]")) logClass = "REQ";
@@ -1136,7 +1501,7 @@
         else if (line.includes("[RL][REWARD]")) logClass = "REWARD";
         else if (line.includes("[RL][ERROR]")) logClass = "ERROR";
 
-        logs.push({ line, className: logClass });
+        logs.push({ line, className: logClass, xai: xai || null });
         if (logs.length > LOGS_HISTORY_MAX) logs.splice(0, logs.length - LOGS_HISTORY_MAX);
 
         if (logBox) {
@@ -1144,12 +1509,31 @@
           div.className = "line";
           if (logClass) div.classList.add(logClass);
           div.textContent = line;
+          const seq = ++logSeq;
+          div.dataset.logSeq = String(seq);
+          if (xai && xai.explanation) {
+            xaiBySeq.set(seq, xai);
+            div.classList.add("xai-log-line");
+            div.title = "Click to show explanation in the XAI panel →";
+          }
           logBox.appendChild(div);
 
           while (logBox.childNodes.length > LOGS_HISTORY_MAX) {
-            logBox.removeChild(logBox.childNodes[0]);
+            const first = logBox.firstChild;
+            if (first === selectedLogLineEl) {
+              selectedLogLineEl = null;
+            }
+            if (first && first.dataset && first.dataset.logSeq) {
+              const n = parseInt(first.dataset.logSeq, 10);
+              if (!isNaN(n)) xaiBySeq.delete(n);
+            }
+            logBox.removeChild(first);
           }
           if (!logPaused) logBox.scrollTop = logBox.scrollHeight;
+        }
+
+        if (xai && xai.explanation) {
+          renderXaiPanel(xai);
         }
 
         if (line.includes("[RL][REQ]")) reqCount++;
@@ -1277,10 +1661,14 @@
         rewardSum = 0;
         rewardCount = 0;
         errorCount = 0;
+        logSeq = 0;
+        xaiBySeq.clear();
+        selectedLogLineEl = null;
         if (logBox) logBox.innerHTML = "";
         updateKpiUI();
         renderTimeline();
         renderScanTable();
+        renderXaiPanel(null);
       }
 
       function updateKpiUI() {
@@ -1322,7 +1710,7 @@
         const keys = Object.keys(scanTargets);
         if (!keys.length) {
           const tr = document.createElement("tr");
-          tr.innerHTML = `<td colspan="5" style="text-align:center; color:#757d91;">No traffic yet</td>`;
+          tr.innerHTML = `<td colspan="5" style="text-align:center; color:#757d91; padding:28px 16px;">No traffic yet</td>`;
           scanTableBody.appendChild(tr);
           return;
         }
@@ -1331,12 +1719,16 @@
           const s = scanTargets[k];
           const tr = document.createElement("tr");
           const statusClass = s.status === "Idle" ? "idle" : "active";
+          const vulnRaw = s.vulns || "—";
+          const findingsClass = vulnRaw === "scan" ? "activity" : "none";
+          const findingsLabel = vulnRaw === "scan" ? "Scanner" : "—";
+          const lastSeen = s.lastSeenTime || "—";
           tr.innerHTML = `
             <td>${s.id}</td>
-            <td class="truncate" title="${s.targetFull || s.target}">${s.target}</td>
-            <td><span class="scan-status ${statusClass}">${s.status}</span></td>
-            <td><span class="badge bg-secondary text-dark-subtle opacity-60">${s.vulns || "—"}</span></td>
-            <td title="Started: ${s.start || "—"}"><small class="text-nowrap">${s.lastSeenTime || "—"}</small></td>`;
+            <td class="col-target" title="${safeToText(s.targetFull || s.target)}">${safeToText(s.target)}</td>
+            <td><span class="scan-status ${statusClass}">${safeToText(s.status)}</span></td>
+            <td><span class="scan-vuln-pill ${findingsClass}">${findingsLabel}</span></td>
+            <td class="col-last" title="Started: ${safeToText(s.start || "—")}">${safeToText(lastSeen)}</td>`;
           scanTableBody.appendChild(tr);
           s.rowEl = tr;
         }
@@ -1371,6 +1763,9 @@
           lastRlPollId = 0;
           fpSeen.clear();
           fpQueue.length = 0;
+          logSeq = 0;
+          xaiBySeq.clear();
+          selectedLogLineEl = null;
         }
         seedFpFromRestoredLogs();
         await bootstrapRlLogsFromDb();
@@ -1422,10 +1817,28 @@
           if (filterSid) {
             if (!msgSid || msgSid !== filterSid) return;
           }
-          onRlLogLine(msg.line);
+          onRlLogLine(msg.line, msg.xai || null);
         });
 
         if (logBox) {
+          logBox.addEventListener("click", function (ev) {
+            const row = ev.target.closest(".line");
+            if (!row || !logBox.contains(row)) return;
+            const seq = parseInt(row.dataset.logSeq, 10);
+            let xa = !isNaN(seq) ? xaiBySeq.get(seq) : null;
+            if (!xa && row.textContent) {
+              xa = resolveXaiForLine(row.textContent.trim(), null);
+            }
+            if (!xa || !xa.explanation) {
+              return;
+            }
+            if (selectedLogLineEl && selectedLogLineEl !== row) {
+              selectedLogLineEl.classList.remove("xai-log-selected");
+            }
+            selectedLogLineEl = row;
+            row.classList.add("xai-log-selected");
+            renderXaiPanel(xa);
+          });
           function checkLiveState() {
             setTimeout(() => {
               const maxScroll = logBox.scrollHeight - logBox.offsetHeight;
@@ -1495,7 +1908,11 @@
                 fpSeen.clear();
                 fpQueue.length = 0;
                 logs = [];
+                logSeq = 0;
+                xaiBySeq.clear();
+                selectedLogLineEl = null;
                 if (logBox) logBox.innerHTML = "";
+                renderXaiPanel(null);
                 await bootstrapRlLogsFromDb();
                 if (scanSessionMsg) scanSessionMsg.textContent = "Session started.";
               }
