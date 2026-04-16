@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en" class="workbench-root">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Workbench</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='lab_workbench.css') }}">
+</head>
+<body class="workbench-body">
+  <header class="page-header">
+    <h1 class="page-title">Manual Burp workbench</h1>
+    <nav class="section-nav" aria-label="Jump to section">
+      <a class="nav-jump" href="#section-generate">Generate Payloads</a>
+      <a class="nav-jump" href="#section-normalize">Normalize Burp Results</a>
+      <a class="nav-jump" href="#section-aggregate">Aggregate Comparison Metrics</a>
+    </nav>
+  </header>
+
+  {% if gen %}
+  <section class="panel last-result" aria-labelledby="result-gen-heading">
+    <h2 id="result-gen-heading" class="panel__title">Generate</h2>
+    {% if gen.error %}<div class="alert alert-error" role="alert">{{ gen.error }}</div>{% endif %}
+    {% if gen and not gen.error %}<div class="alert alert-success" role="status">success</div>{% endif %}
+    {% if gen.payload_lines %}<pre class="preview preview--compact">{{ gen.payload_lines | join('\n') }}</pre>{% endif %}
+    {% if gen.outputs %}
+    <ul class="output-list">
+      {% for o in gen.outputs %}
+      <li>
+        <span class="out-label">{{ o.label }}</span>
+        <code class="out-path">{{ o.path }}</code>
+        {% if o.download_url %}<a class="out-dl" href="{{ o.download_url }}">Download</a>{% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% if debug_ui and gen.preview %}<pre class="preview" aria-label="Debug preview">{{ gen.preview }}</pre>{% endif %}
+  </section>
+  {% endif %}
+
+  {% if norm %}
+  <section class="panel last-result" aria-labelledby="result-norm-heading">
+    <h2 id="result-norm-heading" class="panel__title">Normalize</h2>
+    {% if norm.error %}<div class="alert alert-error" role="alert">{{ norm.error }}</div>{% endif %}
+    {% if norm.ok %}<div class="alert alert-success" role="status">{{ norm.ok }}</div>{% endif %}
+    {% if norm.outputs %}
+    <ul class="output-list">
+      {% for o in norm.outputs %}
+      <li>
+        <span class="out-label">{{ o.label }}</span>
+        <code class="out-path">{{ o.path }}</code>
+        {% if o.download_url %}<a class="out-dl" href="{{ o.download_url }}">Download</a>{% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% if debug_ui and norm.normalize_diagnostics and norm.normalize_diagnostics.parse_preview_rows and not norm.error %}
+    <pre class="preview preview--compact" aria-label="Parse preview">{{ norm.normalize_diagnostics.parse_preview_rows | join('\n') }}</pre>
+    {% endif %}
+    {% if debug_ui and norm.normalize_warnings %}
+    <div class="alert alert-warning" role="status">
+      {% for w in norm.normalize_warnings %}<div>{{ w }}</div>{% endfor %}
+    </div>
+    {% endif %}
+  </section>
+  {% endif %}
+
+  {% if agg %}
+  <section class="panel last-result" aria-labelledby="result-agg-heading">
+    <h2 id="result-agg-heading" class="panel__title">Aggregate</h2>
+    {% if agg.error %}
+      {% if agg.error in aggregate_warning_messages %}
+    <div class="alert alert-warning" role="status">{{ agg.error }}</div>
+      {% else %}
+    <div class="alert alert-error" role="alert">{{ agg.error }}</div>
+      {% endif %}
+    {% endif %}
+    {% if agg.ok %}<div class="alert alert-success" role="status">{{ agg.ok }}</div>{% endif %}
+    {% if debug_ui and agg.diagnostics_text %}<pre class="preview diagnostics-block" aria-label="Aggregate diagnostics">{{ agg.diagnostics_text }}</pre>{% endif %}
+    {% if agg.outputs %}
+    <ul class="output-list">
+      {% for o in agg.outputs %}
+      <li>
+        <span class="out-label">{{ o.label }}</span>
+        <code class="out-path">{{ o.path }}</code>
+        {% if o.download_url %}<a class="out-dl" href="{{ o.download_url }}">Download</a>{% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% if agg.table_html %}
+    <div class="table-scroll table-scroll--metrics-main">{{ agg.table_html|safe }}</div>
+    {% if debug_ui and agg.table_html_full %}
+    <details class="metrics-advanced">
+      <summary class="metrics-advanced__summary">More columns</summary>
+      <div class="table-scroll table-scroll--metrics-full">{{ agg.table_html_full|safe }}</div>
+    </details>
+    {% endif %}
+    {% endif %}
+  </section>
+  {% endif %}
+
+  <section id="section-generate" class="panel step-card" aria-labelledby="heading-generate">
+    <h2 id="heading-generate" class="panel__title">Generate</h2>
+    {% if not gen and not norm and not agg %}
+    <p class="empty-state">Submit the form below to run a step.</p>
+    {% endif %}
+    <form method="post" enctype="multipart/form-data">
+      <input type="hidden" name="action" value="generate">
+      <fieldset class="form-fieldset">
+        <div class="row"><label for="request_id">request_id</label><input id="request_id" name="request_id" required value="{{ defaults.request_id }}"></div>
+        <div class="row row--highlight"><label for="payload_arm">thesis arm</label>
+          <select id="payload_arm" name="payload_arm">
+            <option value="A" {% if defaults.payload_arm == 'A' %}selected{% endif %}>A</option>
+            <option value="B" {% if defaults.payload_arm == 'B' %}selected{% endif %}>B</option>
+            <option value="C" {% if defaults.payload_arm == 'C' %}selected{% endif %}>C</option>
+            <option value="D" {% if defaults.payload_arm == 'D' %}selected{% endif %}>D</option>
+          </select>
+        </div>
+        <div class="row"><label for="url">url</label><input id="url" class="input-grow" name="url" type="url" required placeholder="https://lab.example/api?q=" value="{{ defaults.url }}"></div>
+        <div class="row"><label for="parameter_name">parameter_name</label><input id="parameter_name" name="parameter_name" required value="{{ defaults.parameter_name }}"></div>
+        <div class="row row--wrap"><label for="parameter_location">parameter_location</label>
+          <div class="field-inline">
+            <select id="parameter_location" name="parameter_location">
+              <option value="query" {% if defaults.parameter_location == 'query' %}selected{% endif %}>query</option>
+              <option value="body_form" {% if defaults.parameter_location == 'body_form' %}selected{% endif %}>body_form</option>
+              <option value="json" {% if defaults.parameter_location == 'json' %}selected{% endif %}>json</option>
+            </select>
+          </div>
+        </div>
+        <div class="row"><label for="family">family</label>
+          <select id="family" name="family">
+            {% for f in families %}
+            <option value="{{ f }}" {% if f == defaults.family %}selected{% endif %}>{{ f }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="row"><label for="kb_path">KB path</label><input id="kb_path" class="input-grow" name="kb_path" value="{{ defaults.kb_path }}"></div>
+        <div class="row row--actions"><label></label><button type="submit" class="btn btn-primary">Submit</button></div>
+      </fieldset>
+    </form>
+  </section>
+
+  <section id="section-normalize" class="panel step-card" aria-labelledby="heading-normalize">
+    <h2 id="heading-normalize" class="panel__title">Normalize Burp results</h2>
+    <form method="post" enctype="multipart/form-data">
+      <input type="hidden" name="action" value="normalize">
+      <fieldset class="form-fieldset">
+        <div class="row"><label for="burp_file">Burp results file</label><input id="burp_file" name="burp_file" type="file" required accept=".csv,.tsv,.txt,text/csv,text/plain"></div>
+        <div class="row"><label for="group">group</label>
+          <select id="group" name="group">
+            <option value="A" {% if norm_defaults.group == 'A' %}selected{% endif %}>A</option>
+            <option value="B" {% if norm_defaults.group == 'B' %}selected{% endif %}>B</option>
+            <option value="C" {% if norm_defaults.group == 'C' %}selected{% endif %}>C</option>
+            <option value="D" {% if norm_defaults.group == 'D' %}selected{% endif %}>D</option>
+          </select>
+        </div>
+        <div class="row"><label for="n_request_id">request_id</label><input id="n_request_id" name="n_request_id" required value="{{ defaults.request_id }}"></div>
+        <div class="row"><label for="baseline_status">baseline_status</label><input id="baseline_status" name="baseline_status" type="number" required value="{{ norm_defaults.baseline_status }}"></div>
+        <div class="row"><label for="baseline_length">baseline_length</label><input id="baseline_length" name="baseline_length" type="number" required value="{{ norm_defaults.baseline_length }}"></div>
+        <div class="row"><label for="sep">separator</label>
+          <select id="sep" name="sep">
+            <option value="auto" {% if norm_defaults.sep == 'auto' %}selected{% endif %}>auto</option>
+            <option value="tab" {% if norm_defaults.sep == 'tab' %}selected{% endif %}>tab</option>
+            <option value="comma" {% if norm_defaults.sep == 'comma' %}selected{% endif %}>comma</option>
+          </select>
+        </div>
+        <div class="row row--actions"><label></label><button type="submit" class="btn btn-primary">Normalize &amp; save</button></div>
+      </fieldset>
+    </form>
+  </section>
+
+  <section id="section-aggregate" class="panel step-card" aria-labelledby="heading-aggregate">
+    <h2 id="heading-aggregate" class="panel__title">Aggregate</h2>
+    <form id="aggregate-form" method="post" enctype="multipart/form-data">
+      <input type="hidden" name="action" value="aggregate">
+      <fieldset class="form-fieldset">
+        {% if trial_csv_choices %}
+        {% for name in trial_csv_choices %}
+        <div class="row row--checkbox"><label class="check-label check-label--full"><input type="checkbox" name="trial_csv" value="{{ name }}" {% if name in selected_trials %}checked{% endif %}> {{ name }}</label></div>
+        {% endfor %}
+        {% endif %}
+        <p id="aggregate-no-files-warning" class="aggregate-client-warning" hidden></p>
+        <div class="row row--actions"><label></label><button type="submit" id="aggregate-submit" class="btn btn-primary" {% if not trial_csv_choices or not selected_trials %}disabled{% endif %}>Submit</button></div>
+      </fieldset>
+    </form>
+  </section>
+
+  <script>
+  (function () {
+    var form = document.getElementById("aggregate-form");
+    var btn = document.getElementById("aggregate-submit");
+    var clientWarn = document.getElementById("aggregate-no-files-warning");
+    if (!form || !btn) return;
+    var boxes = form.querySelectorAll('input[name="trial_csv"]');
+    function anyChecked() {
+      for (var i = 0; i < boxes.length; i++) if (boxes[i].checked) return true;
+      return false;
+    }
+    function sync() {
+      if (!boxes.length) return;
+      btn.disabled = !anyChecked();
+      if (clientWarn) clientWarn.hidden = true;
+    }
+    function onSubmit(e) {
+      if (!boxes.length) return;
+      if (!anyChecked()) {
+        e.preventDefault();
+        if (clientWarn) clientWarn.hidden = false;
+        clientWarn && clientWarn.focus && clientWarn.setAttribute("tabindex", "-1");
+        clientWarn && clientWarn.focus();
+      }
+    }
+    for (var j = 0; j < boxes.length; j++) boxes[j].addEventListener("change", sync);
+    form.addEventListener("submit", onSubmit);
+    sync();
+  })();
+  </script>
+</body>
+</html>
