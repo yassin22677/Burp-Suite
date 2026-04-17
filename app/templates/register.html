@@ -107,9 +107,9 @@
                     autocomplete="username" required>
             </div>
             <div class="mb-3">
-                <label for="email" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="email" placeholder="name@example.com" autocomplete="email"
-                    required>
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" placeholder="you@example.com"
+                    autocomplete="email" required>
             </div>
             <div class="mb-4">
                 <label for="password" class="form-label">Password</label>
@@ -127,6 +127,11 @@
     </div>
 
     <script>
+        const API_BASE =
+            window.location.protocol === "file:"
+                ? "http://127.0.0.1:5000"
+                : window.location.origin;
+
         async function register() {
             showAlert(null);
 
@@ -135,16 +140,17 @@
             const password = document.getElementById('password').value;
 
             if (!username || !email || !password) {
-                showAlert("Please fill out all fields.", "warning");
+                showAlert("Please fill out all fields, including email.", "warning");
                 return;
             }
 
             try {
-                const response = await fetch("/auth/register", {
+                const response = await fetch(API_BASE + "/auth/register", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
                     },
+                    credentials: "include",
                     body: JSON.stringify({ username, email, password })
                 });
 
@@ -168,7 +174,11 @@
                 }, 1200);
 
             } catch (err) {
-                showAlert("Could not connect to server. Please try again.", "danger");
+                console.error(err);
+                showAlert(
+                    "Could not reach the backend. Open this page from http://127.0.0.1:5000/auth/register (not as a saved file) and ensure python run.py is running.",
+                    "danger"
+                );
             }
         }
 
@@ -194,7 +204,7 @@
                 register();
             }
         });
-        // (optional gentle UX: also enable Enter on email or username fields, only triggers if fields are filled)
+        // (optional gentle UX: also enable Enter on username field, only triggers if fields are filled)
         document.getElementById("username").addEventListener("keyup", function (event) {
             if (event.key === "Enter") {
                 register();

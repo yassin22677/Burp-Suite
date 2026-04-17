@@ -10,4 +10,3 @@ class Website(db.Model):
     environment = db.Column(db.String(50))
     created_at = db.Column(db.DateTime, server_default=db.func.now())
 
-    scan_sessions = db.relationship("ScanSession", backref="website", lazy=True, cascade="all, delete-orphan")

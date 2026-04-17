@@ -288,6 +288,16 @@
       background: var(--hover-highlight);
     }
 
+    .line.xai-log-line {
+      cursor: pointer;
+    }
+
+    .line.xai-log-selected {
+      background: rgba(53, 142, 251, 0.12);
+      border-radius: 4px;
+      box-shadow: inset 0 0 0 1px rgba(80, 160, 255, 0.35);
+    }
+
     .REQ {
       color: #3dc2fb;
       animation: fakeFadeIn 0.18s;
@@ -312,6 +322,16 @@
       color: #ff4970;
       font-weight: 700;
       animation: fakeFadeIn 0.21s;
+    }
+
+    .SCAN {
+      color: #7ee787;
+      animation: fakeFadeIn 0.17s;
+    }
+
+    .REWARD {
+      color: #ffa657;
+      animation: fakeFadeIn 0.17s;
     }
 
     /* subtle new-line fade-in */
@@ -361,13 +381,15 @@
     .kpi-metric {
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
       background: #202228;
       border-radius: 11px;
       border: 1.4px solid #222a33;
-      min-width: 90px;
-      min-height: 62px;
-      padding: 11px 14px 7px 12px;
+      min-width: 0;
+      min-height: 72px;
+      padding: 10px 8px 9px;
       box-shadow: 0 0 10px rgba(40, 60, 140, 0.045);
       margin-bottom: 0 !important;
       filter: drop-shadow(0 0 2px #161b22dd);
@@ -377,18 +399,23 @@
       font-size: 2.1em;
       font-weight: 700;
       color: var(--color-kpi-accent);
-      margin-bottom: 1px;
+      margin-bottom: 4px;
       letter-spacing: 0.01em;
       min-height: 1.1em;
       line-height: 1;
+      width: 100%;
+      text-align: center;
     }
 
     .kpi-label {
       color: var(--color-kpi-label);
-      font-size: 13.8px;
+      font-size: 12.5px;
       font-weight: 600;
       letter-spacing: 0.01em;
-      white-space: nowrap;
+      line-height: 1.3;
+      width: 100%;
+      text-align: center;
+      text-wrap: balance;
       opacity: .87;
     }
 
@@ -474,106 +501,175 @@
 
     .scan-table-card {
       padding: 0;
-      background: var(--color-bg-card);
+      background: linear-gradient(180deg, #1c2028 0%, #191d23 42%);
       border-radius: var(--border-radius);
       border: 1.5px solid var(--color-border-light);
+      border-left: 3px solid #c97a2d;
       margin-bottom: 0;
-      box-shadow: 0 2px 7px 0 rgba(40, 46, 67, 0.05);
+      box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.22);
     }
 
     .scan-table-title {
-      padding: 13px 22px 9px 22px;
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--color-section-header-muted);
-      letter-spacing: 0.01em;
+      padding: 14px 22px 11px 22px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--color-section-header);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
       border-bottom: 1px solid var(--color-divider);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .scan-table-title::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #c97a2d;
+      box-shadow: 0 0 0 2px rgba(201, 122, 45, 0.25);
+      flex-shrink: 0;
+    }
+
+    .scan-table-scroll-wrap {
+      max-height: 220px;
+      overflow: auto;
+      border-radius: 0 0 calc(var(--border-radius) - 2px) calc(var(--border-radius) - 2px);
+    }
+
+    .scan-table-scroll-wrap::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    .scan-table-scroll-wrap::-webkit-scrollbar-thumb {
+      background: #353b48;
+      border-radius: 6px;
+    }
+
+    .scan-table-scroll-wrap::-webkit-scrollbar-track {
+      background: #14171c;
     }
 
     .scan-table {
       width: 100%;
       border-collapse: separate;
       border-spacing: 0;
+      table-layout: fixed;
       background: transparent;
       font-size: 13.5px;
-      min-width: 560px;
+      min-width: 520px;
     }
 
     .scan-table th,
     .scan-table td {
-      padding: 10px 16px;
+      padding: 11px 14px;
       border-bottom: 1px solid var(--color-border-light);
       text-align: left;
-      background: none;
       vertical-align: middle;
     }
 
     .scan-table th {
-      background: #181b21;
-      color: #8da0be;
+      background: #14181f;
+      color: #a8b4c9;
       font-weight: 700;
-      letter-spacing: 0.02em;
-      font-size: 13.6px;
-      border-bottom: 1.5px solid var(--color-divider);
+      letter-spacing: 0.03em;
+      font-size: 11px;
+      text-transform: uppercase;
+      border-bottom: 1px solid #2a3140;
       position: sticky;
       top: 0;
-      z-index: 1;
+      z-index: 2;
+      box-shadow: 0 1px 0 #2a3140;
+    }
+
+    .scan-table tbody tr {
+      background: rgba(25, 29, 35, 0.6);
+    }
+
+    .scan-table tbody tr:nth-child(even) {
+      background: rgba(22, 26, 32, 0.85);
+    }
+
+    .scan-table tbody tr:hover {
+      background: rgba(42, 48, 58, 0.95);
     }
 
     .scan-table tr:last-child td {
       border-bottom: none;
     }
 
+    .scan-table .col-target {
+      font-weight: 600;
+      color: #dce4f0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .scan-table td.col-last {
+      font-family: var(--font-family-mono);
+      font-size: 12.5px;
+      color: #9eb0d0;
+      white-space: nowrap;
+    }
+
     .scan-table td small {
       word-break: break-all;
-      color: #8b94a9;
-      font-size: 12.5px;
+      color: inherit;
+      font-size: inherit;
     }
 
     .scan-table td {
-      font-size: 13.1px;
-      background: none;
+      font-size: 13px;
+      color: #c4cddc;
     }
 
     .scan-status {
-      font-size: 1em;
-      padding: 2.2px 10px;
-      border-radius: 99px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 6px;
+      display: inline-block;
     }
 
     .scan-status.active {
-      background: #1a3d27;
-      color: #41ea82;
+      background: rgba(65, 234, 130, 0.12);
+      color: #5eed9a;
+      border: 1px solid rgba(65, 234, 130, 0.28);
     }
 
     .scan-status.idle {
-      background: #44240c;
-      color: #ffaa6c;
+      background: rgba(255, 170, 108, 0.12);
+      color: #ffb669;
+      border: 1px solid rgba(255, 170, 108, 0.28);
     }
 
-    .scan-table-body-scroll {
-      max-height: 174px;
-      overflow-y: auto;
-      display: block;
+    .scan-vuln-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 2.25rem;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      font-family: var(--font-family-mono);
     }
 
-    .scan-table-body-scroll::-webkit-scrollbar {
-      width: 8px;
+    .scan-vuln-pill.none {
+      background: #252a33;
+      color: #6b7387;
+      border: 1px solid #323844;
     }
 
-    .scan-table-body-scroll::-webkit-scrollbar-thumb {
-      background: #26292f;
-    }
-
-    .scan-table tbody {
-      display: block;
-      width: 100%;
-    }
-
-    .scan-table tr {
-      display: table;
-      width: 100%;
-      table-layout: fixed;
+    .scan-vuln-pill.activity {
+      background: rgba(126, 231, 135, 0.1);
+      color: #7ee787;
+      border: 1px solid rgba(126, 231, 135, 0.25);
     }
 
     /* == Bootstrap fine-tune == */
@@ -666,6 +762,19 @@
         margin-left: 12px;
       }
     }
+
+    .scan-session-bar {
+      max-width: 920px;
+      margin: 14px auto 0;
+      padding: 16px 20px 18px;
+      border-radius: var(--border-radius);
+      border: 1px solid var(--color-border);
+    }
+
+    .scan-session-bar code {
+      font-size: 0.88em;
+      color: #9eaabd;
+    }
   </style>
 </head>
 
@@ -684,16 +793,41 @@
         Status: <span id="status">connecting…</span>
       </span>
       <div class="navbar-auth d-flex align-items-center">
-        <span id="user-email" style="color:#8b95a2; font-size:.97em; margin-right:1.1em; display:none"></span>
+        <span id="user-name" style="color:#8b95a2; font-size:.97em; margin-right:1.1em; display:none"></span>
         <button class="navbar-auth-btn btn btn-sm" id="auth-action-btn">Logout</button>
       </div>
     </div>
   </nav>
 
+  <div class="scan-session-bar card-dark px-3 py-3 mx-3" id="scan-session-panel">
+    <div class="small text-muted mb-2">Start a scan session for one target so Burp logs are tagged and show up here.
+      Optionally use a website id from the <code>websites</code> table, or paste a full URL.</div>
+    <div class="d-flex flex-wrap gap-2 align-items-center mb-2 scan-session-controls">
+      <input type="text" id="scan-target-url" class="form-control form-control-sm"
+        style="min-width:220px;max-width:420px;" placeholder="https://target.example/">
+      <input type="number" id="scan-website-id" class="form-control form-control-sm" style="width:7.5rem;min-width:6rem;"
+        placeholder="Site ID" title="Optional: id from websites table for your user">
+      <button type="button" class="btn btn-sm btn-primary" id="btn-start-scan-session">Start scan session</button>
+      <button type="button" class="btn btn-sm btn-outline-secondary" id="btn-clear-burp-session">Show all logs</button>
+      <span id="scan-session-msg" class="small ms-1"></span>
+    </div>
+    <div id="burp-link-row" class="mt-2">
+      <div id="active-session-row" class="d-none">
+        <label class="small d-block mb-1">Dashboard filter: active <code>sessions.id</code> (optional):</label>
+        <div class="input-group input-group-sm">
+          <input type="text" readonly class="form-control font-monospace small" id="active-session-id-field"
+            style="font-size:12px;">
+          <button class="btn btn-outline-secondary" type="button" id="btn-copy-session-id">Copy</button>
+        </div>
+      </div>
+      <div class="small text-muted mt-2" id="burp-env-hint"></div>
+    </div>
+  </div>
+
   <div id="main">
     <!-- ===== LEFT: RL LOGS (terminal style card) ===== -->
     <section id="log-section" class="dashboard-section card-dark">
-      <div class="logs-header-bar d-flex align-items-center">
+      <div class="logs-header-bar d-flex align-items-center flex-wrap gap-2">
         <span class="section-title">Live RL Logs</span>
         <span class="log-live-indicator ms-auto" id="log-live-ind" style="cursor:pointer;" tabindex="0"
           title="Pause autoscroll">
@@ -742,24 +876,22 @@
         </div>
       </div>
       <div id="scan-table-section">
-        <div class="scan-table-card card-dark">
-          <div class="scan-table-title">Scan Reports Viewer</div>
-          <table class="scan-table">
-            <thead>
-              <tr>
-                <th style="width:7ch;">Scan ID</th>
-                <th style="width:40%;">Target</th>
-                <th style="width:17ch;">Status</th>
-                <th style="width:8ch;">Vulns</th>
-                <th style="width:16ch;">Last Seen</th>
-              </tr>
-            </thead>
-          </table>
-          <div class="scan-table-body-scroll" id="scan-table-body-scroll">
+        <div class="scan-table-card">
+          <div class="scan-table-title">Scan reports</div>
+          <div class="scan-table-scroll-wrap" id="scan-table-body-scroll">
             <table class="scan-table mb-0">
+              <thead>
+                <tr>
+                  <th style="width:9%;">ID</th>
+                  <th style="width:34%;">Target</th>
+                  <th style="width:18%;">Status</th>
+                  <th style="width:14%;">Findings</th>
+                  <th style="width:25%;">Last seen</th>
+                </tr>
+              </thead>
               <tbody id="scan-table-body">
                 <tr class="scan-row-placeholder">
-                  <td colspan="5" style="text-align:center; color:#757d91;">
+                  <td colspan="5" style="text-align:center; color:#757d91; padding:28px 16px;">
                     No traffic yet
                   </td>
                 </tr>
@@ -775,15 +907,16 @@
       <div id="xai-container" class="card-dark px-0 py-2" style="box-shadow: 0 1.5px 13px 0 rgba(80,100,160,.09);">
         <div class="xai-card" id="xai-placeholder"
           style="opacity:.7; filter: grayscale(.5);border: 1px dashed #242a36;min-height:95px;">
-          <div class="xai-title mb-1" style="color:#9eaabd;font-size:15px;font-weight:600;">Why this action?
+          <div class="xai-title mb-1" style="color:#9eaabd;font-size:15px;font-weight:600;">Explanation (XAI)
           </div>
+          <div class="xai-subtitle mb-2" style="color:#6b7387;font-size:12px;line-height:1.4;">Logs on the left are raw lines only. Click an RL line or wait for the latest event.</div>
           <div class="xai-item xai-placeholder d-flex align-items-center" style="color:#6b7387;min-height:36px;">
             <svg width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"
               stroke-linejoin="round" viewBox="0 0 24 24" style="opacity:.25;">
               <path d="M13.73 21a2 2 0 01-3.46 0L2.29 7.61A2 2 0 013.73 5h16.54a2 2 0 011.44 2.61z" />
               <circle cx="12" cy="9" r="2.0" fill="#23272f" stroke="none" />
             </svg>
-            <span class="ms-2">XAI explanation not available</span>
+            <span class="ms-2" id="xai-explanation-text" style="white-space:pre-wrap;">Click an RL log line to see the explanation here, or wait for new events (the panel updates with the latest).</span>
           </div>
         </div>
       </div>
@@ -793,9 +926,19 @@
   <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
   <script>
     (function () {
-      const STORAGE_KEY = "bssaDashboardStateV1.3";
+      // DB is source of truth for logs/history (no localStorage log cache).
+      const STORAGE_KEY = null;
+      const LS_SCAN_SESSION = "bssa_active_scan_session_id";
       const LOGS_HISTORY_MAX = 2000;
       const TIMELINE_MAX = 15;
+      const LINE_FP_CAP = 2500;
+
+      const API_ORIGIN =
+        window.location.protocol === "file:"
+          ? "http://127.0.0.1:5000"
+          : window.location.origin;
+
+      const FETCH_OPTS = { credentials: "include" };
 
       // ===== DOM =====
       const statusEl = document.getElementById("status");
@@ -812,8 +955,17 @@
       const scanTableBody = document.getElementById("scan-table-body");
 
       const targetDomainEl = document.getElementById("target-domain");
-      const userEmailEl = document.getElementById("user-email");
+      const userNameEl = document.getElementById("user-name");
       const logoutBtn = document.getElementById("auth-action-btn");
+      const scanTargetUrl = document.getElementById("scan-target-url");
+      const scanWebsiteId = document.getElementById("scan-website-id");
+      const btnStartScanSession = document.getElementById("btn-start-scan-session");
+      const btnClearBurpSession = document.getElementById("btn-clear-burp-session");
+      const scanSessionMsg = document.getElementById("scan-session-msg");
+      const activeSessionRow = document.getElementById("active-session-row");
+      const activeSessionIdField = document.getElementById("active-session-id-field");
+      const btnCopySessionId = document.getElementById("btn-copy-session-id");
+      const burpEnvHint = document.getElementById("burp-env-hint");
 
       // ===== STATE =====
       let reqCount = 0, applyCount = 0, rewardSum = 0, rewardCount = 0, errorCount = 0;
@@ -823,6 +975,9 @@
       let timeline = [];
       let primaryBaseDomain = null;
       let logPaused = false;
+      let logSeq = 0;
+      const xaiBySeq = new Map();
+      let selectedLogLineEl = null;
 
       const IGNOISE = [
         "google-analytics", "googletagmanager", "doubleclick", "googleadservices",
@@ -869,60 +1024,651 @@
         return "NO_OP";
       }
 
-      // ===== PERSISTENCE =====
-      function saveState() {
-        const scanPersist = {};
-        for (const k in scanTargets) {
-          const tr = scanTargets[k];
-          const safe = Object.assign({}, tr);
-          delete safe.rowEl;
-          delete safe.timer;
-          scanPersist[k] = safe;
+      const fpSeen = new Set();
+      const fpQueue = [];
+      function rememberFp(fp) {
+        const s = String(fp);
+        if (fpSeen.has(s)) return false;
+        fpSeen.add(s);
+        fpQueue.push(s);
+        if (fpQueue.length > LINE_FP_CAP) {
+          const old = fpQueue.shift();
+          fpSeen.delete(old);
         }
-        localStorage.setItem(STORAGE_KEY, JSON.stringify({
-          logs: logs.slice(-LOGS_HISTORY_MAX),
-          reqCount, applyCount, rewardSum, rewardCount, errorCount,
-          scanTargets: scanPersist,
-          scanIdSeq,
-          timeline: timeline.slice(0, TIMELINE_MAX),
-          primaryBaseDomain
-        }));
+        return true;
+      }
+
+      function seedFpFromRestoredLogs() {
+        for (const log of logs) {
+          rememberFp(log.line || "");
+        }
+      }
+
+      let lastRlPollId = 0;
+      let currentUserId = null;
+      const seenHttpLogIds = new Set();
+      let lastHttpLogPollId = 0;
+
+      function getActiveScanSessionId() {
+        let v = (localStorage.getItem(LS_SCAN_SESSION) || "").trim();
+        if (v.includes("-")) {
+          localStorage.removeItem(LS_SCAN_SESSION);
+          return "";
+        }
+        if (v && !/^\d+$/.test(v)) {
+          localStorage.removeItem(LS_SCAN_SESSION);
+          return "";
+        }
+        return v;
+      }
+
+      function sessionQuerySuffix() {
+        const sid = getActiveScanSessionId();
+        return sid ? "&session_id=" + encodeURIComponent(sid) : "";
+      }
+
+      async function loadCurrentUser() {
+        try {
+          const r = await fetch(API_ORIGIN + "/auth/me", FETCH_OPTS);
+          if (!r.ok) {
+            currentUserId = null;
+            return;
+          }
+          const d = await r.json();
+          if (d.user_id != null) {
+            currentUserId = parseInt(d.user_id, 10);
+            if (!Number.isNaN(currentUserId)) {
+              try {
+                localStorage.setItem("user_id", String(currentUserId));
+              } catch (_) { }
+            }
+          }
+          if (d.username && userNameEl) {
+            userNameEl.textContent = d.username;
+            userNameEl.style.display = "";
+            try {
+              localStorage.setItem("username", d.username);
+            } catch (_) { }
+          }
+        } catch {
+          currentUserId = null;
+        }
+      }
+
+      async function pollHttpProxyLogs() {
+        if (currentUserId == null || Number.isNaN(currentUserId)) return;
+        try {
+          const r = await fetch(
+            API_ORIGIN +
+            "/logs?user_id=" +
+            encodeURIComponent(String(currentUserId)),
+            FETCH_OPTS
+          );
+          if (!r.ok) return;
+          const data = await r.json();
+          const items = data.items || [];
+          for (let i = items.length - 1; i >= 0; i--) {
+            const it = items[i];
+            if (!it || it.event_type !== "http_request") continue;
+            const id = it.id;
+            if (id != null && seenHttpLogIds.has(id)) continue;
+            const p = it.data || {};
+            const method = p.method || "?";
+            const url = p.url || "";
+            const st = p.status != null ? p.status : p.response_status;
+            const line =
+              "[HTTP] " +
+              method +
+              " " +
+              url +
+              (st != null ? " -> " + st : "");
+            if (id != null) seenHttpLogIds.add(id);
+            if (id != null && id > lastHttpLogPollId) lastHttpLogPollId = id;
+            onRlLogLine(line);
+          }
+        } catch (e) {
+          console.warn("poll /logs", e);
+        }
+      }
+
+      function refreshBurpSessionUi() {
+        const sid = getActiveScanSessionId();
+        if (sid && activeSessionRow && activeSessionIdField) {
+          activeSessionRow.classList.remove("d-none");
+          activeSessionIdField.value = sid;
+        } else if (activeSessionRow) {
+          activeSessionRow.classList.add("d-none");
+        }
+        if (burpEnvHint) {
+          burpEnvHint.textContent =
+            "Burp: configure preference rl_api_token or environment BURP_RL_API_TOKEN (token is not shown on this dashboard). The extension calls /api/scan/start and stores sessions.id as burp_scan_session_id.";
+        }
+      }
+
+      async function bootstrapRlLogsFromDb() {
+        try {
+          const r = await fetch(
+            API_ORIGIN + "/api/rl-logs/bootstrap?limit=200" + sessionQuerySuffix(),
+            FETCH_OPTS
+          );
+          if (!r.ok) return;
+          const data = await r.json();
+          for (const row of data.lines || []) {
+            if (row.line) onRlLogLine(row.line, row.xai || null);
+          }
+          lastRlPollId = Math.max(
+            lastRlPollId,
+            parseInt(data.max_id, 10) || 0
+          );
+        } catch (e) {
+          console.warn("bootstrap rl_logs", e);
+        }
+      }
+
+      async function pollRlLogsFromDb() {
+        try {
+          const r = await fetch(
+            API_ORIGIN +
+              "/api/rl-logs/recent?after_id=" +
+              lastRlPollId +
+              "&limit=200" +
+              sessionQuerySuffix(),
+            FETCH_OPTS
+          );
+          if (!r.ok) return;
+          const data = await r.json();
+          for (const row of data.lines || []) {
+            if (row.id > lastRlPollId) lastRlPollId = row.id;
+            if (row.line) onRlLogLine(row.line, row.xai || null);
+          }
+        } catch (e) {
+          console.warn("poll rl_logs", e);
+        }
+      }
+
+      /** When the API/socket omits xai (older server), derive text from the raw RL line. */
+      const APPLY_PLAIN_JS = {
+        PASSIVE_SCAN:
+          "What this means: Burp watches traffic and runs passive checks—it does not aggressively attack the site from this setting alone.",
+        ACTIVE_SCAN:
+          "What this means: Burp actively probes for vulnerabilities (more intrusive than passive only).",
+        NO_OP:
+          "What this means: the assistant did not change Burp configuration on this step; it kept the current setup.",
+        DISABLE_INTERCEPT:
+          "What this means: Proxy Intercept is turned off. Requests and responses are not held in the Intercept tab for manual review—they pass through automatically. The assistant usually does this so automated crawling and RL traffic are not stuck waiting for you to click Forward.",
+        ENABLE_INTERCEPT:
+          "What this means: Proxy Intercept is turned on. Traffic that matches your intercept rules can pause until you forward or drop it. That gives manual control but can slow or block a fully automated run if messages pile up in the Intercept queue.",
+      };
+
+      function httpStatusPlainJs(sc) {
+        if (sc == null) return null;
+        if (sc >= 200 && sc < 300) {
+          return "Success range: the server accepted the request and returned a normal response.";
+        }
+        if (sc >= 300 && sc < 400) {
+          return "Redirect: the client may follow a new location; your reward rules decide if that counts as progress.";
+        }
+        if (sc >= 400 && sc < 500) {
+          return "Client error: often “not found” or “bad request”—often scored as a penalty unless your rules say otherwise.";
+        }
+        if (sc >= 500 && sc < 600) {
+          return "Server error: the application failed processing—often leads to penalties if your reward code punishes errors.";
+        }
+        return "Unusual status; check the response and your reward rules.";
+      }
+
+      function scoreExplanationLinesJs(reward) {
+        if (reward == null || reward === "") {
+          return [
+            "No score on this line",
+            "This line usually does not carry a reward number. Scores typically appear on [RL][RESP] or [RL][REWARD] lines after the system reacts to what happened.",
+          ];
+        }
+        const r = Number(reward);
+        if (r > 0) {
+          return [
+            "The score on this line: +" + r + " (this is a reward)",
+            "Why you see a reward (positive number)",
+            "A positive score means the RL setup judged this outcome as good for the goal—for example a successful HTTP response, discovering new URLs or behavior, scanner progress, or a rule in your reward code that adds points. The assistant is encouraged to make similar choices when the situation looks similar again.",
+            "This is how the system says “that last move helped,” not a random number.",
+          ];
+        }
+        if (r < 0) {
+          return [
+            "The score on this line: " + r + " (this is a penalty)",
+            "Why you see a penalty (negative number)",
+            "A negative score means the RL setup judged this outcome as bad or wasteful. Typical reasons: HTTP errors (4xx/5xx), blocked or failed requests, timeouts, repeating useless steps, or your reward code subtracting points.",
+            "The assistant is nudged to try something different next time instead of repeating the same pattern.",
+            "Compare to a reward: a positive score would mean the step was considered useful.",
+          ];
+        }
+        return [
+          "The score on this line: 0 (neutral)",
+          "Why the score is zero",
+          "Zero means neither a clear win nor a clear loss. The step was recorded, but the training signal does not strongly say “do more of this” or “avoid this.”",
+        ];
+      }
+
+      function linesScoreNotOnThisStepJs() {
+        return [
+          "When a reward or penalty appears (not on this line)",
+          "This line has no score. Rewards and penalties show up after the environment judges an outcome—almost always on a later [RL][RESP] line as reward=… and/or on a [RL][REWARD] line as value=…. Positive = reward, negative = penalty, zero = neutral. Scroll to the next RESP or REWARD line for this traffic.",
+        ];
+      }
+
+      function buildLocalXaiFromRlLine(line) {
+        if (typeof line !== "string" || line.indexOf("[RL][") === -1) return null;
+        const tagM = line.match(/\[RL\]\[([A-Z]+)\]/);
+        const et = tagM ? tagM[1] : "UNKNOWN";
+        const ctx = { event_type: et };
+        const parts = [];
+
+        if (et === "REQ") {
+          const ridM = line.match(/\[reqId=(\d+)\]/);
+          const urlM = line.match(
+            /\b(GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS)\s+(https?:\/\/\S+)/i
+          );
+          if (urlM) {
+            ctx.http_method = urlM[1].toUpperCase();
+            ctx.url = urlM[2].split(/\s/)[0].replace(/\)+$/, "");
+          }
+          if (ridM) ctx.request_id = parseInt(ridM[1], 10);
+          parts.push("What happened");
+          parts.push(
+            "The assistant sent " +
+              (ctx.http_method || "HTTP") +
+              " " +
+              (ctx.url || "a request") +
+              " through Burp so the application responds and the RL loop can observe the result."
+          );
+          parts.push("Why this request was made");
+          parts.push(
+            "The assistant explores the target with real traffic. Each response updates what it sees and feeds the next decision. It follows the current policy and training—not a manual click in the UI."
+          );
+          if (ctx.request_id != null) {
+            parts.push(
+              "Technical note: request id " +
+                ctx.request_id +
+                " ties this line to matching ACT / APPLY / RESP lines in the same step."
+            );
+          }
+          parts.push(...linesScoreNotOnThisStepJs());
+        } else if (et === "ACT") {
+          const corrM = line.match(/\[actionId=(\d+)\]/);
+          const valM = line.match(/value=(\d+)/);
+          if (corrM) ctx.request_id = parseInt(corrM[1], 10);
+          if (valM) {
+            ctx.action_id = parseInt(valM[1], 10);
+            ctx.action_name = "RL_VALUE_" + valM[1];
+          }
+          parts.push("What happened");
+          parts.push(
+            "The assistant chose option “" +
+              (ctx.action_name || "index " + (ctx.action_id != null ? ctx.action_id : "?")) +
+              ".” That number is a code: your integration maps it to a concrete Burp action on the next APPLY line."
+          );
+          parts.push("Why this action was taken (plain language)");
+          parts.push(
+            "The log does not say “because the page looked interesting.” The model picks the code that currently scores best given what it has seen (URLs, responses, earlier rewards and penalties) and how it was trained."
+          );
+          parts.push(
+            "So this action was taken because the RL policy at this moment preferred this option over the other numbered options—not because someone selected it by hand."
+          );
+          parts.push(...linesScoreNotOnThisStepJs());
+        } else if (et === "APPLY") {
+          const aidM = line.match(/\[actionId=(\d+)\]/);
+          const nameM = line.match(/\[RL\]\[APPLY\]\[actionId=\d+\]\s+([A-Z0-9_]+)/);
+          if (aidM) ctx.action_id = parseInt(aidM[1], 10);
+          if (nameM) ctx.action_name = nameM[1];
+          const urlM = line.match(/(https?:\/\/[^\s)]+)/);
+          if (urlM) {
+            ctx.url = urlM[1].replace(/\)+$/, "");
+          }
+          const an = ctx.action_name || "CONFIG";
+          parts.push("What happened");
+          parts.push(
+            "The assistant actually changed Burp behavior: “" + an + ".” This is the visible effect of the last ACT choice."
+          );
+          const plain = APPLY_PLAIN_JS[String(an).toUpperCase()];
+          if (plain) parts.push(plain);
+          parts.push("Why this matters");
+          parts.push(
+            "Later rewards and penalties depend on whether this setting helped testing (coverage, findings) or caused problems (errors, wasted steps)—according to your reward rules."
+          );
+          if (ctx.url) parts.push("Related URL in the log: " + ctx.url + ".");
+          parts.push(...linesScoreNotOnThisStepJs());
+        } else if (et === "RESP") {
+          const stM = line.match(/status=(\d+)/);
+          const rwM = line.match(/reward=(-?\d+)/);
+          if (stM) ctx.status_code = parseInt(stM[1], 10);
+          if (rwM) ctx.reward = parseInt(rwM[1], 10);
+          parts.push("What happened");
+          if (ctx.status_code != null) {
+            parts.push("The server answered with HTTP status " + ctx.status_code + ".");
+            const h = httpStatusPlainJs(ctx.status_code);
+            if (h) parts.push(h);
+          } else {
+            parts.push("A response was logged, but the status code was not parsed from this line.");
+          }
+          if (ctx.reward != null) {
+            parts.push("When reward or penalty appears");
+            parts.push(
+              "On this [RL][RESP] line: look at reward=…. A positive value is a reward, a negative value is a penalty, zero is neutral."
+            );
+          } else {
+            parts.push("When reward or penalty appears");
+            parts.push(
+              "This line has no reward= field after parsing. The score may be on the next [RL][REWARD] line (value=…) or omitted if your pipeline does not attach a number to this response."
+            );
+          }
+          parts.push(...scoreExplanationLinesJs(ctx.reward));
+          if (ctx.status_code != null && ctx.reward != null) {
+            parts.push("How status and score fit together");
+            parts.push(
+              "The status code is what the server returned. The reward/penalty is how your RL setup judged that outcome. They are related but not the same—you can configure rewards so some errors still help learning."
+            );
+          }
+        } else if (et === "REWARD") {
+          const vm = line.match(/value=(-?\d+)/);
+          if (vm) ctx.reward = parseInt(vm[1], 10);
+          parts.push("What happened");
+          parts.push(
+            "This line is a dedicated reward signal from your pipeline (extra shaping on top of raw HTTP)."
+          );
+          parts.push("When reward or penalty appears");
+          parts.push(
+            "Right here: [RL][REWARD] uses value=…. That number is the score—positive = reward, negative = penalty, zero = neutral—for whatever your reward code graded on this step."
+          );
+          parts.push(...scoreExplanationLinesJs(ctx.reward));
+        } else if (et === "SCAN") {
+          const um = line.match(/url=([^|\s]+)/);
+          const nameM = line.match(/\[RL\]\[SCAN\][^\]]*\]\s+(.+?)\s*\|/);
+          if (um) ctx.url = um[1].trim();
+          if (nameM) ctx.action_name = nameM[1].trim().slice(0, 255);
+          parts.push("What happened");
+          parts.push("Scanner / analysis feedback: " + (ctx.action_name || "finding") + ".");
+          parts.push("Why this affects rewards");
+          parts.push(
+            "Many setups add reward when new issues appear (progress for security testing). If nothing new is found, the step may earn less—depending on your reward function."
+          );
+          if (ctx.url) parts.push("Related URL: " + ctx.url + ".");
+          parts.push("When reward or penalty appears");
+          parts.push(
+            "SCAN lines describe findings; they usually do not carry value= or reward= themselves. The numeric reward or penalty typically appears on a nearby [RL][RESP] or [RL][REWARD] line."
+          );
+        } else if (et === "ERROR") {
+          const msg = line.replace(/^[\s\S]*?\[RL\]\[ERROR\]\s*/i, "").trim();
+          parts.push("What happened");
+          parts.push("Something failed in the RL or Burp integration; this step did not complete normally.");
+          if (msg) parts.push("Detail: " + msg);
+        } else {
+          parts.push("What happened");
+          parts.push(
+            "Event type “" + et + "”. Only part of the line could be interpreted automatically; read the raw line for full detail."
+          );
+          const rwAny = line.match(/reward=(-?\d+)/);
+          if (rwAny) {
+            ctx.reward = parseInt(rwAny[1], 10);
+            parts.push(...scoreExplanationLinesJs(ctx.reward));
+          }
+        }
+
+        return {
+          explanation: parts.join("\n\n"),
+          context: ctx,
+        };
+      }
+
+      function resolveXaiForLine(line, xaiPayload) {
+        if (
+          xaiPayload &&
+          typeof xaiPayload.explanation === "string" &&
+          xaiPayload.explanation.trim()
+        ) {
+          return xaiPayload;
+        }
+        return buildLocalXaiFromRlLine(line);
+      }
+
+      function renderXaiPanel(xai) {
+        const el = document.getElementById("xai-explanation-text");
+        const card = document.getElementById("xai-placeholder");
+        if (!el) return;
+        if (!xai || !xai.explanation) {
+          el.textContent =
+            "Click an RL log line on the left to see its explanation here, or wait for new RL events.";
+          if (card) {
+            card.style.opacity = "0.7";
+            card.style.filter = "grayscale(.5)";
+          }
+          return;
+        }
+        const ctx = xai.context || {};
+        const bits = [
+          ctx.event_type && ("Event: " + ctx.event_type),
+          ctx.action_name && ("Action: " + ctx.action_name),
+          ctx.action_id != null &&
+            ctx.action_id !== "" &&
+            ("Action id: " + ctx.action_id),
+          ctx.http_method && ctx.url && (String(ctx.http_method) + " " + ctx.url),
+          !ctx.http_method && ctx.url && ("URL: " + ctx.url),
+          ctx.status_code != null && ("HTTP " + ctx.status_code),
+          ctx.reward != null && ("Score (reward): " + ctx.reward),
+          ctx.request_id != null &&
+            (ctx.event_type === "ACT"
+              ? "Correlation id: " + ctx.request_id
+              : "Request id: " + ctx.request_id),
+        ].filter(Boolean);
+        el.textContent =
+          xai.explanation + (bits.length ? "\n\n— " + bits.join(" · ") : "");
+        if (card) {
+          card.style.opacity = "1";
+          card.style.filter = "none";
+        }
+      }
+
+      async function pollLatestXai() {
+        try {
+          const r = await fetch(
+            API_ORIGIN + "/api/rl-event/latest-xai",
+            FETCH_OPTS
+          );
+          if (!r.ok) return;
+          const d = await r.json();
+          if (d.explanation) {
+            renderXaiPanel({
+              explanation: d.explanation,
+              context: d.context || {},
+            });
+          }
+        } catch (e) {
+          console.warn("poll xai", e);
+        }
+      }
+
+      function onRlLogLine(line, xaiPayload) {
+        if (typeof line !== "string" || !line.length) return;
+        if (!rememberFp(line)) return;
+
+        const xai = resolveXaiForLine(line, xaiPayload);
+
+        let logClass = "";
+        if (line.includes("[RL][REQ]")) logClass = "REQ";
+        else if (line.includes("[RL][ACT]")) logClass = "ACT";
+        else if (line.includes("[RL][APPLY]")) logClass = "APPLY";
+        else if (line.includes("[RL][RESP]")) logClass = "RESP";
+        else if (line.includes("[RL][SCAN]")) logClass = "SCAN";
+        else if (line.includes("[RL][REWARD]")) logClass = "REWARD";
+        else if (line.includes("[RL][ERROR]")) logClass = "ERROR";
+
+        logs.push({ line, className: logClass, xai: xai || null });
+        if (logs.length > LOGS_HISTORY_MAX) logs.splice(0, logs.length - LOGS_HISTORY_MAX);
+
+        if (logBox) {
+          const div = document.createElement("div");
+          div.className = "line";
+          if (logClass) div.classList.add(logClass);
+          div.textContent = line;
+          const seq = ++logSeq;
+          div.dataset.logSeq = String(seq);
+          if (xai && xai.explanation) {
+            xaiBySeq.set(seq, xai);
+            div.classList.add("xai-log-line");
+            div.title = "Click to show explanation in the XAI panel →";
+          }
+          logBox.appendChild(div);
+
+          while (logBox.childNodes.length > LOGS_HISTORY_MAX) {
+            const first = logBox.firstChild;
+            if (first === selectedLogLineEl) {
+              selectedLogLineEl = null;
+            }
+            if (first && first.dataset && first.dataset.logSeq) {
+              const n = parseInt(first.dataset.logSeq, 10);
+              if (!isNaN(n)) xaiBySeq.delete(n);
+            }
+            logBox.removeChild(first);
+          }
+          if (!logPaused) logBox.scrollTop = logBox.scrollHeight;
+        }
+
+        if (xai && xai.explanation) {
+          renderXaiPanel(xai);
+        }
+
+        if (line.includes("[RL][REQ]")) reqCount++;
+        if (line.includes("[RL][APPLY]")) applyCount++;
+        if (line.includes("[RL][RESP]")) {
+          const r = extractReward(line);
+          if (typeof r === "number" && !isNaN(r)) {
+            rewardSum += r;
+            rewardCount++;
+          }
+        }
+        if (line.includes("[RL][REWARD]")) {
+          const mr = line.match(/value=(-?\d+)/);
+          if (mr) {
+            rewardSum += parseInt(mr[1], 10);
+            rewardCount++;
+          }
+        }
+        if (line.includes("[RL][ERROR]")) errorCount++;
+        updateKpiUI();
+
+        if (line.includes("[RL][REQ]")) {
+          const host = extractHostFromLine(line);
+          if (host && !isNoiseHost(host)) {
+            const bd = baseDomain(host);
+            if (!primaryBaseDomain) {
+              primaryBaseDomain = bd;
+              if (targetDomainEl) targetDomainEl.textContent = primaryBaseDomain;
+            }
+
+            const key = bd;
+            const nowEpoch = Date.now() / 1000;
+            const nowStr = timeString();
+
+            if (!scanTargets[key]) {
+              scanTargets[key] = {
+                id: scanIdSeq++,
+                target: bd,
+                targetFull: host,
+                start: nowStr,
+                lastSeen: nowEpoch,
+                lastSeenTime: nowStr,
+                status: "Active",
+                vulns: "—",
+              };
+            } else {
+              const s = scanTargets[key];
+              s.lastSeen = nowEpoch;
+              s.lastSeenTime = nowStr;
+              s.targetFull = host;
+            }
+            renderScanTable();
+          }
+        }
+
+        if (line.includes("[RL][SCAN]")) {
+          let u = null;
+          const um = line.match(/url=([^|\s]+)/);
+          if (um) u = um[1].trim();
+          if (u && !/^https?:\/\//i.test(u)) u = "http://" + u;
+          const host = u ? extractHostFromLine(u) : null;
+          if (host && !isNoiseHost(host)) {
+            const bd = baseDomain(host);
+            if (!primaryBaseDomain) {
+              primaryBaseDomain = bd;
+              if (targetDomainEl) targetDomainEl.textContent = primaryBaseDomain;
+            }
+            const key = bd;
+            const nowEpoch = Date.now() / 1000;
+            const nowStr = timeString();
+            if (!scanTargets[key]) {
+              scanTargets[key] = {
+                id: scanIdSeq++,
+                target: bd,
+                targetFull: host,
+                start: nowStr,
+                lastSeen: nowEpoch,
+                lastSeenTime: nowStr,
+                status: "Active",
+                vulns: "scan",
+              };
+            } else {
+              const sx = scanTargets[key];
+              sx.lastSeen = nowEpoch;
+              sx.lastSeenTime = nowStr;
+              sx.targetFull = host;
+              sx.vulns = "scan";
+            }
+            renderScanTable();
+          }
+        }
+
+        if (line.includes("[RL][APPLY]")) {
+          const actionName = extractApplyAction(line) || "NO_OP";
+          const now = timeString();
+          const nowEpoch = Date.now() / 1000;
+          const last = timeline[0];
+          if (
+            !last ||
+            last.action !== actionName ||
+            nowEpoch - (+last.tsEpoch || 0) > 2.1
+          ) {
+            timeline.unshift({ action: actionName, ts: now, tsEpoch: nowEpoch });
+            if (timeline.length > TIMELINE_MAX) timeline.length = TIMELINE_MAX;
+            renderTimeline();
+          }
+        }
+
+        // Intentionally no localStorage persistence for logs/history.
+      }
+
+      // ===== PERSISTENCE (disabled for logs/history) =====
+      function saveState() {
+        return;
       }
 
       function restoreState() {
-        let state = {};
-        try { state = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); } catch { }
-
-        logs = Array.isArray(state.logs) ? state.logs.slice(-LOGS_HISTORY_MAX) : [];
-        if (logBox) {
-          logBox.innerHTML = "";
-          for (const log of logs) {
-            const div = document.createElement("div");
-            div.className = "line";
-            if (log.className) div.classList.add(log.className);
-            div.textContent = log.line;
-            logBox.appendChild(div);
-          }
-          logBox.scrollTop = logBox.scrollHeight;
-        }
-
-        reqCount = +state.reqCount || 0;
-        applyCount = +state.applyCount || 0;
-        rewardSum = +state.rewardSum || 0;
-        rewardCount = +state.rewardCount || 0;
-        errorCount = +state.errorCount || 0;
+        logs = [];
+        scanTargets = {};
+        scanIdSeq = 1;
+        timeline = [];
+        primaryBaseDomain = null;
+        reqCount = 0;
+        applyCount = 0;
+        rewardSum = 0;
+        rewardCount = 0;
+        errorCount = 0;
+        logSeq = 0;
+        xaiBySeq.clear();
+        selectedLogLineEl = null;
+        if (logBox) logBox.innerHTML = "";
         updateKpiUI();
-
-        timeline = Array.isArray(state.timeline) ? state.timeline.slice(0, TIMELINE_MAX) : [];
         renderTimeline();
-
-        scanTargets = (typeof state.scanTargets === "object" && state.scanTargets) ? state.scanTargets : {};
-        scanIdSeq = parseInt(state.scanIdSeq) || 1;
-
-        primaryBaseDomain = state.primaryBaseDomain || null;
-        if (targetDomainEl && primaryBaseDomain) targetDomainEl.textContent = primaryBaseDomain;
-
         renderScanTable();
+        renderXaiPanel(null);
       }
 
       function updateKpiUI() {
@@ -964,7 +1710,7 @@
         const keys = Object.keys(scanTargets);
         if (!keys.length) {
           const tr = document.createElement("tr");
-          tr.innerHTML = `<td colspan="5" style="text-align:center; color:#757d91;">No traffic yet</td>`;
+          tr.innerHTML = `<td colspan="5" style="text-align:center; color:#757d91; padding:28px 16px;">No traffic yet</td>`;
           scanTableBody.appendChild(tr);
           return;
         }
@@ -973,12 +1719,16 @@
           const s = scanTargets[k];
           const tr = document.createElement("tr");
           const statusClass = s.status === "Idle" ? "idle" : "active";
+          const vulnRaw = s.vulns || "—";
+          const findingsClass = vulnRaw === "scan" ? "activity" : "none";
+          const findingsLabel = vulnRaw === "scan" ? "Scanner" : "—";
+          const lastSeen = s.lastSeenTime || "—";
           tr.innerHTML = `
             <td>${s.id}</td>
-            <td class="truncate" title="${s.targetFull || s.target}">${s.target}</td>
-            <td><span class="scan-status ${statusClass}">${s.status}</span></td>
-            <td><span class="badge bg-secondary text-dark-subtle opacity-60">${s.vulns || "—"}</span></td>
-            <td title="Started: ${s.start || "—"}"><small class="text-nowrap">${s.lastSeenTime || "—"}</small></td>`;
+            <td class="col-target" title="${safeToText(s.targetFull || s.target)}">${safeToText(s.target)}</td>
+            <td><span class="scan-status ${statusClass}">${safeToText(s.status)}</span></td>
+            <td><span class="scan-vuln-pill ${findingsClass}">${findingsLabel}</span></td>
+            <td class="col-last" title="Started: ${safeToText(s.start || "—")}">${safeToText(lastSeen)}</td>`;
           scanTableBody.appendChild(tr);
           s.rowEl = tr;
         }
@@ -987,124 +1737,108 @@
       // ===== "LOGOUT" WITHOUT AUTH =====
       function hookLogout() {
         if (!logoutBtn) return;
-        logoutBtn.onclick = function () {
-          // Just clear UI state and reload (no auth anymore)
-          localStorage.removeItem(STORAGE_KEY);
-          location.reload();
+        logoutBtn.onclick = async function () {
+          try {
+            await fetch(API_ORIGIN + "/auth/logout", {
+              method: "POST",
+              credentials: "include",
+            });
+          } catch (_) { }
+          localStorage.removeItem(LS_SCAN_SESSION);
+          try {
+            localStorage.removeItem("api_token");
+            localStorage.removeItem("user_id");
+          } catch (_) { }
+          location.href = "/auth/login";
         };
       }
 
       // ===== SOCKET =====
-      function startSocket() {
+      async function startSocket() {
+        const sessionFilter = getActiveScanSessionId();
         restoreState();
+        if (sessionFilter) {
+          logs = [];
+          if (logBox) logBox.innerHTML = "";
+          lastRlPollId = 0;
+          fpSeen.clear();
+          fpQueue.length = 0;
+          logSeq = 0;
+          xaiBySeq.clear();
+          selectedLogLineEl = null;
+        }
+        seedFpFromRestoredLogs();
+        await bootstrapRlLogsFromDb();
+        void pollHttpProxyLogs();
+        setInterval(pollRlLogsFromDb, 2500);
+        setInterval(pollHttpProxyLogs, 4000);
+        setInterval(pollLatestXai, 4000);
+        void pollLatestXai();
 
-        // If you accidentally open file://... we still connect to the Flask server
-        const socketUrl = (location.protocol === "file:") ? "http://127.0.0.1:5000" : undefined;
+        const socketUrl =
+          window.location.protocol === "file:" ? "http://127.0.0.1:5000" : undefined;
 
+        const socketOpts = {
+          // Werkzeug + Flask-SocketIO threading is stable with polling transport.
+          transports: ["polling"],
+          reconnection: true,
+          withCredentials: true,
+        };
         const socket = socketUrl
-          ? io(socketUrl, { transports: ["websocket", "polling"], reconnection: true })
-          : io({ transports: ["websocket", "polling"], reconnection: true });
+          ? io(socketUrl, socketOpts)
+          : io(socketOpts);
 
         socket.on("connect", () => {
-          if (statusEl) { statusEl.textContent = "connected"; statusEl.style.color = "#47d68d"; }
+          if (statusEl) {
+            statusEl.textContent = "connected";
+            statusEl.style.color = "#47d68d";
+          }
         });
 
         socket.on("disconnect", () => {
-          if (statusEl) { statusEl.textContent = "disconnected"; statusEl.style.color = "#ff7b72"; }
+          if (statusEl) {
+            statusEl.textContent = "disconnected";
+            statusEl.style.color = "#ff7b72";
+          }
         });
 
         socket.on("connect_error", (err) => {
           console.error("socket connect_error:", err);
-          if (statusEl) { statusEl.textContent = "connection error"; statusEl.style.color = "#ff7b72"; }
+          if (statusEl) {
+            statusEl.textContent = "connection error";
+            statusEl.style.color = "#ff7b72";
+          }
         });
 
         socket.on("rl_log", (msg) => {
           if (!msg || typeof msg.line !== "string") return;
-
-          const line = msg.line;
-
-          let logClass = "";
-          if (line.includes("[RL][REQ]")) logClass = "REQ";
-          else if (line.includes("[RL][ACT]")) logClass = "ACT";
-          else if (line.includes("[RL][APPLY]")) logClass = "APPLY";
-          else if (line.includes("[RL][RESP]")) logClass = "RESP";
-          else if (line.includes("[RL][ERROR]")) logClass = "ERROR";
-
-          logs.push({ line, className: logClass });
-          if (logs.length > LOGS_HISTORY_MAX) logs.splice(0, logs.length - LOGS_HISTORY_MAX);
-
-          if (logBox) {
-            const div = document.createElement("div");
-            div.className = "line";
-            if (logClass) div.classList.add(logClass);
-            div.textContent = line;
-            logBox.appendChild(div);
-
-            while (logBox.childNodes.length > LOGS_HISTORY_MAX) {
-              logBox.removeChild(logBox.childNodes[0]);
-            }
-            if (!logPaused) logBox.scrollTop = logBox.scrollHeight;
+          const filterSid = getActiveScanSessionId();
+          const msgSid = msg.session_id != null ? String(msg.session_id) : "";
+          if (filterSid) {
+            if (!msgSid || msgSid !== filterSid) return;
           }
-
-          if (line.includes("[RL][REQ]")) reqCount++;
-          if (line.includes("[RL][APPLY]")) applyCount++;
-          if (line.includes("[RL][RESP]")) {
-            const r = extractReward(line);
-            if (typeof r === "number" && !isNaN(r)) { rewardSum += r; rewardCount++; }
-          }
-          if (line.includes("[RL][ERROR]")) errorCount++;
-          updateKpiUI();
-
-          if (line.includes("[RL][REQ]")) {
-            const host = extractHostFromLine(line);
-            if (host && !isNoiseHost(host)) {
-              const bd = baseDomain(host);
-              if (!primaryBaseDomain) {
-                primaryBaseDomain = bd;
-                if (targetDomainEl) targetDomainEl.textContent = primaryBaseDomain;
-              }
-
-              const key = bd;
-              const nowEpoch = Date.now() / 1000;
-              const nowStr = timeString();
-
-              if (!scanTargets[key]) {
-                scanTargets[key] = {
-                  id: scanIdSeq++,
-                  target: bd,
-                  targetFull: host,
-                  start: nowStr,
-                  lastSeen: nowEpoch,
-                  lastSeenTime: nowStr,
-                  status: "Active",
-                  vulns: "—"
-                };
-              } else {
-                const s = scanTargets[key];
-                s.lastSeen = nowEpoch;
-                s.lastSeenTime = nowStr;
-                s.targetFull = host;
-              }
-              renderScanTable();
-            }
-          }
-
-          if (line.includes("[RL][APPLY]")) {
-            const actionName = extractApplyAction(line) || "NO_OP";
-            const now = timeString();
-            const nowEpoch = Date.now() / 1000;
-            const last = timeline[0];
-            if (!last || last.action !== actionName || (nowEpoch - (+last.tsEpoch || 0)) > 2.1) {
-              timeline.unshift({ action: actionName, ts: now, tsEpoch: nowEpoch });
-              if (timeline.length > TIMELINE_MAX) timeline.length = TIMELINE_MAX;
-              renderTimeline();
-            }
-          }
-
-          saveState();
+          onRlLogLine(msg.line, msg.xai || null);
         });
 
         if (logBox) {
+          logBox.addEventListener("click", function (ev) {
+            const row = ev.target.closest(".line");
+            if (!row || !logBox.contains(row)) return;
+            const seq = parseInt(row.dataset.logSeq, 10);
+            let xa = !isNaN(seq) ? xaiBySeq.get(seq) : null;
+            if (!xa && row.textContent) {
+              xa = resolveXaiForLine(row.textContent.trim(), null);
+            }
+            if (!xa || !xa.explanation) {
+              return;
+            }
+            if (selectedLogLineEl && selectedLogLineEl !== row) {
+              selectedLogLineEl.classList.remove("xai-log-selected");
+            }
+            selectedLogLineEl = row;
+            row.classList.add("xai-log-selected");
+            renderXaiPanel(xa);
+          });
           function checkLiveState() {
             setTimeout(() => {
               const maxScroll = logBox.scrollHeight - logBox.offsetHeight;
@@ -1123,13 +1857,89 @@
       // ===== BOOT =====
       document.addEventListener("DOMContentLoaded", async () => {
         hookLogout();
+        await loadCurrentUser();
+        refreshBurpSessionUi();
 
-        if (userEmailEl) {
-          userEmailEl.textContent = "Guest (no auth)";
-          userEmailEl.style.display = "";
+        if (userNameEl && (!userNameEl.textContent || userNameEl.textContent === "")) {
+          const storedUsername = localStorage.getItem("username");
+          userNameEl.textContent = storedUsername || "Guest (no auth)";
+          userNameEl.style.display = "";
         }
 
-        startSocket();
+        if (btnStartScanSession) {
+          btnStartScanSession.onclick = async function () {
+            if (scanSessionMsg) scanSessionMsg.textContent = "";
+            const widRaw = scanWebsiteId && scanWebsiteId.value.trim();
+            const target =
+              scanTargetUrl && scanTargetUrl.value.trim();
+            const body = {};
+            if (widRaw) {
+              const w = parseInt(widRaw, 10);
+              if (Number.isNaN(w)) {
+                if (scanSessionMsg) scanSessionMsg.textContent = "Invalid website id.";
+                return;
+              }
+              body.website_id = w;
+            } else if (target) {
+              body.target_url = target;
+            } else {
+              if (scanSessionMsg)
+                scanSessionMsg.textContent = "Enter a URL or website id.";
+              return;
+            }
+            try {
+              const r = await fetch(API_ORIGIN + "/api/scan/start", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify(body),
+              });
+              const d = await r.json().catch(() => ({}));
+              if (!r.ok) {
+                if (scanSessionMsg)
+                  scanSessionMsg.textContent = d.error || "Could not start session.";
+                return;
+              }
+              const sid = d.session_id;
+              if (sid != null) {
+                localStorage.setItem(LS_SCAN_SESSION, String(sid));
+                refreshBurpSessionUi();
+                lastRlPollId = 0;
+                fpSeen.clear();
+                fpQueue.length = 0;
+                logs = [];
+                logSeq = 0;
+                xaiBySeq.clear();
+                selectedLogLineEl = null;
+                if (logBox) logBox.innerHTML = "";
+                renderXaiPanel(null);
+                await bootstrapRlLogsFromDb();
+                if (scanSessionMsg) scanSessionMsg.textContent = "Session started.";
+              }
+            } catch (e) {
+              console.warn(e);
+              if (scanSessionMsg)
+                scanSessionMsg.textContent = "Network error starting session.";
+            }
+          };
+        }
+
+        if (btnClearBurpSession) {
+          btnClearBurpSession.onclick = function () {
+            localStorage.removeItem(LS_SCAN_SESSION);
+            location.reload();
+          };
+        }
+
+        if (btnCopySessionId && activeSessionIdField) {
+          btnCopySessionId.onclick = function () {
+            const t = activeSessionIdField.value;
+            if (!t) return;
+            navigator.clipboard.writeText(t).catch(() => {});
+          };
+        }
+
+        void startSocket();
       });
 
     })();
