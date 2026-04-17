@@ -1,0 +1,7 @@
+Request	Payload	Status code	Response received	Error	Timeout	Length	Comment
+0		200	151	false	false	5025	
+1	Gifts	200	151	false	false	5025	
+2	Pets	200	151	false	false	3821	
+3	Clothing	200	152	false	false	3825	
+4	Test	200	81	false	false	3821	
+5	Random	200	151	false	false	3823	

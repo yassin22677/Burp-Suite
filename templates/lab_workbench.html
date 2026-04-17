@@ -3,12 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Workbench</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='lab_workbench.css') }}">
+  <title>Generative payloads — Burp Suite thesis UI</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/lab_workbench.css') }}">
 </head>
 <body class="workbench-body">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
   <header class="page-header">
-    <h1 class="page-title">Manual Burp workbench</h1>
+    <h1 class="page-title">Generative payloads</h1>
+    <p class="page-subtitle">Generate payloads, normalize Burp exports, then aggregate metrics—all in one flow.</p>
     <nav class="section-nav" aria-label="Jump to section">
       <a class="nav-jump" href="#section-generate">Generate Payloads</a>
       <a class="nav-jump" href="#section-normalize">Normalize Burp Results</a>
@@ -16,6 +18,7 @@
     </nav>
   </header>
 
+  <main id="main-content" class="workbench-main" tabindex="-1">
   {% if gen %}
   <section class="panel last-result" aria-labelledby="result-gen-heading">
     <h2 id="result-gen-heading" class="panel__title">Generate</h2>
@@ -91,7 +94,7 @@
     <div class="table-scroll table-scroll--metrics-main">{{ agg.table_html|safe }}</div>
     {% if debug_ui and agg.table_html_full %}
     <details class="metrics-advanced">
-      <summary class="metrics-advanced__summary">More columns</summary>
+      <summary class="metrics-advanced__summary">All columns (same as CSV)</summary>
       <div class="table-scroll table-scroll--metrics-full">{{ agg.table_html_full|safe }}</div>
     </details>
     {% endif %}
@@ -175,15 +178,25 @@
       <input type="hidden" name="action" value="aggregate">
       <fieldset class="form-fieldset">
         {% if trial_csv_choices %}
-        {% for name in trial_csv_choices %}
-        <div class="row row--checkbox"><label class="check-label check-label--full"><input type="checkbox" name="trial_csv" value="{{ name }}" {% if name in selected_trials %}checked{% endif %}> {{ name }}</label></div>
-        {% endfor %}
+        {% set _len = trial_csv_choices|length %}
+        {% set _size = 4 if _len < 4 else (_len if _len < 14 else 14) %}
+        <div class="row row--aggregate-select">
+          <label for="trial_csv_select">Trial CSV files</label>
+          <div class="aggregate-select-wrap">
+            <select id="trial_csv_select" name="trial_csv" multiple size="{{ _size }}" class="select-multiple-trials">
+              {% for name in trial_csv_choices %}
+              <option value="{{ name }}" {% if name in selected_trials %}selected{% endif %}>{{ name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
         {% endif %}
-        <p id="aggregate-no-files-warning" class="aggregate-client-warning" hidden></p>
+        <p id="aggregate-no-files-warning" class="aggregate-client-warning" role="alert" hidden>Select at least one trial CSV in the list above, then submit again.</p>
         <div class="row row--actions"><label></label><button type="submit" id="aggregate-submit" class="btn btn-primary" {% if not trial_csv_choices or not selected_trials %}disabled{% endif %}>Submit</button></div>
       </fieldset>
     </form>
   </section>
+  </main>
 
   <script>
   (function () {
@@ -191,26 +204,25 @@
     var btn = document.getElementById("aggregate-submit");
     var clientWarn = document.getElementById("aggregate-no-files-warning");
     if (!form || !btn) return;
-    var boxes = form.querySelectorAll('input[name="trial_csv"]');
-    function anyChecked() {
-      for (var i = 0; i < boxes.length; i++) if (boxes[i].checked) return true;
-      return false;
+    var sel = form.querySelector('select[name="trial_csv"]');
+    function anySelected() {
+      return sel && sel.selectedOptions && sel.selectedOptions.length > 0;
     }
     function sync() {
-      if (!boxes.length) return;
-      btn.disabled = !anyChecked();
+      if (!sel || !sel.options.length) return;
+      btn.disabled = !anySelected();
       if (clientWarn) clientWarn.hidden = true;
     }
     function onSubmit(e) {
-      if (!boxes.length) return;
-      if (!anyChecked()) {
+      if (!sel || !sel.options.length) return;
+      if (!anySelected()) {
         e.preventDefault();
         if (clientWarn) clientWarn.hidden = false;
         clientWarn && clientWarn.focus && clientWarn.setAttribute("tabindex", "-1");
         clientWarn && clientWarn.focus();
       }
     }
-    for (var j = 0; j < boxes.length; j++) boxes[j].addEventListener("change", sync);
+    if (sel) sel.addEventListener("change", sync);
     form.addEventListener("submit", onSubmit);
     sync();
   })();

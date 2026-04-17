@@ -1,0 +1,3 @@
+experiment_group,trial_count,response_code_change_count,response_code_change_rate,abnormal_response_count,abnormal_rate,avg_abs_length_delta,useful_signal_count,requests_per_useful_signal,invalid_candidate_rate,unique_candidate_count,duplicate_candidate_rate
+A_baseline_burp,2,1,0.5,1,0.5,150.0,1,2.0,0.0,2,0.0
+B_static_dataset,2,0,0.0,0,0.0,10.0,0,,0.5,1,0.5
