@@ -213,6 +213,36 @@ def finish_session(session_id: int, user_id: int) -> bool:
             return cur.fetchone() is not None
 
 
+def finish_stale_sessions(user_id: int) -> list[int]:
+    """
+    Mark all active sessions for user as completed, keeping only the most recent one.
+    Returns the list of closed session IDs.
+    """
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT id FROM sessions
+                WHERE user_id = %s AND status = 'active'
+                ORDER BY id DESC
+                """,
+                (user_id,),
+            )
+            rows = cur.fetchall()
+            if len(rows) <= 1:
+                return []
+            stale_ids = [int(r[0]) for r in rows[1:]]
+            cur.execute(
+                """
+                UPDATE sessions
+                SET ended_at = CURRENT_TIMESTAMP, status = 'completed'
+                WHERE id = ANY(%s) AND user_id = %s
+                """,
+                (stale_ids, user_id),
+            )
+            return stale_ids
+
+
 @scan_session_bp.post("/start")
 def start_scan():
     data = request.get_json() or {}
@@ -346,3 +376,25 @@ def finish_scan():
         jsonify({"message": "session completed", "session_id": session_id_int}),
         200,
     )
+
+
+@scan_session_bp.post("/finish-stale")
+def finish_stale():
+    """
+    Close every active session for the caller except the most recently created one.
+    Useful when multiple stale sessions accumulate and Burp loopback events become ambiguous.
+    """
+    data = request.get_json() or {}
+    user_id = resolve_scan_actor_user_id(request, data)
+    if user_id is None:
+        return jsonify({"error": "Authentication required"}), 401
+
+    try:
+        closed = finish_stale_sessions(int(user_id))
+    except psycopg2.OperationalError:
+        return jsonify({"error": "Database unavailable. Please try again later."}), 503
+    except psycopg2.Error as exc:
+        logger.exception("finish-stale failed: %s", exc)
+        return jsonify({"error": "Could not close stale sessions."}), 500
+
+    return jsonify({"closed_session_ids": closed, "count": len(closed)}), 200

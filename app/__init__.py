@@ -100,4 +100,7 @@ def create_app():
     from app.views.proxy_request_routes import proxy_request_bp
     app.register_blueprint(proxy_request_bp)
 
+    from app.views.team_profile_routes import team_profile_bp
+    app.register_blueprint(team_profile_bp)
+
     return app

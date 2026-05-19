@@ -243,6 +243,34 @@ def _infer_loopback_identity(data: dict) -> tuple[int | None, int | None]:
         )
         return int(r[0]), int(r[1])
 
+    if len(active_rows) > 1 and active_rows[0][0] is not None:
+        r = active_rows[0]
+        current_app.logger.warning(
+            "rl-events loopback: %d active sessions exist; using most recent "
+            "user_id=%s id=%s. Set api_token or session_id in Burp to be explicit.",
+            len(active_rows),
+            r[0],
+            r[1],
+        )
+        return int(r[0]), int(r[1])
+
+    # No active sessions — fall back to the most recently created session for any user.
+    any_row = (
+        db.session.query(ScanSession.user_id, ScanSession.id)
+        .join(User, User.id == ScanSession.user_id)
+        .filter(ScanSession.user_id.isnot(None))
+        .order_by(ScanSession.id.desc())
+        .first()
+    )
+    if any_row and any_row[0] is not None:
+        current_app.logger.warning(
+            "rl-events loopback: no active sessions; falling back to most recent session "
+            "user_id=%s id=%s. Start a scan from the dashboard to associate events properly.",
+            any_row[0],
+            any_row[1],
+        )
+        return int(any_row[0]), int(any_row[1])
+
     return None, None
 
 

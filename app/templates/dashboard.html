@@ -775,6 +775,204 @@
       font-size: 0.88em;
       color: #9eaabd;
     }
+
+    /* ===== Team Profile Panel ===== */
+    .team-profile-bar {
+      max-width: 920px;
+      margin: 10px auto 0;
+      padding: 0;
+      border-radius: var(--border-radius);
+      border: 1px solid var(--color-border);
+      overflow: hidden;
+    }
+
+    .team-profile-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      cursor: pointer;
+      user-select: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color .15s;
+    }
+
+    .team-profile-header:hover {
+      background: rgba(255,255,255,.025);
+    }
+
+    .team-profile-header.open {
+      border-bottom-color: var(--color-divider);
+    }
+
+    .team-profile-title {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .045em;
+      text-transform: uppercase;
+      color: #8b95a2;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .team-profile-title svg {
+      opacity: .7;
+    }
+
+    .team-profile-chevron {
+      color: #4b566a;
+      transition: transform .2s;
+      flex-shrink: 0;
+    }
+
+    .team-profile-chevron.open {
+      transform: rotate(180deg);
+    }
+
+    .team-profile-body {
+      display: none;
+      padding: 18px 20px 20px;
+    }
+
+    .team-profile-body.open {
+      display: block;
+    }
+
+    .team-profile-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 680px) {
+      .team-profile-cols { grid-template-columns: 1fr; }
+    }
+
+    .tp-section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: #6b7a96;
+      margin-bottom: 9px;
+    }
+
+    .tp-input {
+      background: #14171e;
+      border: 1.3px solid #272d3a;
+      border-radius: 7px;
+      color: #d4daea;
+      font-size: 13px;
+      padding: 7px 11px;
+      width: 100%;
+      outline: none;
+      transition: border-color .15s;
+      box-sizing: border-box;
+    }
+
+    .tp-input:focus { border-color: var(--color-border-focus); }
+
+    .tp-input::placeholder { color: #3d4a5c; }
+
+    .tp-btn {
+      font-size: 12.5px;
+      font-weight: 600;
+      border-radius: 7px;
+      padding: 7px 16px;
+      border: 1.3px solid;
+      cursor: pointer;
+      transition: background .14s, color .14s;
+      white-space: nowrap;
+    }
+
+    .tp-btn-export {
+      background: rgba(83,207,255,.08);
+      color: #53cfff;
+      border-color: rgba(83,207,255,.28);
+    }
+
+    .tp-btn-export:hover {
+      background: rgba(83,207,255,.16);
+    }
+
+    .tp-btn-preview {
+      background: rgba(240,182,62,.08);
+      color: #f0b63e;
+      border-color: rgba(240,182,62,.28);
+    }
+
+    .tp-btn-preview:hover {
+      background: rgba(240,182,62,.16);
+    }
+
+    .tp-btn-import {
+      background: rgba(126,231,135,.08);
+      color: #7ee787;
+      border-color: rgba(126,231,135,.28);
+    }
+
+    .tp-btn-import:hover {
+      background: rgba(126,231,135,.16);
+    }
+
+    .tp-file-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: #14171e;
+      border: 1.3px dashed #272d3a;
+      border-radius: 7px;
+      padding: 7px 13px;
+      color: #6b7a96;
+      font-size: 12.5px;
+      cursor: pointer;
+      transition: border-color .15s, color .15s;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .tp-file-label:hover {
+      border-color: #3d5068;
+      color: #8fa3be;
+    }
+
+    .tp-file-label.has-file {
+      border-color: rgba(83,207,255,.35);
+      color: #53cfff;
+    }
+
+    #tp-file-input { display: none; }
+
+    .tp-result {
+      margin-top: 13px;
+      background: #13171f;
+      border: 1.3px solid #1e2330;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 12.5px;
+      line-height: 1.65;
+      color: #9eaabf;
+      display: none;
+      max-height: 240px;
+      overflow-y: auto;
+    }
+
+    .tp-result.visible { display: block; }
+
+    .tp-result::-webkit-scrollbar { width: 5px; }
+    .tp-result::-webkit-scrollbar-thumb { background: #2b3145; border-radius: 4px; }
+
+    .tp-result-ok   { color: #7ee787; font-weight: 600; }
+    .tp-result-warn { color: #f0b63e; font-weight: 600; }
+    .tp-result-err  { color: #ff4970; font-weight: 600; }
+
+    .tp-step {
+      padding: 3px 0;
+      border-bottom: 1px solid #1a1f2c;
+    }
+
+    .tp-step:last-child { border-bottom: none; }
   </style>
 </head>
 
@@ -821,6 +1019,65 @@
         </div>
       </div>
       <div class="small text-muted mt-2" id="burp-env-hint"></div>
+    </div>
+  </div>
+
+  <!-- ===== Team Profile Panel ===== -->
+  <div class="team-profile-bar card-dark mx-3" id="team-profile-panel">
+    <div class="team-profile-header" id="tp-toggle" role="button" tabindex="0"
+         title="Expand to export or import a team configuration profile">
+      <span class="team-profile-title">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+        Team Profile
+        <span style="color:#4b566a;font-weight:400;font-size:.92em;text-transform:none;letter-spacing:0;">
+          — share your setup as a JSON file
+        </span>
+      </span>
+      <svg class="team-profile-chevron" id="tp-chevron" width="15" height="15" viewBox="0 0 24 24"
+           fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 12 15 18 9"/>
+      </svg>
+    </div>
+
+    <div class="team-profile-body" id="tp-body">
+      <div class="team-profile-cols">
+
+        <!-- LEFT: Export -->
+        <div>
+          <div class="tp-section-label">Export (lead pentester)</div>
+          <button class="tp-btn tp-btn-export" id="tp-btn-export">
+            ↓ Export Profile
+          </button>
+          <div class="tp-result" id="tp-export-result"></div>
+        </div>
+
+        <!-- RIGHT: Import -->
+        <div>
+          <div class="tp-section-label">Import (junior tester)</div>
+          <label class="tp-file-label" id="tp-file-label" for="tp-file-input">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+            <span id="tp-file-name">Choose profile JSON…</span>
+          </label>
+          <input type="file" id="tp-file-input" accept=".json,application/json">
+          <div class="d-flex gap-2 mt-2">
+            <button class="tp-btn tp-btn-preview" id="tp-btn-preview" disabled>Preview</button>
+            <button class="tp-btn tp-btn-import" id="tp-btn-import" disabled>Apply Profile</button>
+          </div>
+          <div class="tp-result" id="tp-import-result"></div>
+        </div>
+
+      </div>
     </div>
   </div>
 
@@ -1941,6 +2198,231 @@
 
         void startSocket();
       });
+
+      // ===== TEAM PROFILE PANEL =====
+      (function () {
+        const tpToggle     = document.getElementById("tp-toggle");
+        const tpChevron    = document.getElementById("tp-chevron");
+        const tpBody       = document.getElementById("tp-body");
+        const tpHeader     = document.getElementById("tp-toggle");
+
+        const tpBtnExport  = document.getElementById("tp-btn-export");
+        const tpExportResult = document.getElementById("tp-export-result");
+
+        const tpFileInput  = document.getElementById("tp-file-input");
+        const tpFileLabel  = document.getElementById("tp-file-label");
+        const tpFileName   = document.getElementById("tp-file-name");
+        const tpBtnPreview = document.getElementById("tp-btn-preview");
+        const tpBtnImport  = document.getElementById("tp-btn-import");
+        const tpImportResult = document.getElementById("tp-import-result");
+
+        let tpOpen = false;
+        let tpSelectedFile = null;
+
+        // ---------- toggle ----------
+        function tpSetOpen(v) {
+          tpOpen = v;
+          tpBody.classList.toggle("open", v);
+          tpChevron.classList.toggle("open", v);
+          tpHeader.classList.toggle("open", v);
+        }
+
+        tpToggle.addEventListener("click", () => tpSetOpen(!tpOpen));
+        tpToggle.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") { e.preventDefault(); tpSetOpen(!tpOpen); }
+        });
+
+        // ---------- file selection ----------
+        tpFileInput.addEventListener("change", () => {
+          const f = tpFileInput.files && tpFileInput.files[0];
+          if (f) {
+            tpSelectedFile = f;
+            tpFileName.textContent = f.name;
+            tpFileLabel.classList.add("has-file");
+            tpBtnPreview.disabled = false;
+            tpBtnImport.disabled = false;
+            tpImportResult.classList.remove("visible");
+            tpImportResult.innerHTML = "";
+          } else {
+            tpSelectedFile = null;
+            tpFileName.textContent = "Choose profile JSON…";
+            tpFileLabel.classList.remove("has-file");
+            tpBtnPreview.disabled = true;
+            tpBtnImport.disabled = true;
+          }
+        });
+
+        // ---------- helpers ----------
+        function tpShowResult(el, html) {
+          el.innerHTML = html;
+          el.classList.add("visible");
+        }
+
+        function tpHtml(result, mode) {
+          if (!result) return '<span class="tp-result-err">No response received.</span>';
+          const lines = [];
+
+          if (result.error) {
+            lines.push(`<span class="tp-result-err">Error: ${tpEsc(result.error)}</span>`);
+            return lines.join("");
+          }
+
+          if (result.errors && result.errors.length) {
+            lines.push('<span class="tp-result-err">Validation errors:</span>');
+            result.errors.forEach(e => lines.push(`<div class="tp-step">• ${tpEsc(e)}</div>`));
+            return lines.join("");
+          }
+
+          if (mode === "preview") {
+            lines.push(`<span class="tp-result-ok">✓ Valid profile</span>`);
+            if (result.profile_name)
+              lines.push(`<div class="tp-step"><b>Name:</b> ${tpEsc(result.profile_name)}</div>`);
+            if (result.exported_by)
+              lines.push(`<div class="tp-step"><b>Exported by:</b> ${tpEsc(result.exported_by)}</div>`);
+            if (result.new_targets && result.new_targets.length) {
+              lines.push(`<div class="tp-step"><b>New targets (${result.new_targets.length}):</b></div>`);
+              result.new_targets.slice(0, 8).forEach(t =>
+                lines.push(`<div class="tp-step" style="padding-left:12px;">+ ${tpEsc(t.base_url)} <span style="color:#6b7a96;">(${tpEsc(t.environment || "prod")})</span></div>`));
+              if (result.new_targets.length > 8)
+                lines.push(`<div class="tp-step" style="padding-left:12px;">… and ${result.new_targets.length - 8} more</div>`);
+            }
+            if (result.existing_targets_skipped && result.existing_targets_skipped.length) {
+              lines.push(`<div class="tp-step" style="color:#6b7a96;">${result.existing_targets_skipped.length} target(s) already in your account — will be skipped.</div>`);
+            }
+            if (result.notes)
+              lines.push(`<div class="tp-step" style="color:#8596a8;margin-top:4px;"><i>Lead notes: ${tpEsc(result.notes)}</i></div>`);
+          }
+
+          if (mode === "import") {
+            if (result.applied) {
+              lines.push(`<span class="tp-result-ok">✓ Profile applied</span>`);
+              if (result.profile_name)
+                lines.push(`<div class="tp-step"><b>Name:</b> ${tpEsc(result.profile_name)}</div>`);
+              if (result.targets_added && result.targets_added.length) {
+                lines.push(`<div class="tp-step"><b>Targets added (${result.targets_added.length}):</b></div>`);
+                result.targets_added.slice(0, 8).forEach(u =>
+                  lines.push(`<div class="tp-step" style="padding-left:12px;">+ ${tpEsc(u)}</div>`));
+                if (result.targets_added.length > 8)
+                  lines.push(`<div class="tp-step" style="padding-left:12px;">… and ${result.targets_added.length - 8} more</div>`);
+              }
+              if (result.targets_skipped && result.targets_skipped.length)
+                lines.push(`<div class="tp-step" style="color:#6b7a96;">${result.targets_skipped.length} target(s) already existed — skipped.</div>`);
+              if (result.targets_failed && result.targets_failed.length)
+                lines.push(`<span class="tp-result-warn">${result.targets_failed.length} target(s) failed to insert — check server logs.</span>`);
+              if (result.rl_brain_status)
+                lines.push(`<div class="tp-step" style="margin-top:6px;">🧠 <b>RL brain:</b> ${tpEsc(result.rl_brain_status)}</div>`);
+              if (result.notes)
+                lines.push(`<div class="tp-step" style="color:#8596a8;margin-top:4px;"><i>Lead notes: ${tpEsc(result.notes)}</i></div>`);
+            } else {
+              lines.push(`<span class="tp-result-err">Import failed.</span>`);
+              if (result.errors) result.errors.forEach(e => lines.push(`<div class="tp-step">• ${tpEsc(e)}</div>`));
+            }
+          }
+
+          return lines.join("\n");
+        }
+
+        function tpEsc(str) {
+          return String(str || "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;");
+        }
+
+        // ---------- export ----------
+        tpBtnExport.addEventListener("click", async () => {
+          tpExportResult.classList.remove("visible");
+          tpBtnExport.disabled = true;
+          tpBtnExport.textContent = "Exporting…";
+
+          try {
+            const url = API_ORIGIN + "/api/team/profile/export";
+            const r = await fetch(url, FETCH_OPTS);
+
+            if (!r.ok) {
+              let errMsg = "Export failed (HTTP " + r.status + ")";
+              try { const j = await r.json(); errMsg = j.error || errMsg; } catch (_) {}
+              tpShowResult(tpExportResult,
+                `<span class="tp-result-err">${tpEsc(errMsg)}</span>`);
+              return;
+            }
+
+            const blob = await r.blob();
+            const cd = r.headers.get("Content-Disposition") || "";
+            const fnMatch = cd.match(/filename="?([^";\r\n]+)"?/);
+            const filename = fnMatch ? fnMatch[1] : "burp_team_profile.json";
+            const objUrl = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = objUrl;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(objUrl);
+            tpShowResult(tpExportResult,
+              `<span class="tp-result-ok">✓ Profile downloaded as ${tpEsc(filename)}</span>`);
+          } catch (e) {
+            tpShowResult(tpExportResult,
+              `<span class="tp-result-err">Network error: ${tpEsc(String(e))}</span>`);
+          } finally {
+            tpBtnExport.disabled = false;
+            tpBtnExport.textContent = "↓ Export Profile";
+          }
+        });
+
+        // ---------- preview ----------
+        tpBtnPreview.addEventListener("click", async () => {
+          if (!tpSelectedFile) return;
+          tpImportResult.classList.remove("visible");
+          tpBtnPreview.disabled = true;
+          tpBtnPreview.textContent = "Loading…";
+          try {
+            const text = await tpSelectedFile.text();
+            const r = await fetch(API_ORIGIN + "/api/team/profile/preview", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              credentials: "include",
+              body: text,
+            });
+            let data = {};
+            try { data = await r.json(); } catch (_) {}
+            tpShowResult(tpImportResult, tpHtml(data, "preview"));
+          } catch (e) {
+            tpShowResult(tpImportResult,
+              `<span class="tp-result-err">Network error: ${tpEsc(String(e))}</span>`);
+          } finally {
+            tpBtnPreview.disabled = false;
+            tpBtnPreview.textContent = "Preview";
+          }
+        });
+
+        // ---------- import ----------
+        tpBtnImport.addEventListener("click", async () => {
+          if (!tpSelectedFile) return;
+          tpImportResult.classList.remove("visible");
+          tpBtnImport.disabled = true;
+          tpBtnImport.textContent = "Applying…";
+          try {
+            const text = await tpSelectedFile.text();
+            const r = await fetch(API_ORIGIN + "/api/team/profile/import", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              credentials: "include",
+              body: text,
+            });
+            let data = {};
+            try { data = await r.json(); } catch (_) {}
+            tpShowResult(tpImportResult, tpHtml(data, "import"));
+          } catch (e) {
+            tpShowResult(tpImportResult,
+              `<span class="tp-result-err">Network error: ${tpEsc(String(e))}</span>`);
+          } finally {
+            tpBtnImport.disabled = false;
+            tpBtnImport.textContent = "Apply Profile";
+          }
+        });
+      })();
 
     })();
   </script>
